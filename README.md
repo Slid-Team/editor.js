@@ -8,28 +8,56 @@
 [![](https://img.shields.io/npm/l/@editorjs/editorjs?style=flat-square)](https://www.npmjs.com/package/@editorjs/editorjs)
 [![Join the chat at https://gitter.im/codex-team/editor.js](https://badges.gitter.im/codex-team/editor.js.svg)](https://gitter.im/codex-team/editor.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_48x48.png" alt="iOS Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>iOS Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
-| --------- | --------- | --------- | --------- | --------- | --------- |
-| Edge 12+ | Firefox 18+ | Chrome 49+ | Safari 10+ | Safari 10+ | Opera 36+
+|                                                                                                                                                        |                                                                                                                                                               |                                                                                                                                                           |                                                                                                                                                           |                                                                                                                                                                           |                                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="16px" height="16px" /> Edge 12+ | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="16px" height="16px" /> Firefox 18+ | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="16px" height="16px" /> Chrome 49+ | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="16px" height="16px" /> Safari 10+ | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_48x48.png" alt="iOS Safari" width="16px" height="16px" /> iOS Safari 10+ | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="16px" height="16px" /> Opera 36+ |
+
+## Roadmap
+
+<img align="right" width="342" src="https://user-images.githubusercontent.com/3684889/152149321-3f9c585d-7d87-4dad-ab14-def0d526e71c.png" hspace="50">
+
+- Collaborative editing
+
+  - [ ] Implement Inline Tools JSON format `In progress` [#1801](https://github.com/codex-team/editor.js/pull/1801)
+  - [ ] Implement Operations creation and transformations
+  - [ ] Implement Tools API changes
+  - [ ] Implement Server and communication
+  - [ ] Update basic tools to fit the new API
+
+- Unified Toolbox
+  - [x] Block Tunes moved left [#1815](https://github.com/codex-team/editor.js/pull/1815)
+  - [ ] Toolbox become vertical `In progress`
+  - [ ] Ability to display several Toolbox buttons by the single Tool
+  - [ ] Conversion Toolbar uses Unified Toolbox
+  - [ ] Block Tunes become vertical
+  - [ ] Conversion Toolbar added to the Block Tunes
+- Ecosystem improvements
+
+<a href="https://opencollective.com/editorjs/donate" target="_blank">
+  <img width="459" alt="image" src="https://user-images.githubusercontent.com/3684889/152159639-f5e89362-19a1-4c71-a089-422e875fab7d.png">
+</a>
+
+##
 
 ## If you like a project 💗💗💗
 
 If you like Editor.js you can support project improvements and development of new features with a donation to our collective.
 
- 👉  [https://opencollective.com/editorjs](https://opencollective.com/editorjs)
+👉 [https://opencollective.com/editorjs](https://opencollective.com/editorjs)
 
 ### Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/editorjs#sponsor)]
+Support us by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/editorjs/contribute/sir-8679/checkout)]
 
-<a href="https://opencollective.com/editorjs/sponsor/0/website" target="_blank"><img src="https://opencollective.com/editorjs/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/editorjs/sponsor/3/website" target="_blank"><img src="https://opencollective.com/editorjs/sponsor/3/avatar.svg"></a>
+<a href="https://humm.earth/" target="_blank"><img src="https://images.opencollective.com/hummearth/2a8406a/logo/256.png" width="64"></a>
+<a href="https://tesen.com/" target="_blank"><img src="https://images.opencollective.com/tesen-media-inc/b90cf6a/logo/256.png" width="64"></a>
+<a href="https://slid.cc/" target="_blank"><img src="https://images.opencollective.com/slid_team/ff564d7/logo/256.png" width="64"></a>
 
- ### Backers
+### Backers
 
- Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/editorjs#backer)]
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/editorjs/contribute/backer-8632/checkout)]
 
- <a href="https://opencollective.com/editorjs#backers" target="_blank"><img src="https://opencollective.com/editorjs/backers.svg?width=890"></a>
+<a href="https://opencollective.com/editorjs#backers" target="_blank"><img src="https://opencollective.com/editorjs/backers.svg?width=890"></a>
 
 ### Contributors
 
@@ -68,15 +96,14 @@ How to use the Editor after [Installation](https://editorjs.io/getting-started).
 - Press `TAB` or click on the Plus Button to view the Toolbox
 - Press `TAB` again to leaf Toolbox and select a Block you need. Then press Enter.
 
-
- ![](https://github.com/editor-js/list/raw/master/assets/example.gif)
+![](https://github.com/editor-js/list/raw/master/assets/example.gif)
 
 - Select a text fragment and apply a style or insert a link from the Inline Toolbar
 
 ![](https://capella.pics/7ccbcfcd-1c49-4674-bea7-71021468a1bd.jpg)
 
 - Use the «three-dots» button on the right to open Block Settings. From here, you can move and delete a Block
-or apply a Tool's settings, if it provided. For example, you can set a Heading level or List style.
+  or apply a Tool's settings, if it provided. For example, you can set a Heading level or List style.
 
 ![](https://capella.pics/01a55381-46cd-47c7-b92e-34765434f2ca.jpg)
 
@@ -84,14 +111,14 @@ or apply a Tool's settings, if it provided. For example, you can set a Heading l
 
 A few shortcuts are preset as available.
 
-Shortcut | Action | Restrictions
--- | -- | --
-`TAB` | Show/leaf a Toolbox. | On empty block
-`SHIFT+TAB` | Leaf back a Toolbox. | While Toolbox is opened
-`ENTER` | Create a Block | While Toolbox is opened and some Tool is selected
-`CMD+B` | Bold style | On selection
-`CMD+I` | Italic style | On selection
-`CMD+K` | Insert a link | On selection
+| Shortcut    | Action               | Restrictions                                      |
+| ----------- | -------------------- | ------------------------------------------------- |
+| `TAB`       | Show/leaf a Toolbox. | On empty block                                    |
+| `SHIFT+TAB` | Leaf back a Toolbox. | While Toolbox is opened                           |
+| `ENTER`     | Create a Block       | While Toolbox is opened and some Tool is selected |
+| `CMD+B`     | Bold style           | On selection                                      |
+| `CMD+I`     | Italic style         | On selection                                      |
+| `CMD+K`     | Insert a link        | On selection                                      |
 
 Each Tool can also have its own shortcuts. These are specified in the configuration of the Tool, for example:
 
@@ -101,18 +128,16 @@ var editor = new EditorJS({
   tools: {
     header: {
       class: Header,
-      shortcut: 'CMD+SHIFT+H'
+      shortcut: "CMD+SHIFT+H",
     },
     list: {
       class: List,
-      shortcut: 'CMD+SHIFT+L'
-    }
-  }
+      shortcut: "CMD+SHIFT+L",
+    },
+  },
   //...
- });
-
+});
 ```
-
 
 ## Installation Guide
 
@@ -142,7 +167,7 @@ npm i @editorjs/editorjs
 Include module in your application
 
 ```javascript
-import EditorJS from '@editorjs/editorjs';
+import EditorJS from "@editorjs/editorjs";
 ```
 
 ##### Option B. Use a CDN
@@ -190,34 +215,34 @@ var editor = new EditorJS(); /** Zero-configuration */
 
 // equals
 
-var editor = new EditorJS('editorjs');
-````
+var editor = new EditorJS("editorjs");
+```
 
 Or pass a whole settings object.
 
 ```javascript
 var editor = new EditorJS({
-    /**
-     * Create a holder for the Editor and pass its ID
-     */
-    holder : 'editorjs',
+  /**
+   * Create a holder for the Editor and pass its ID
+   */
+  holder: "editorjs",
 
-    /**
-     * Available Tools list.
-     * Pass Tool's class or Settings object for each Tool you want to use
-     */
-    tools: {
-        header: {
-          class: Header,
-          inlineToolbar : true
-        },
-        // ...
+  /**
+   * Available Tools list.
+   * Pass Tool's class or Settings object for each Tool you want to use
+   */
+  tools: {
+    header: {
+      class: Header,
+      inlineToolbar: true,
     },
+    // ...
+  },
 
-    /**
-     * Previously saved data that should be rendered
-     */
-    data: {}
+  /**
+   * Previously saved data that should be rendered
+   */
+  data: {},
 });
 ```
 
@@ -226,10 +251,9 @@ var editor = new EditorJS({
 Call `editor.save()` and handle returned Promise with saved data.
 
 ```javascript
-editor.save()
-  .then((savedData) => {
-    console.log(savedData);
-  });
+editor.save().then((savedData) => {
+  console.log(savedData);
+});
 ```
 
 ### Example
@@ -240,12 +264,12 @@ Take a look at the [example.html](example/example.html) to view more detailed ex
 
 - We use [HTMLJanitor](https://github.com/guardian/html-janitor) module in our Sanitizer module.
 
-## About team
+# About CodeX
 
-We are CodeX and we build products for developers and makers.
+<img align="right" width="120" height="120" src="https://codex.so/public/app/img/codex-logo.svg" hspace="50">
 
-Follow us on Twitter: [twitter.com/codex_team](https://twitter.com/codex_team)
+CodeX is a team of digital specialists around the world interested in building high-quality open source products on a global market. We are [open](https://codex.so/join) for young people who want to constantly improve their skills and grow professionally with experiments in cutting-edge technologies.
 
-Feel free to contact: <a href="mailto:team@codex.so?subject=Editor.js feedback">team@codex.so</a>
-
-[codex.so](https://codex.so)
+| 🌐                           | Join 👋                                | Twitter                                      | Instagram                                       |
+| ---------------------------- | -------------------------------------- | -------------------------------------------- | ----------------------------------------------- |
+| [codex.so](https://codex.so) | [codex.so/join](https://codex.so/join) | [@codex_team](http://twitter.com/codex_team) | [@codex_team](http://instagram.com/codex_team/) |

@@ -13,6 +13,8 @@ import * as _ from '../utils';
 import Blocks from '../blocks';
 import { BlockToolData, PasteEvent } from '../../../types';
 import { BlockTuneData } from '../../../types/block-tunes/block-tune-data';
+import BlockAPI from '../block/api';
+import { BlockMutationType } from '../../../types/events/block/mutation-type';
 
 /**
  * @typedef {BlockManager} BlockManager
@@ -71,6 +73,15 @@ export default class BlockManager extends Module {
    */
   public get currentBlock(): Block {
     return this._blocks[this.currentBlockIndex];
+  }
+
+  /**
+   * Set passed Block as a current
+   *
+   * @param block - block to set as a current
+   */
+  public set currentBlock(block: Block) {
+    this.currentBlockIndex = this.getBlockIndex(block);
   }
 
   /**
@@ -288,7 +299,24 @@ export default class BlockManager extends Module {
       tunes,
     });
 
+    /**
+     * In case of block replacing (Converting OR from Toolbox or Shortcut on empty block OR on-paste to empty block)
+     * we need to dispatch the 'block-removing' event for the replacing block
+     */
+    if (replace) {
+      this.blockDidMutated(BlockMutationType.Removed, this.getBlockByIndex(newIndex), {
+        index: newIndex,
+      });
+    }
+
     this._blocks.insert(newIndex, block, replace);
+
+    /**
+     * Force call of didMutated event on Block insertion
+     */
+    this.blockDidMutated(BlockMutationType.Added, block, {
+      index: newIndex,
+    });
 
     if (needToFocus) {
       this.currentBlockIndex = newIndex;
@@ -361,6 +389,13 @@ export default class BlockManager extends Module {
 
     this._blocks[index] = block;
 
+    /**
+     * Force call of didMutated event on Block insertion
+     */
+    this.blockDidMutated(BlockMutationType.Added, block, {
+      index,
+    });
+
     if (needToFocus) {
       this.currentBlockIndex = index;
     } else if (index <= this.currentBlockIndex) {
@@ -426,7 +461,17 @@ export default class BlockManager extends Module {
       throw new Error('Can\'t find a Block to remove');
     }
 
+    const blockToRemove = this._blocks[index];
+
+    blockToRemove.destroy();
     this._blocks.remove(index);
+
+    /**
+     * Force call of didMutated event on Block removal
+     */
+    this.blockDidMutated(BlockMutationType.Removed, blockToRemove, {
+      index,
+    });
 
     if (this.currentBlockIndex >= index) {
       this.currentBlockIndex--;
@@ -513,12 +558,25 @@ export default class BlockManager extends Module {
   /**
    * Returns Block by passed index
    *
-   * @param {number} index - index to get
+   * @param {number} index - index to get. -1 to get last
    *
    * @returns {Block}
    */
   public getBlockByIndex(index): Block {
+    if (index === -1) {
+      index = this._blocks.length - 1;
+    }
+
     return this._blocks[index];
+  }
+
+  /**
+   * Returns an index for passed Block
+   *
+   * @param block - block to find index
+   */
+  public getBlockIndex(block: Block): number {
+    return this._blocks.indexOf(block);
   }
 
   /**
@@ -528,7 +586,7 @@ export default class BlockManager extends Module {
    *
    * @returns {Block}
    */
-  public getBlockById(id): Block {
+  public getBlockById(id): Block | undefined {
     return this._blocks.array.find(block => block.id === id);
   }
 
@@ -689,11 +747,19 @@ export default class BlockManager extends Module {
 
     /** Now actual block moved so that current block index changed */
     this.currentBlockIndex = toIndex;
+
+    /**
+     * Force call of didMutated event on Block movement
+     */
+    this.blockDidMutated(BlockMutationType.Moved, this.currentBlock, {
+      fromIndex,
+      toIndex,
+    });
   }
 
   /**
    * Sets current Block Index -1 which means unknown
-   * and clear highlightings
+   * and clear highlights
    */
   public dropPointer(): void {
     this.currentBlockIndex = -1;
@@ -754,6 +820,12 @@ export default class BlockManager extends Module {
     this.readOnlyMutableListeners.on(block.holder, 'dragleave', (event: DragEvent) => {
       BlockEvents.dragLeave(event);
     });
+
+    block.on('didMutated', (affectedBlock: Block) => {
+      return this.blockDidMutated(BlockMutationType.Changed, affectedBlock, {
+        index: this.getBlockIndex(affectedBlock),
+      });
+    });
   }
 
   /**
@@ -788,5 +860,25 @@ export default class BlockManager extends Module {
    */
   private validateIndex(index: number): boolean {
     return !(index < 0 || index >= this._blocks.length);
+  }
+
+  /**
+   * Block mutation callback
+   *
+   * @param mutationType - what happened with block
+   * @param block - mutated block
+   * @param details - additional data to pass with change event
+   */
+  private blockDidMutated(mutationType: BlockMutationType, block: Block, details: Record<string, unknown> = {}): Block {
+    const event = new CustomEvent(mutationType, {
+      detail: {
+        target: new BlockAPI(block),
+        ...details,
+      },
+    });
+
+    this.Editor.ModificationsObserver.onChange(event);
+
+    return block;
   }
 }
