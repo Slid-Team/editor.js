@@ -4,19 +4,20 @@
 
 :root {
   --color-bg-main: #fff;
-  --color-border-light: #E8E8EB;
+  --color-border-light: #e8e8eb;
   --color-text-main: #000;
 }
 
 .dark-mode {
-  --color-border-light: rgba(255, 255, 255,.08);
+  --color-border-light: rgba(255, 255, 255, 0.08);
   --color-bg-main: #1c1e24;
   --color-text-main: #737886;
 }
 
-
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   font-size: 14px;
   line-height: 1.5em;
   margin: 0;
@@ -51,7 +52,7 @@ body {
   margin-left: auto;
 }
 
-@media all and (max-width: 730px){
+@media all and (max-width: 730px) {
   .ce-example__header-menu {
     margin-left: 0;
     margin-top: 10px;
@@ -64,7 +65,7 @@ body {
   margin-left: 20px;
 }
 
-@media all and (max-width: 730px){
+@media all and (max-width: 730px) {
   .ce-example__header-menu a {
     margin-left: 0;
     margin-right: 15px;
@@ -82,11 +83,11 @@ body {
   max-width: 500px;
   border-left: 1px solid #eee;
   border-right: 1px solid #eee;
-  padding: 0 15px;
+  padding: 0 60px;
 }
 
 .ce-example__output {
-  background: #1B202B;
+  background: #1b202b;
   overflow-x: auto;
   padding: 0 30px 80px;
 }
@@ -94,8 +95,8 @@ body {
 .ce-example__output-content {
   max-width: 650px;
   margin: 30px auto;
-  color: #ABADC3;
-  font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+  color: #abadc3;
+  font-family: "PT Mono", Menlo, Monaco, Consolas, Courier New, monospace;
   font-size: 13.3px;
 }
 
@@ -107,19 +108,19 @@ body {
   display: block;
   margin: 50px auto;
   max-width: 180px;
-  background: #4A9DF8;
+  background: #4a9df8;
   padding: 17px 30px;
   box-shadow: 0 22px 18px -4px rgba(137, 207, 255, 0.77);
   transition: all 150ms ease;
   cursor: pointer;
   border-radius: 31px;
   color: #fff;
-  font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+  font-family: "PT Mono", Menlo, Monaco, Consolas, Courier New, monospace;
   text-align: center;
 }
 
 .ce-example__button:hover {
-  background: #3D8DE5;
+  background: #3d8de5;
   transform: translateY(2px);
   box-shadow: 0 20px 15px -4px rgba(137, 207, 255, 0.77);
 }
@@ -160,7 +161,7 @@ body {
 }
 
 .ce-example__statusbar-item:not(:last-of-type)::after {
-  content: '|';
+  content: "|";
   color: #ddd;
   margin: 0 15px 0 12px;
 }
@@ -185,10 +186,10 @@ body {
 }
 
 .ce-example__statusbar-button-primary {
-  background: #4A9DF8;
+  background: #4a9df8;
   color: #fff;
   box-shadow: 0 7px 8px -4px rgba(137, 207, 255, 0.77);
-  font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+  font-family: "PT Mono", Menlo, Monaco, Consolas, Courier New, monospace;
 }
 
 .ce-example__statusbar {
@@ -207,7 +208,7 @@ body {
 
 .ce-example__statusbar-toggler::before {
   display: block;
-  content: '';
+  content: "";
   width: var(--toggler-size);
   height: var(--toggler-size);
   background: #fff;
@@ -217,20 +218,21 @@ body {
 
 .ce-example__statusbar-toggler::after {
   --moon-size: calc(var(--toggler-size) * 0.5);
-  content: '';
+  content: "";
   position: absolute;
   top: 5px;
   right: 5px;
   height: var(--moon-size);
   width: var(--moon-size);
-  box-shadow: calc(var(--moon-size) * 0.25 * -1) calc(var(--moon-size) * 0.18) 0 calc(var(--moon-size) * 0.05) white;
+  box-shadow: calc(var(--moon-size) * 0.25 * -1) calc(var(--moon-size) * 0.18) 0
+    calc(var(--moon-size) * 0.05) white;
   border-radius: 50%;
 }
 
-@media all and (max-width: 730px){
+@media all and (max-width: 730px) {
   .ce-example__header,
-  .ce-example__content{
-    padding: 0 20px;
+  .ce-example__content {
+    padding: 0 60px;
   }
 }
 
@@ -253,7 +255,7 @@ body {
   color: rgb(247, 60, 173);
 }
 
-.ce-example .ce-block:first-of-type h1.ce-header{
+.ce-example .ce-block:first-of-type h1.ce-header {
   font-size: 50px;
 }
 
@@ -289,8 +291,6 @@ body {
   display: inline;
   font-size: 13px;
 }
-
-
 
 /**
  * Dark theme overrides
@@ -331,7 +331,7 @@ body {
 }
 
 .dark-mode .ce-example__statusbar-toggler::after {
-  content: '*';
+  content: "*";
   right: auto;
   left: 6px;
   top: 7px;
@@ -345,7 +345,7 @@ body {
   box-shadow: 0 0 0 1px rgba(128, 144, 159, 0.09) inset;
 }
 
-.dark-mode.thin-mode .ce-example__content{
+.dark-mode.thin-mode .ce-example__content {
   border-color: var(--color-border-light);
 }
 
@@ -354,7 +354,7 @@ body {
 }
 
 .dark-mode .ce-block--selected .ce-block__content,
-.dark-mode ::selection{
+.dark-mode ::selection {
   background-color: rgba(57, 68, 84, 0.57);
 }
 
