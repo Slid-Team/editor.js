@@ -1,5 +1,5 @@
-@custom-media --mobile (width <= 650px);
-@custom-media --not-mobile (width >= 651px);
+@custom-media --mobile (width <= 200px);
+@custom-media --not-mobile (width >= 201px);
 
 :root {
   /**
@@ -21,12 +21,12 @@
   /**
    * Gray icons hover
    */
-    --color-dark: #1D202B;
+  --color-dark: #1d202b;
 
   /**
    * Blue icons
    */
-  --color-active-icon: #388AE5;
+  --color-active-icon: #388ae5;
 
   /**
    * Gray border, loaders
@@ -64,17 +64,17 @@
   /**
    * Confirm deletion bg
    */
-  --color-confirm: #E24A4A;
+  --color-confirm: #e24a4a;
 
   --overlay-pane: {
     position: absolute;
-    background-color: #FFFFFF;
-    border: 1px solid #E8E8EB;
-    box-shadow: 0 3px 15px -3px rgba(13,20,33,0.13);
+    background-color: #ffffff;
+    border: 1px solid #e8e8eb;
+    box-shadow: 0 3px 15px -3px rgba(13, 20, 33, 0.13);
     border-radius: 6px;
     z-index: 2;
 
-    @media (--mobile){
+    @media (--mobile) {
       box-shadow: 0 8px 6px -6px rgb(33 48 73 / 19%);
       border-bottom-color: #c7c7c7;
     }
@@ -93,7 +93,7 @@
         margin-left: 0;
       }
     }
-  };
+  }
 
   /**
    * Styles for Toolbox Buttons and Plus Button
@@ -108,7 +108,7 @@
     justify-content: center;
     align-items: center;
 
-    @media (--mobile){
+    @media (--mobile) {
       width: var(--toolbox-buttons-size--mobile);
       height: var(--toolbox-buttons-size--mobile);
     }
@@ -118,12 +118,11 @@
       background-color: var(--bg-light);
     }
 
-    &--active{
+    &--active {
       animation: bounceIn 0.75s 1;
       animation-fill-mode: forwards;
     }
-
-  };
+  }
 
   /**
    * Styles for Settings Button in Toolbar
@@ -163,6 +162,5 @@
         animation-duration: 250ms;
       }
     }
-  };
+  }
 }
-
