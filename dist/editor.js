@@ -11028,7 +11028,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _slicedToArray2, _classCallCheck2, _createClass2, _register, _polyfills, _core, _) {
-  'use strict';
+  "use strict";
   /**
    * Apply polyfills
    */
@@ -11112,7 +11112,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function exportAPI(editor) {
         var _this2 = this;
 
-        var fieldsToExport = ['configuration'];
+        var fieldsToExport = ["configuration"];
 
         var destroy = function destroy() {
           Object.values(editor.moduleInstances).forEach(function (moduleInstance) {
@@ -11141,19 +11141,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         delete this.exportAPI;
         var shorthands = {
           blocks: {
-            clear: 'clear',
-            render: 'render'
+            clear: "clear",
+            render: "render"
           },
           caret: {
-            focus: 'focus'
+            focus: "focus"
           },
           events: {
-            on: 'on',
-            off: 'off',
-            emit: 'emit'
+            on: "on",
+            off: "off",
+            emit: "emit"
           },
           saver: {
-            save: 'save'
+            save: "save"
           }
         };
         Object.entries(shorthands).forEach(function (_ref) {
