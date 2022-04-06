@@ -1,5 +1,5 @@
-import $ from '../dom';
-import { InlineTool, SanitizerConfig } from '../../../types';
+import $ from "../dom";
+import { InlineTool, SanitizerConfig } from "../../../types";
 
 /**
  * Italic Tool
@@ -19,7 +19,7 @@ export default class ItalicInlineTool implements InlineTool {
   /**
    * Title for hover-tooltip
    */
-  public static title = 'Italic';
+  public static title = "Italic";
 
   /**
    * Sanitizer Rule
@@ -36,21 +36,21 @@ export default class ItalicInlineTool implements InlineTool {
   /**
    * Native Document's command that uses for Italic
    */
-  private readonly commandName: string = 'italic';
+  private readonly commandName: string = "italic";
 
   /**
    * Styles
    */
   private readonly CSS = {
-    button: 'ce-inline-tool',
-    buttonActive: 'ce-inline-tool--active',
-    buttonModifier: 'ce-inline-tool--italic',
+    button: "ce-inline-tool",
+    buttonActive: "ce-inline-tool--active",
+    buttonModifier: "ce-inline-tool--italic",
   };
 
   /**
    * Elements
    */
-  private nodes: {button: HTMLButtonElement} = {
+  private nodes: { button: HTMLButtonElement } = {
     button: null,
   };
 
@@ -58,10 +58,10 @@ export default class ItalicInlineTool implements InlineTool {
    * Create button for Inline Toolbar
    */
   public render(): HTMLElement {
-    this.nodes.button = document.createElement('button') as HTMLButtonElement;
-    this.nodes.button.type = 'button';
+    this.nodes.button = document.createElement("button") as HTMLButtonElement;
+    this.nodes.button.type = "button";
     this.nodes.button.classList.add(this.CSS.button, this.CSS.buttonModifier);
-    this.nodes.button.appendChild($.svg('italic', 4, 11));
+    this.nodes.button.appendChild($.svg("italic", 9, 10));
 
     return this.nodes.button;
   }
@@ -92,6 +92,6 @@ export default class ItalicInlineTool implements InlineTool {
    * Set a shortcut
    */
   public get shortcut(): string {
-    return 'CMD+I';
+    return "CMD+I";
   }
 }

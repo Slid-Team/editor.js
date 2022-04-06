@@ -1,5 +1,5 @@
-import $ from '../dom';
-import { InlineTool, SanitizerConfig } from '../../../types';
+import $ from "../dom";
+import { InlineTool, SanitizerConfig } from "../../../types";
 
 /**
  * Bold Tool
@@ -19,7 +19,7 @@ export default class BoldInlineTool implements InlineTool {
   /**
    * Title for hover-tooltip
    */
-  public static title = 'Bold';
+  public static title = "Bold";
 
   /**
    * Sanitizer Rule
@@ -36,21 +36,21 @@ export default class BoldInlineTool implements InlineTool {
   /**
    * Native Document's command that uses for Bold
    */
-  private readonly commandName: string = 'bold';
+  private readonly commandName: string = "bold";
 
   /**
    * Styles
    */
   private readonly CSS = {
-    button: 'ce-inline-tool',
-    buttonActive: 'ce-inline-tool--active',
-    buttonModifier: 'ce-inline-tool--bold',
+    button: "ce-inline-tool",
+    buttonActive: "ce-inline-tool--active",
+    buttonModifier: "ce-inline-tool--bold",
   };
 
   /**
    * Elements
    */
-  private nodes: {button: HTMLButtonElement} = {
+  private nodes: { button: HTMLButtonElement } = {
     button: undefined,
   };
 
@@ -58,10 +58,10 @@ export default class BoldInlineTool implements InlineTool {
    * Create button for Inline Toolbar
    */
   public render(): HTMLElement {
-    this.nodes.button = document.createElement('button') as HTMLButtonElement;
-    this.nodes.button.type = 'button';
+    this.nodes.button = document.createElement("button") as HTMLButtonElement;
+    this.nodes.button.type = "button";
     this.nodes.button.classList.add(this.CSS.button, this.CSS.buttonModifier);
-    this.nodes.button.appendChild($.svg('bold', 12, 14));
+    this.nodes.button.appendChild($.svg("bold", 16, 16));
 
     return this.nodes.button;
   }
@@ -96,6 +96,6 @@ export default class BoldInlineTool implements InlineTool {
    * @returns {boolean}
    */
   public get shortcut(): string {
-    return 'CMD+B';
+    return "CMD+B";
   }
 }
