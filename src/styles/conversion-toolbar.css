@@ -84,7 +84,7 @@
   }
 
   &--active {
-    color: var(--color-active-icon) !important;
+    color: var(--blue5) !important;
   }
 
   &--active {

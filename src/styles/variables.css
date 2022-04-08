@@ -198,7 +198,7 @@
     }
 
     &--active {
-      color: var(--color-active-icon);
+      color: var(--blue5);
     }
 
     &--focused {

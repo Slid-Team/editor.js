@@ -33,30 +33,30 @@
 
   &--drop-target &__content {
     &:before {
-      content: '';
+      content: "";
       position: absolute;
       top: 100%;
       left: -20px;
       margin-top: -1px;
       height: 8px;
       width: 8px;
-      border: solid var(--color-active-icon);
+      border: solid var(--blue5);
       border-width: 1px 1px 0 0;
       transform-origin: right;
       transform: rotate(45deg);
     }
 
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       top: 100%;
       height: 1px;
       width: 100%;
-      color: var(--color-active-icon);
+      color: var(--blue5);
       background: repeating-linear-gradient(
         90deg,
-        var(--color-active-icon),
-        var(--color-active-icon) 1px,
+        var(--blue5),
+        var(--blue5) 1px,
         #fff 1px,
         #fff 6px
       );
