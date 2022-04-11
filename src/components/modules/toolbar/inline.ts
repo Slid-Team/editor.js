@@ -162,43 +162,32 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     const selectionRect = SelectionUtils.rect as DOMRect;
     const wrapperOffset = this.Editor.UI.nodes.wrapper.getBoundingClientRect();
     const newCoords = {
-      x: selectionRect.x - wrapperOffset.left,
-      y:
-        selectionRect.y +
-        selectionRect.height -
-        // + window.scrollY
-        wrapperOffset.top +
-        this.toolbarVerticalMargin,
+      x: selectionRect.x - wrapperOffset.left + 105,
+      y: selectionRect.y - wrapperOffset.top - 40,
     };
 
-    /**
-     * If we know selections width, place InlineToolbar to center
-     */
-    if (selectionRect.width) {
-      newCoords.x += Math.floor(selectionRect.width / 2);
+    const toolbarWidth =
+      document.getElementsByClassName("ce-inline-toolbar")[0].clientWidth;
+
+    const blockOffset = document
+      .getElementsByClassName("ce-block__content")[0]
+      .getBoundingClientRect();
+
+    if (
+      blockOffset.width < 650 &&
+      wrapperOffset.right - selectionRect.x < toolbarWidth
+    ) {
+      newCoords.x =
+        newCoords.x - (toolbarWidth - (wrapperOffset.right - selectionRect.x));
+    } else if (
+      blockOffset.width >= 650 &&
+      blockOffset.right - selectionRect.x < toolbarWidth
+    ) {
+      newCoords.x -= toolbarWidth - (blockOffset.right - selectionRect.x);
     }
 
-    /**
-     * Inline Toolbar has -50% translateX, so we need to check real coords to prevent overflowing
-     */
-    const realLeftCoord = newCoords.x - this.width / 2;
-    const realRightCoord = newCoords.x + this.width / 2;
-
-    /**
-     * By default, Inline Toolbar has top-corner at the center
-     * We are adding a modifiers for to move corner to the left or right
-     */
-    this.nodes.wrapper.classList.toggle(
-      this.CSS.inlineToolbarLeftOriented,
-      realLeftCoord < this.Editor.UI.contentRect.left
-    );
-
-    this.nodes.wrapper.classList.toggle(
-      this.CSS.inlineToolbarRightOriented,
-      realRightCoord > this.Editor.UI.contentRect.right
-    );
-
     this.nodes.wrapper.style.left = Math.floor(newCoords.x) + "px";
+
     this.nodes.wrapper.style.top = Math.floor(newCoords.y) + "px";
   }
 
