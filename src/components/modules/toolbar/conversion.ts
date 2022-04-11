@@ -325,7 +325,6 @@ export default class ConversionToolbar extends Module<ConversionToolbarNodes> {
     checkIcon.innerHTML = `<svg width="12" height="8" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M11.1919 0.278013C11.5907 0.660142 11.6041 1.29316 11.222 1.69191L5.47199 7.69191C5.09491 8.08539 4.47219 8.10446 4.07172 7.73481L0.821725 4.7348C0.415904 4.3602 0.390598 3.72754 0.765202 3.32172C1.13981 2.9159 1.77246 2.89059 2.17829 3.2652L4.7071 5.59949L9.77802 0.308096C10.1601 -0.090647 10.7932 -0.104116 11.1919 0.278013Z" />
     </svg>`;
-    // checkIcon.appendChild($.svg("check", 16, 16));
 
     $.append(tool, icon);
     $.append(
