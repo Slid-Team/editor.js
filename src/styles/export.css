@@ -5,7 +5,7 @@
   padding: var(--block-padding-vertical) 0;
 
   &::-webkit-input-placeholder {
-    line-height:normal!important;
+    line-height: normal !important;
   }
 }
 
@@ -40,16 +40,18 @@
 .cdx-settings-button {
   @apply --toolbar-button;
 
-  &:not(:nth-child(3n+3)) {
+  &:not(:nth-child(3n + 3)) {
     margin-right: 3px;
   }
 
-  &:nth-child(n+4) {
+  &:nth-child(n + 4) {
     margin-top: 3px;
   }
 
   &--active {
-    color: var(--color-active-icon);
+    svg {
+      fill: var(--blue5);
+    }
   }
 }
 
@@ -61,7 +63,7 @@
   border: 1px solid var(--color-gray-border);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 50%;
     top: 50%;
@@ -69,7 +71,7 @@
     height: 18px;
     margin: -11px 0 0 -11px;
     border: 2px solid var(--color-gray-border);
-    border-left-color: var(--color-active-icon);
+    border-left-color: var(--blue5);
     border-radius: 50%;
     animation: cdxRotation 1.2s infinite linear;
   }
@@ -93,14 +95,14 @@
   border: 1px solid var(--color-gray-border);
   font-size: 14.9px;
   background: #fff;
-  box-shadow: 0 2px 2px 0 rgba(18,30,57,0.04);
+  box-shadow: 0 2px 2px 0 rgba(18, 30, 57, 0.04);
   color: var(--grayText);
   text-align: center;
   cursor: pointer;
 
   &:hover {
-    background: #FBFCFE;
-    box-shadow: 0 1px 3px 0 rgba(18,30,57,0.08);
+    background: #fbfcfe;
+    box-shadow: 0 1px 3px 0 rgba(18, 30, 57, 0.08);
   }
 
   svg {

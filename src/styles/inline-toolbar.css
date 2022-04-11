@@ -1,5 +1,8 @@
 .ce-inline-toolbar {
   @apply --overlay-pane;
+  border-radius: 4px !important;
+  border: none;
+  box-shadow: var(--boxShadow2);
   transform: translateX(-50%) translateY(8px) scale(0.9);
   opacity: 0;
   visibility: hidden;
@@ -12,7 +15,7 @@
   &--showed {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%)
+    transform: translateX(-50%);
   }
 
   &--left-oriented {
@@ -39,7 +42,6 @@
   &__toggler-and-button-wrapper {
     display: flex;
     width: 100%;
-    padding: 0 6px;
   }
 
   &__buttons {
@@ -51,28 +53,31 @@
 
   &__dropdown {
     display: inline-flex;
-    height: var(--toolbar-buttons-size);
-    padding: 0 9px 0 10px;
-    margin: 0 6px 0 -6px;
+    padding: 0 10px;
     align-items: center;
     cursor: pointer;
-    border-right: 1px solid var(--color-gray-border);
+    border-right: 1px solid var(--gray3);
+    border-radius: 4px 0 0 4px;
 
     &:hover {
-      background: var(--bg-light);
+      background: var(--gray2);
+    }
+
+    &:active {
+      background: var(--gray1);
     }
 
     &--hidden {
       display: none;
     }
 
-    &-content{
+    &-content {
       display: flex;
       font-weight: 500;
       font-size: 14px;
 
       svg {
-        height: 12px;
+        /* height: 12px; */
       }
     }
 
@@ -93,15 +98,23 @@
   border-radius: 0;
   line-height: normal;
   width: auto;
-  padding: 0 5px !important;
+  padding: 0 10px !important;
   min-width: 24px;
-
-  &:not(:last-of-type) {
-    margin-right: 2px;
-  }
 
   .icon {
     height: 12px;
+  }
+
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
+
+  &:hover {
+    background: var(--gray2);
+  }
+
+  &:active {
+    background: var(--gray1);
   }
 
   &--link {
@@ -131,7 +144,7 @@
     box-sizing: border-box;
     display: none;
     font-weight: 500;
-    border-top: 1px solid rgba(201,201,204,.48);
+    border-top: 1px solid rgba(201, 201, 204, 0.48);
 
     &::placeholder {
       color: var(--grayText);
