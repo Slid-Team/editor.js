@@ -2,6 +2,54 @@
 @custom-media --not-mobile (width >= 201px);
 
 :root {
+  /* Slid-shadow */
+  --boxShadow1: 0 2px 8px rgb(0, 0, 0, 0.1);
+  --boxShadow2: 0 8px 24px rgb(0, 0, 0, 0.1);
+  --boxShadow3: 0 12px 40px rgb(0, 0, 0, 0.1);
+
+  /* Slid-color */
+
+  --blue0: #e7f5ff;
+  --blue1: #d0ebff;
+  --blue2: #afd8fb;
+  --blue3: #84bff7;
+  --blue4: #64abf1;
+  --blue5: #4593fc;
+  --blue6: #3182f6;
+  --blue7: #1b64da;
+  --blue8: #1f58b2;
+  --blue9: #1a4aa6;
+  --gray0: #f8f9fa;
+  --gray1: #f1f3f5;
+  --gray2: #e9ecef;
+  --gray3: #dee2e6;
+  --gray4: #ced4da;
+  --gray5: #adb5bd;
+  --gray6: #868e96;
+  --gray7: #495057;
+  --gray8: #343a40;
+  --gray9: #212529;
+  --red_12: rgb(249, 61, 63, 0.12);
+  --redCloudy: #d78582;
+  --red: #f93d3f;
+  --redDark: #cb0101;
+  --orange_12: rgb(255, 99, 60, 0.12);
+  --orangeCloudy: #ed8e6a;
+  --orange: #ff633c;
+  --orangeDark: #e94600;
+  --yellow_12: rgb(255, 202, 60, 0.12);
+  --yellowCloudy: #f9e079;
+  --yellow: #ffca3c;
+  --yellowDark: #ba6100;
+  --green_12: rgb(14, 184, 122, 0.12);
+  --greenCloudy: #67c1a0;
+  --green: #0eb87a;
+  --greenDark: #00796e;
+  --purple_12: rgb(115, 84, 230, 0.12);
+  --purpleCloudy: #8e82d7;
+  --purple: #7354e6;
+  --purpleDark: #4f3292;
+
   /**
    * Selection color
    */
@@ -47,7 +95,7 @@
   /**
    * Toolbar buttons height and width
    */
-  --toolbar-buttons-size: 34px;
+  --toolbar-buttons-size: 32px;
 
   /**
    * Toolbar Plus Button and Toolbox buttons height and width
@@ -131,9 +179,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
-    line-height: 34px;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
     padding: 0 !important;
     text-align: center;
     border-radius: 3px;
@@ -150,7 +198,7 @@
     }
 
     &--active {
-      color: var(--color-active-icon);
+      color: var(--blue5);
     }
 
     &--focused {
