@@ -192,6 +192,16 @@ export default class LinkInlineTool implements InlineTool {
    */
   public checkState(selection?: Selection): boolean {
     const anchorTag = this.selection.findParentTag("A");
+    const unlinkButton = document.createElement("button");
+    unlinkButton.classList.add("unlink-button");
+    unlinkButton.textContent = this.i18n.t("Remove");
+    unlinkButton.addEventListener("click", () => {
+      this.unlink();
+      this.nodes.input.value = "";
+      this.nodes.button.classList.remove(this.CSS.buttonUnlink);
+      this.nodes.button.classList.remove(this.CSS.buttonActive);
+      unlinkButton.remove();
+    });
 
     if (anchorTag) {
       this.nodes.button.classList.add(this.CSS.buttonUnlink);
@@ -204,6 +214,11 @@ export default class LinkInlineTool implements InlineTool {
       const hrefAttr = anchorTag.getAttribute("href");
 
       this.nodes.input.value = hrefAttr !== "null" ? hrefAttr : "";
+      if (this.nodes.input.value !== "") {
+        document
+          .querySelector(".ce-inline-toolbar__actions")
+          .appendChild(unlinkButton);
+      }
 
       this.selection.save();
     } else {
