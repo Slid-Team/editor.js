@@ -25,7 +25,8 @@
   },
   "tools": {
     "link": {
-      "Add a link": ""
+      "Add a link": "Add a link",
+      "Remove": "Remove"
     },
     "stub": {
       "The block can not be displayed correctly.": ""
