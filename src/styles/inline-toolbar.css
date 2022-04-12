@@ -72,6 +72,8 @@
       color: var(--gray6);
       padding: 8px 10px 8px 0;
       cursor: pointer;
+      white-space: nowrap;
+      min-width: 60px;
     }
   }
 
