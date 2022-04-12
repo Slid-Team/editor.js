@@ -321,7 +321,18 @@ export default class ConversionToolbar extends Module<ConversionToolbarNodes> {
     ]);
 
     tool.dataset.tool = toolName;
-    icon.innerHTML = toolIcon;
+    icon.innerHTML =
+      toolName === "header"
+        ? `<svg width="10" height="12" viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 0.5C0.776142 0.5 1 0.773604 1 1.11111V5.5H9V1.11111C9 0.773604 9.22386 0.5 9.5 0.5C9.77614 0.5 10 0.773604 10 1.11111V6V10.8889C10 11.2264 9.77614 11.5 9.5 11.5C9.22386 11.5 9 11.2264 9 10.8889V6.5H1V10.8889C1 11.2264 0.776142 11.5 0.5 11.5C0.223858 11.5 0 11.2264 0 10.8889V6V1.11111C0 0.773604 0.223858 0.5 0.5 0.5Z" />
+    </svg>
+    `
+        : toolName === "paragraph"
+        ? `<svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 1C0 0.723858 0.223858 0.5 0.5 0.5H6H11.5C11.7761 0.5 12 0.723858 12 1V2.5C12 2.77614 11.7761 3 11.5 3C11.2238 3 11 2.77614 11 2.5V1.5H6.5V10.5H8.11107C8.38721 10.5 8.61107 10.7239 8.61107 11C8.61107 11.2761 8.38721 11.5 8.11107 11.5H6H3.66663C3.39048 11.5 3.16663 11.2761 3.16663 11C3.16663 10.7239 3.39048 10.5 3.66663 10.5H5.5V1.5H1V2.5C1 2.77614 0.776142 3 0.5 3C0.223858 3 0 2.77614 0 2.5V1Z" />
+    </svg>`
+        : toolIcon;
+
     checkIcon.innerHTML = `<svg width="12" height="8" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M11.1919 0.278013C11.5907 0.660142 11.6041 1.29316 11.222 1.69191L5.47199 7.69191C5.09491 8.08539 4.47219 8.10446 4.07172 7.73481L0.821725 4.7348C0.415904 4.3602 0.390598 3.72754 0.765202 3.32172C1.13981 2.9159 1.77246 2.89059 2.17829 3.2652L4.7071 5.59949L9.77802 0.308096C10.1601 -0.090647 10.7932 -0.104116 11.1919 0.278013Z" />
     </svg>`;
