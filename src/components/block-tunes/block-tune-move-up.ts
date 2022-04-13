@@ -4,8 +4,8 @@
  *
  * @copyright <CodeX Team> 2018
  */
-import $ from '../dom';
-import { API, BlockTune } from '../../../types';
+import $ from "../dom";
+import { API, BlockTune } from "../../../types";
 
 /**
  *
@@ -29,9 +29,9 @@ export default class MoveUpTune implements BlockTune {
    * @type {{wrapper: string}}
    */
   private CSS = {
-    button: 'ce-settings__button',
-    wrapper: 'ce-tune-move-up',
-    animation: 'wobble',
+    button: "ce-settings__button",
+    wrapper: "ce-tune-move-up",
+    animation: "wobble",
   };
 
   /**
@@ -49,22 +49,15 @@ export default class MoveUpTune implements BlockTune {
    * @returns {HTMLElement}
    */
   public render(): HTMLElement {
-    const moveUpButton = $.make('div', [this.CSS.button, this.CSS.wrapper], {});
+    const moveUpButton = $.make("div", [this.CSS.button, this.CSS.wrapper], {});
 
-    moveUpButton.appendChild($.svg('arrow-up', 14, 14));
+    moveUpButton.appendChild($.svg("arrow-up", 12, 16));
     this.api.listeners.on(
       moveUpButton,
-      'click',
+      "click",
       (event) => this.handleClick(event as MouseEvent, moveUpButton),
       false
     );
-
-    /**
-     * Enable tooltip module on button
-     */
-    this.api.tooltip.onHover(moveUpButton, this.api.i18n.t('Move up'), {
-      hidingDelay: 300,
-    });
 
     return moveUpButton;
   }
@@ -78,7 +71,9 @@ export default class MoveUpTune implements BlockTune {
   public handleClick(event: MouseEvent, button: HTMLElement): void {
     const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
     const currentBlock = this.api.blocks.getBlockByIndex(currentBlockIndex);
-    const previousBlock = this.api.blocks.getBlockByIndex(currentBlockIndex - 1);
+    const previousBlock = this.api.blocks.getBlockByIndex(
+      currentBlockIndex - 1
+    );
 
     if (currentBlockIndex === 0 || !currentBlock || !previousBlock) {
       button.classList.add(this.CSS.animation);
@@ -102,14 +97,18 @@ export default class MoveUpTune implements BlockTune {
      *      than we scroll window to the difference between this offsets.
      */
     const currentBlockCoords = currentBlockElement.getBoundingClientRect(),
-        previousBlockCoords = previousBlockElement.getBoundingClientRect();
+      previousBlockCoords = previousBlockElement.getBoundingClientRect();
 
     let scrollUpOffset;
 
     if (previousBlockCoords.top > 0) {
-      scrollUpOffset = Math.abs(currentBlockCoords.top) - Math.abs(previousBlockCoords.top);
+      scrollUpOffset =
+        Math.abs(currentBlockCoords.top) - Math.abs(previousBlockCoords.top);
     } else {
-      scrollUpOffset = window.innerHeight - Math.abs(currentBlockCoords.top) + Math.abs(previousBlockCoords.top);
+      scrollUpOffset =
+        window.innerHeight -
+        Math.abs(currentBlockCoords.top) +
+        Math.abs(previousBlockCoords.top);
     }
 
     window.scrollBy(0, -1 * scrollUpOffset);
@@ -118,8 +117,5 @@ export default class MoveUpTune implements BlockTune {
     this.api.blocks.move(currentBlockIndex - 1);
 
     this.api.toolbar.toggleBlockSettings(true);
-
-    /** Hide the Tooltip */
-    this.api.tooltip.hide();
   }
 }

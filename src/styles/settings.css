@@ -1,7 +1,7 @@
 .ce-settings {
   @apply --overlay-pane;
   top: 30px;
-  min-width: 114px;
+  left: 28px;
   box-sizing: content-box;
 
   @media (--mobile) {
@@ -41,7 +41,7 @@
   }
 
   &__button {
-    @apply --toolbar-button;
+    /* @apply --toolbar-button;
 
     &:not(:nth-child(3n + 3)) {
       margin-right: 3px;
@@ -51,7 +51,7 @@
       margin-top: 3px;
     }
 
-    line-height: 32px;
+    line-height: 32px; */
 
     &--disabled {
       cursor: not-allowed !important;
@@ -69,21 +69,6 @@
       .icon {
         transition: transform 200ms ease-out;
         will-change: transform;
-      }
-    }
-
-    &--confirm {
-      background-color: var(--color-confirm) !important;
-      color: #fff;
-
-      &:hover {
-        background-color: color-mod(
-          var(--color-confirm) blackness(+5%)
-        ) !important;
-      }
-
-      .icon {
-        transform: rotate(90deg);
       }
     }
   }

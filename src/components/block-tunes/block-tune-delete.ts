@@ -4,8 +4,8 @@
  *
  * @copyright <CodeX Team> 2018
  */
-import { API, BlockTune } from '../../../types';
-import $ from '../dom';
+import { API, BlockTune } from "../../../types";
+import $ from "../dom";
 
 /**
  *
@@ -27,25 +27,14 @@ export default class DeleteTune implements BlockTune {
    * Styles
    */
   private CSS = {
-    button: 'ce-settings__button',
-    buttonDelete: 'ce-settings__button--delete',
-    buttonConfirm: 'ce-settings__button--confirm',
+    button: "ce-settings__button",
+    buttonDelete: "ce-settings__button--delete",
   };
-
-  /**
-   * Delete confirmation
-   */
-  private needConfirmation: boolean;
-
-  /**
-   * set false confirmation state
-   */
-  private readonly resetConfirmation: () => void;
 
   /**
    * Tune nodes
    */
-  private nodes: {button: HTMLElement} = {
+  private nodes: { button: HTMLElement } = {
     button: null,
   };
 
@@ -56,10 +45,6 @@ export default class DeleteTune implements BlockTune {
    */
   constructor({ api }) {
     this.api = api;
-
-    this.resetConfirmation = (): void => {
-      this.setConfirmation(false);
-    };
   }
 
   /**
@@ -68,16 +53,18 @@ export default class DeleteTune implements BlockTune {
    * @returns {HTMLElement}
    */
   public render(): HTMLElement {
-    this.nodes.button = $.make('div', [this.CSS.button, this.CSS.buttonDelete], {});
-    this.nodes.button.appendChild($.svg('cross', 12, 12));
-    this.api.listeners.on(this.nodes.button, 'click', (event: MouseEvent) => this.handleClick(event), false);
-
-    /**
-     * Enable tooltip module
-     */
-    this.api.tooltip.onHover(this.nodes.button, this.api.i18n.t('Delete'), {
-      hidingDelay: 300,
-    });
+    this.nodes.button = $.make(
+      "div",
+      [this.CSS.button, this.CSS.buttonDelete],
+      {}
+    );
+    this.nodes.button.appendChild($.svg("delete", 16, 16));
+    this.api.listeners.on(
+      this.nodes.button,
+      "click",
+      (event: MouseEvent) => this.handleClick(event),
+      false
+    );
 
     return this.nodes.button;
   }
@@ -88,43 +75,12 @@ export default class DeleteTune implements BlockTune {
    * @param {MouseEvent} event - click event
    */
   public handleClick(event: MouseEvent): void {
+    this.api.blocks.delete();
+    this.api.toolbar.close();
+
     /**
-     * if block is not waiting the confirmation, subscribe on block-settings-closing event to reset
-     * otherwise delete block
+     * Prevent firing ui~documentClicked that can drop currentBlock pointer
      */
-    if (!this.needConfirmation) {
-      this.setConfirmation(true);
-
-      /**
-       * Subscribe on event.
-       * When toolbar block settings is closed but block deletion is not confirmed,
-       * then reset confirmation state
-       */
-      this.api.events.on('block-settings-closed', this.resetConfirmation);
-    } else {
-      /**
-       * Unsubscribe from block-settings closing event
-       */
-      this.api.events.off('block-settings-closed', this.resetConfirmation);
-
-      this.api.blocks.delete();
-      this.api.toolbar.close();
-      this.api.tooltip.hide();
-
-      /**
-       * Prevent firing ui~documentClicked that can drop currentBlock pointer
-       */
-      event.stopPropagation();
-    }
-  }
-
-  /**
-   * change tune state
-   *
-   * @param {boolean} state - delete confirmation state
-   */
-  private setConfirmation(state: boolean): void {
-    this.needConfirmation = state;
-    this.nodes.button.classList.add(this.CSS.buttonConfirm);
+    event.stopPropagation();
   }
 }
