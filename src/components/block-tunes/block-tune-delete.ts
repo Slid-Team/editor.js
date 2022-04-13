@@ -28,6 +28,7 @@ export default class DeleteTune implements BlockTune {
    */
   private CSS = {
     button: "ce-settings__button",
+    iconContainer: "ce-settings__button-icon-container",
     buttonDelete: "ce-settings__button--delete",
   };
 
@@ -53,20 +54,24 @@ export default class DeleteTune implements BlockTune {
    * @returns {HTMLElement}
    */
   public render(): HTMLElement {
-    this.nodes.button = $.make(
+    const deleteButton = $.make(
       "div",
       [this.CSS.button, this.CSS.buttonDelete],
       {}
     );
-    this.nodes.button.appendChild($.svg("delete", 16, 16));
+    const deleteButtonContainer = $.make("div", [this.CSS.iconContainer], {});
+
+    deleteButtonContainer.appendChild($.svg("delete", 16, 16));
+    deleteButton.appendChild(deleteButtonContainer);
+
     this.api.listeners.on(
-      this.nodes.button,
+      deleteButton,
       "click",
       (event: MouseEvent) => this.handleClick(event),
       false
     );
 
-    return this.nodes.button;
+    return deleteButton;
   }
 
   /**

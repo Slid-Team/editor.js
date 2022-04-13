@@ -32,6 +32,7 @@ export default class MoveDownTune implements BlockTune {
   private CSS = {
     button: "ce-settings__button",
     wrapper: "ce-tune-move-down",
+    iconContainer: "ce-settings__button-icon-container",
     animation: "wobble",
   };
 
@@ -56,7 +57,11 @@ export default class MoveDownTune implements BlockTune {
       {}
     );
 
-    moveDownButton.appendChild($.svg("arrow-down", 12, 16));
+    const moveDownButtonContainer = $.make("div", [this.CSS.iconContainer], {});
+
+    moveDownButtonContainer.appendChild($.svg("arrow-down", 12, 16));
+    moveDownButton.appendChild(moveDownButtonContainer);
+
     this.api.listeners.on(
       moveDownButton,
       "click",
