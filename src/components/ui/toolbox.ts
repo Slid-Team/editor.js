@@ -1,15 +1,15 @@
-import $ from '../dom';
-import * as _ from '../utils';
-import Flipper from '../flipper';
-import { BlockToolAPI } from '../block';
-import I18n from '../i18n';
-import { I18nInternalNS } from '../i18n/namespace-internal';
-import Shortcuts from '../utils/shortcuts';
-import Tooltip from '../utils/tooltip';
-import BlockTool from '../tools/block';
-import ToolsCollection from '../tools/collection';
-import { API } from '../../../types';
-import EventsDispatcher from '../utils/events';
+import $ from "../dom";
+import * as _ from "../utils";
+import Flipper from "../flipper";
+import { BlockToolAPI } from "../block";
+import I18n from "../i18n";
+import { I18nInternalNS } from "../i18n/namespace-internal";
+import Shortcuts from "../utils/shortcuts";
+import Tooltip from "../utils/tooltip";
+import BlockTool from "../tools/block";
+import ToolsCollection from "../tools/collection";
+import { API } from "../../../types";
+import EventsDispatcher from "../utils/events";
 
 /**
  * Event that can be triggered by the Toolbox
@@ -18,17 +18,17 @@ export enum ToolboxEvent {
   /**
    * When the Toolbox is opened
    */
-  Opened = 'toolbox-opened',
+  Opened = "toolbox-opened",
 
   /**
    * When the Toolbox is closed
    */
-  Closed = 'toolbox-closed',
+  Closed = "toolbox-closed",
 
   /**
    * When the new Block added by Toolbox
    */
-  BlockAdded = 'toolbox-block-added',
+  BlockAdded = "toolbox-block-added",
 }
 
 /**
@@ -74,7 +74,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
   } = {
     toolbox: null,
     buttons: [],
-  }
+  };
 
   /**
    * CSS styles
@@ -83,13 +83,16 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    */
   private static get CSS(): { [name: string]: string } {
     return {
-      toolbox: 'ce-toolbox',
-      toolboxButton: 'ce-toolbox__button',
-      toolboxButtonActive: 'ce-toolbox__button--active',
-      toolboxOpened: 'ce-toolbox--opened',
+      toolbox: "ce-toolbox",
+      toolboxButton: "ce-toolbox__button",
+      toolboxBlockButton: "ce-toolbox__block-button",
+      toolboxBlockButtonIcon: "ce-toolbox__block-button-icon",
+      toolboxBlockButtonText: "ce-toolbox__block-button-text",
+      toolboxButtonActive: "ce-toolbox__button--active",
+      toolboxOpened: "ce-toolbox--opened",
 
-      buttonTooltip: 'ce-toolbox-button-tooltip',
-      buttonShortcut: 'ce-toolbox-button-tooltip__shortcut',
+      buttonTooltip: "ce-toolbox-button-tooltip",
+      buttonShortcut: "ce-toolbox-button-tooltip__shortcut",
     };
   }
 
@@ -144,7 +147,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    * Makes the Toolbox
    */
   public make(): Element {
-    this.nodes.toolbox = $.make('div', Toolbox.CSS.toolbox);
+    this.nodes.toolbox = $.make("div", Toolbox.CSS.toolbox);
 
     this.addTools();
     this.enableFlipper();
@@ -184,7 +187,10 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    * @param {MouseEvent|KeyboardEvent} event - event that activates toolbox button
    * @param {string} toolName - button to activate
    */
-  public toolButtonActivate(event: MouseEvent|KeyboardEvent, toolName: string): void {
+  public toolButtonActivate(
+    event: MouseEvent | KeyboardEvent,
+    toolName: string
+  ): void {
     this.insertNewBlock(toolName);
   }
 
@@ -231,9 +237,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    * Iterates available tools and appends them to the Toolbox
    */
   private addTools(): void {
-    Array
-      .from(this.tools.values())
-      .forEach((tool) => this.addTool(tool));
+    Array.from(this.tools.values()).forEach((tool) => this.addTool(tool));
   }
 
   /**
@@ -252,7 +256,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     }
 
     if (toolToolboxSettings && !toolToolboxSettings.icon) {
-      _.log('Toolbar icon is missed. Tool %o skipped', 'warn', tool.name);
+      _.log("Toolbar icon is missed. Tool %o skipped", "warn", tool.name);
 
       return;
     }
@@ -265,12 +269,17 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     //   return;
     // }
 
-    const button = $.make('li', [ Toolbox.CSS.toolboxButton ]);
+    const button = $.make("li", [Toolbox.CSS.toolboxBlockButton]);
+    const buttonText = $.make("span", [Toolbox.CSS.toolboxBlockButtonText]);
+    const buttonIconContainer = $.make("div", [
+      Toolbox.CSS.toolboxBlockButtonIcon,
+    ]);
 
     button.dataset.tool = tool.name;
-    button.innerHTML = toolToolboxSettings.icon;
-
-    $.append(this.nodes.toolbox, button);
+    buttonIconContainer.innerHTML = toolToolboxSettings.icon;
+    button.appendChild(buttonIconContainer);
+    buttonText.innerHTML = toolToolboxSettings.title;
+    button.appendChild(buttonText);
 
     this.nodes.toolbox.appendChild(button);
     this.nodes.buttons.push(button);
@@ -278,25 +287,13 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     /**
      * Add click listener
      */
-    this.clickListenerId = this.api.listeners.on(button, 'click', (event: KeyboardEvent|MouseEvent) => {
-      this.toolButtonActivate(event, tool.name);
-    });
-
-    /**
-     * Add listeners to show/hide toolbox tooltip
-     */
-    const tooltipContent = this.drawTooltip(tool);
-
-    this.tooltip.onHover(button, tooltipContent, {
-      placement: 'bottom',
-      hidingDelay: 200,
-    });
-
-    const shortcut = tool.shortcut;
-
-    if (shortcut) {
-      this.enableShortcut(tool.name, shortcut);
-    }
+    this.clickListenerId = this.api.listeners.on(
+      button,
+      "click",
+      (event: KeyboardEvent | MouseEvent) => {
+        this.toolButtonActivate(event, tool.name);
+      }
+    );
 
     /** Increment Tools count */
     this.displayedToolsCount++;
@@ -310,11 +307,14 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    */
   private drawTooltip(tool: BlockTool): HTMLElement {
     const toolboxSettings = tool.toolbox || {};
-    const name = I18n.t(I18nInternalNS.toolNames, toolboxSettings.title || tool.name);
+    const name = I18n.t(
+      I18nInternalNS.toolNames,
+      toolboxSettings.title || tool.name
+    );
 
     let shortcut = tool.shortcut;
 
-    const tooltip = $.make('div', Toolbox.CSS.buttonTooltip);
+    const tooltip = $.make("div", Toolbox.CSS.buttonTooltip);
     const hint = document.createTextNode(_.capitalize(name));
 
     tooltip.appendChild(hint);
@@ -322,9 +322,11 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     if (shortcut) {
       shortcut = _.beautifyShortcut(shortcut);
 
-      tooltip.appendChild($.make('div', Toolbox.CSS.buttonShortcut, {
-        textContent: shortcut,
-      }));
+      tooltip.appendChild(
+        $.make("div", Toolbox.CSS.buttonShortcut, {
+          textContent: shortcut,
+        })
+      );
     }
 
     return tooltip;
@@ -352,15 +354,13 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    * Fired when the Read-Only mode is activated
    */
   private removeAllShortcuts(): void {
-    Array
-      .from(this.tools.values())
-      .forEach((tool) => {
-        const shortcut = tool.shortcut;
+    Array.from(this.tools.values()).forEach((tool) => {
+      const shortcut = tool.shortcut;
 
-        if (shortcut) {
-          Shortcuts.remove(this.api.ui.nodes.redactor, shortcut);
-        }
-      });
+      if (shortcut) {
+        Shortcuts.remove(this.api.ui.nodes.redactor, shortcut);
+      }
+    });
   }
 
   /**
@@ -393,7 +393,9 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
      * On mobile version, we see the Plus Button even near non-empty blocks,
      * so if current block is not empty, add the new block below the current
      */
-    const index = currentBlock.isEmpty ? currentBlockIndex : currentBlockIndex + 1;
+    const index = currentBlock.isEmpty
+      ? currentBlockIndex
+      : currentBlockIndex + 1;
 
     const newBlock = this.api.blocks.insert(
       toolName,
