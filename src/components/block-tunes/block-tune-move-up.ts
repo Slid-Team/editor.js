@@ -32,6 +32,7 @@ export default class MoveUpTune implements BlockTune {
     button: "ce-settings__button",
     wrapper: "ce-tune-move-up",
     iconContainer: "ce-settings__button-icon-container",
+    buttonText: "ce-settings__button-text",
     animation: "wobble",
   };
 
@@ -50,11 +51,14 @@ export default class MoveUpTune implements BlockTune {
    * @returns {HTMLElement}
    */
   public render(): HTMLElement {
-    const moveUpButton = $.make("div", [this.CSS.button, this.CSS.wrapper], {});
-    const moveUpButtonContainer = $.make("div", [this.CSS.iconContainer], {});
+    const moveUpButton = $.make("div", [this.CSS.button, this.CSS.wrapper]);
+    const moveUpButtonContainer = $.make("div", [this.CSS.iconContainer]);
+    const moveUpText = $.make("span", [this.CSS.buttonText]);
 
     moveUpButtonContainer.appendChild($.svg("arrow-up", 12, 16));
+    moveUpText.innerHTML = this.api.i18n.t("Move up");
     moveUpButton.appendChild(moveUpButtonContainer);
+    moveUpButton.appendChild(moveUpText);
 
     this.api.listeners.on(
       moveUpButton,

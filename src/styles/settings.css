@@ -2,6 +2,7 @@
   @apply --overlay-pane;
   top: 30px;
   left: 28px;
+  width: 220px;
   box-sizing: content-box;
 
   @media (--mobile) {
@@ -36,6 +37,7 @@
   }
 
   &__default-zone {
+    padding: 8px 0;
   }
 
   &__button {
@@ -59,6 +61,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
+      svg {
+        fill: var(--gray6);
+      }
+    }
+
+    &-text {
+      font-size: 13px;
+      line-height: 18px;
+      color: var(--gray8);
+      margin-left: 4px;
+      white-space: nowrap;
     }
 
     &--disabled {

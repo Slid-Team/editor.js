@@ -29,6 +29,7 @@ export default class DeleteTune implements BlockTune {
   private CSS = {
     button: "ce-settings__button",
     iconContainer: "ce-settings__button-icon-container",
+    buttonText: "ce-settings__button-text",
     buttonDelete: "ce-settings__button--delete",
   };
 
@@ -54,15 +55,17 @@ export default class DeleteTune implements BlockTune {
    * @returns {HTMLElement}
    */
   public render(): HTMLElement {
-    const deleteButton = $.make(
-      "div",
-      [this.CSS.button, this.CSS.buttonDelete],
-      {}
-    );
-    const deleteButtonContainer = $.make("div", [this.CSS.iconContainer], {});
+    const deleteButton = $.make("div", [
+      this.CSS.button,
+      this.CSS.buttonDelete,
+    ]);
+    const deleteButtonContainer = $.make("div", [this.CSS.iconContainer]);
+    const deleteButtonText = $.make("span", [this.CSS.buttonText]);
 
     deleteButtonContainer.appendChild($.svg("delete", 16, 16));
+    deleteButtonText.innerHTML = this.api.i18n.t("Delete");
     deleteButton.appendChild(deleteButtonContainer);
+    deleteButton.appendChild(deleteButtonText);
 
     this.api.listeners.on(
       deleteButton,

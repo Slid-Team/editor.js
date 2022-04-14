@@ -33,6 +33,7 @@ export default class MoveDownTune implements BlockTune {
     button: "ce-settings__button",
     wrapper: "ce-tune-move-down",
     iconContainer: "ce-settings__button-icon-container",
+    buttonText: "ce-settings__button-text",
     animation: "wobble",
   };
 
@@ -56,11 +57,13 @@ export default class MoveDownTune implements BlockTune {
       [this.CSS.button, this.CSS.wrapper],
       {}
     );
-
-    const moveDownButtonContainer = $.make("div", [this.CSS.iconContainer], {});
+    const moveDownButtonContainer = $.make("div", [this.CSS.iconContainer]);
+    const moveDownText = $.make("span", [this.CSS.buttonText]);
 
     moveDownButtonContainer.appendChild($.svg("arrow-down", 12, 16));
+    moveDownText.innerHTML = this.api.i18n.t("Move down");
     moveDownButton.appendChild(moveDownButtonContainer);
+    moveDownButton.appendChild(moveDownText);
 
     this.api.listeners.on(
       moveDownButton,
