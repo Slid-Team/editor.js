@@ -1,5 +1,6 @@
 .ce-settings {
   @apply --overlay-pane;
+  border: none;
   top: 30px;
   left: 28px;
   width: 220px;
@@ -30,6 +31,8 @@
   }
 
   &__plugin-zone {
+    display: flex;
+
     &:not(:empty) {
       border-bottom: 1px solid var(--gray3);
       padding: 8px 0;
@@ -73,6 +76,13 @@
       color: var(--gray8);
       margin-left: 4px;
       white-space: nowrap;
+    }
+
+    &-shortcut-text {
+      font-size: 11px;
+      line-height: 16px;
+      color: var(--gray5);
+      margin-left: auto;
     }
 
     &--disabled {

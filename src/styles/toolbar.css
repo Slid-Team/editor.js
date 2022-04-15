@@ -87,7 +87,7 @@
   &__settings-btn {
     @apply --toolbox-button;
     width: 18px;
-    margin: 0 5px;
+    height: 100%;
 
     cursor: pointer;
     user-select: none;
