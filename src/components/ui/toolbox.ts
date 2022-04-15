@@ -271,6 +271,10 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
 
     const button = $.make("li", [Toolbox.CSS.toolboxBlockButton]);
     const buttonText = $.make("span", [Toolbox.CSS.toolboxBlockButtonText]);
+    const toolTitle = I18n.t(
+      I18nInternalNS.toolNames,
+      toolToolboxSettings.title || _.capitalize(tool.name)
+    );
     const buttonIconContainer = $.make("div", [
       Toolbox.CSS.toolboxBlockButtonIcon,
     ]);
@@ -278,7 +282,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     button.dataset.tool = tool.name;
     buttonIconContainer.innerHTML = toolToolboxSettings.icon;
     button.appendChild(buttonIconContainer);
-    buttonText.innerHTML = toolToolboxSettings.title;
+    buttonText.innerHTML = toolTitle;
     button.appendChild(buttonText);
 
     this.nodes.toolbox.appendChild(button);
