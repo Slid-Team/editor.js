@@ -1,7 +1,9 @@
 .ce-settings {
   @apply --overlay-pane;
+  border: none;
   top: 30px;
-  min-width: 114px;
+  left: 44px;
+  width: 220px;
   box-sizing: content-box;
 
   @media (--mobile) {
@@ -29,29 +31,60 @@
   }
 
   &__plugin-zone {
+    display: flex;
+    flex-direction: column;
+
     &:not(:empty) {
-      padding: 3px 3px 0;
+      border-bottom: 1px solid var(--gray3);
+      padding: 8px 0;
     }
   }
 
   &__default-zone {
-    &:not(:empty) {
-      padding: 3px;
-    }
+    padding: 8px 0;
   }
 
   &__button {
-    @apply --toolbar-button;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
 
-    &:not(:nth-child(3n + 3)) {
-      margin-right: 3px;
+    &:hover {
+      background-color: var(--gray2);
     }
 
-    &:nth-child(n + 4) {
-      margin-top: 3px;
+    &:active {
+      background-color: var(--gray1);
     }
 
-    line-height: 32px;
+    &-icon-container {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        fill: var(--gray6);
+      }
+    }
+
+    &-text {
+      font-size: 13px;
+      line-height: 18px;
+      color: var(--gray8);
+      margin-left: 4px;
+      white-space: nowrap;
+    }
+
+    &-shortcut-text {
+      font-size: 11px;
+      line-height: 16px;
+      color: var(--gray5);
+      margin-left: auto;
+    }
 
     &--disabled {
       cursor: not-allowed !important;
@@ -60,31 +93,6 @@
 
     &--selected {
       color: var(--blue5);
-    }
-
-    &--delete {
-      transition: background-color 300ms ease;
-      will-change: background-color;
-
-      .icon {
-        transition: transform 200ms ease-out;
-        will-change: transform;
-      }
-    }
-
-    &--confirm {
-      background-color: var(--color-confirm) !important;
-      color: #fff;
-
-      &:hover {
-        background-color: color-mod(
-          var(--color-confirm) blackness(+5%)
-        ) !important;
-      }
-
-      .icon {
-        transform: rotate(90deg);
-      }
     }
   }
 }
