@@ -1,8 +1,8 @@
 .ce-settings {
   @apply --overlay-pane;
   border: none;
-  top: 30px;
-  left: 44px;
+  top: 34px;
+  left: 51px;
   width: 220px;
   box-sizing: content-box;
 
