@@ -50,7 +50,6 @@
 
   &__actions {
     display: flex;
-    border-top: 1px solid var(--gray3);
 
     .unlink-button {
       /* s of reset button */
@@ -74,6 +73,11 @@
       cursor: pointer;
       white-space: nowrap;
       min-width: 60px;
+    }
+
+    input,
+    .unlink-button {
+      border-top: 1px solid var(--gray3);
     }
   }
 

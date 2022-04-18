@@ -172,11 +172,14 @@ export default class LinkInlineTool implements InlineTool {
        * Unlink icon pressed
        */
       if (parentAnchor) {
+        const unlinkButton =
+          document.getElementsByClassName("unlink-button")[0];
         this.selection.expandToTag(parentAnchor);
         this.unlink();
-        this.closeActions();
-        this.checkState();
-        this.toolbar.close();
+        this.nodes.input.value = "";
+        this.nodes.button.classList.remove(this.CSS.buttonUnlink);
+        this.nodes.button.classList.remove(this.CSS.buttonActive);
+        unlinkButton.remove();
 
         return;
       }
