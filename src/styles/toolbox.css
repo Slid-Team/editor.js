@@ -4,9 +4,15 @@
   transition: opacity 100ms ease;
   will-change: opacity;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  top: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: var(--boxShadow2);
+  width: 220px;
+  padding: 8px 0;
 
-  @media (--mobile){
+  @media (--mobile) {
     position: static;
     transform: none !important;
     align-items: center;
@@ -22,6 +28,46 @@
     @apply --toolbox-button;
     flex-shrink: 0;
     margin-left: 5px;
+  }
+
+  &__block-button {
+    /* S of reset ul */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    /* E of reset ul */
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--gray2);
+    }
+
+    &:active {
+      background-color: var(--gray1);
+    }
+  }
+
+  &__block-button-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      fill: var(--gray6);
+    }
+  }
+
+  &__block-button-text {
+    margin-left: 4px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--gary8);
   }
 }
 
