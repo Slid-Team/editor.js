@@ -20649,6 +20649,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function extractFragmentFromCaretPosition() {
         var selection = _selection["default"].get();
 
+        console.log("selection1", selection);
+
         if (selection.rangeCount) {
           var selectRange = selection.getRangeAt(0);
           var currentBlockInput = this.Editor.BlockManager.currentBlock.currentInput;
@@ -20676,8 +20678,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             }
           }
         } else {
-          alert("no selection");
-          console.log("selection", selection);
+          console.log("selection2", selection);
         }
       }
       /**

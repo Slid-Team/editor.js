@@ -380,6 +380,7 @@ export default class Caret extends Module {
    */
   public extractFragmentFromCaretPosition(): void | DocumentFragment {
     const selection = Selection.get();
+    console.log("selection1", selection);
 
     if (selection.rangeCount) {
       const selectRange = selection.getRangeAt(0);
@@ -420,8 +421,7 @@ export default class Caret extends Module {
         }
       }
     } else {
-      alert("no selection");
-      console.log("selection", selection);
+      console.log("selection2", selection);
     }
   }
 
