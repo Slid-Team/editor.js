@@ -9,11 +9,11 @@
  * @version 2.0.0
  */
 
-import Selection from '../selection';
-import Module from '../__module';
-import Block from '../block';
-import $ from '../dom';
-import * as _ from '../utils';
+import Selection from "../selection";
+import Module from "../__module";
+import Block from "../block";
+import $ from "../dom";
+import * as _ from "../utils";
 
 /**
  * @typedef {Caret} Caret
@@ -25,20 +25,20 @@ export default class Caret extends Module {
    * @static
    * @returns {{START: string, END: string, DEFAULT: string}}
    */
-  public get positions(): {START: string; END: string; DEFAULT: string} {
+  public get positions(): { START: string; END: string; DEFAULT: string } {
     return {
-      START: 'start',
-      END: 'end',
-      DEFAULT: 'default',
+      START: "start",
+      END: "end",
+      DEFAULT: "default",
     };
   }
 
   /**
    * Elements styles that can be useful for Caret Module
    */
-  private static get CSS(): {shadowCaret: string} {
+  private static get CSS(): { shadowCaret: string } {
     return {
-      shadowCaret: 'cdx-shadow-caret',
+      shadowCaret: "cdx-shadow-caret",
     };
   }
 
@@ -49,7 +49,9 @@ export default class Caret extends Module {
    */
   public get isAtStart(): boolean {
     const selection = Selection.get();
-    const firstNode = $.getDeepestNode(this.Editor.BlockManager.currentBlock.currentInput);
+    const firstNode = $.getDeepestNode(
+      this.Editor.BlockManager.currentBlock.currentInput
+    );
     let focusNode = selection.focusNode;
 
     /** In case lastNode is native input */
@@ -71,7 +73,8 @@ export default class Caret extends Module {
 
     let firstLetterPosition = focusNode.textContent.search(/\S/);
 
-    if (firstLetterPosition === -1) { // empty text
+    if (firstLetterPosition === -1) {
+      // empty text
       firstLetterPosition = 0;
     }
 
@@ -104,7 +107,10 @@ export default class Caret extends Module {
      * </div>
      */
     if ($.isLineBreakTag(firstNode as HTMLElement) || $.isEmpty(firstNode)) {
-      const leftSiblings = this.getHigherLevelSiblings(focusNode as HTMLElement, 'left');
+      const leftSiblings = this.getHigherLevelSiblings(
+        focusNode as HTMLElement,
+        "left"
+      );
       const nothingAtLeft = leftSiblings.every((node) => {
         /**
          * Workaround case when block starts with several <br>'s (created by SHIFT+ENTER)
@@ -116,7 +122,9 @@ export default class Caret extends Module {
         /**
          * Workaround SHIFT+ENTER in Safari, that creates <div><br></div> instead of <br>
          */
-        const lineBreakInSafari = node.children.length === 1 && $.isLineBreakTag(node.children[0] as HTMLElement);
+        const lineBreakInSafari =
+          node.children.length === 1 &&
+          $.isLineBreakTag(node.children[0] as HTMLElement);
         const isLineBreak = regularLineBreak || lineBreakInSafari;
 
         return $.isEmpty(node) && !isLineBreak;
@@ -131,7 +139,10 @@ export default class Caret extends Module {
      * We use <= comparison for case:
      * "| Hello"  <--- selection.anchorOffset is 0, but firstLetterPosition is 1
      */
-    return firstNode === null || (focusNode === firstNode && focusOffset <= firstLetterPosition);
+    return (
+      firstNode === null ||
+      (focusNode === firstNode && focusOffset <= firstLetterPosition)
+    );
   }
 
   /**
@@ -143,11 +154,17 @@ export default class Caret extends Module {
     const selection = Selection.get();
     let focusNode = selection.focusNode;
 
-    const lastNode = $.getDeepestNode(this.Editor.BlockManager.currentBlock.currentInput, true);
+    const lastNode = $.getDeepestNode(
+      this.Editor.BlockManager.currentBlock.currentInput,
+      true
+    );
 
     /** In case lastNode is native input */
     if ($.isNativeInput(lastNode)) {
-      return (lastNode as HTMLInputElement).selectionEnd === (lastNode as HTMLInputElement).value.length;
+      return (
+        (lastNode as HTMLInputElement).selectionEnd ===
+        (lastNode as HTMLInputElement).value.length
+      );
     }
 
     /** Case when selection have been cleared programmatically, for example after CBS */
@@ -184,12 +201,17 @@ export default class Caret extends Module {
      * </div>
      */
     if ($.isLineBreakTag(lastNode as HTMLElement) || $.isEmpty(lastNode)) {
-      const rightSiblings = this.getHigherLevelSiblings(focusNode as HTMLElement, 'right');
+      const rightSiblings = this.getHigherLevelSiblings(
+        focusNode as HTMLElement,
+        "right"
+      );
       const nothingAtRight = rightSiblings.every((node, i) => {
         /**
          * If last right sibling is BR isEmpty returns false, but there actually nothing at right
          */
-        const isLastBR = i === rightSiblings.length - 1 && $.isLineBreakTag(node as HTMLElement);
+        const isLastBR =
+          i === rightSiblings.length - 1 &&
+          $.isLineBreakTag(node as HTMLElement);
 
         return isLastBR || ($.isEmpty(node) && !$.isLineBreakTag(node));
       });
@@ -205,7 +227,7 @@ export default class Caret extends Module {
      * Why not regular .trim():
      *  in case of ' hello |' trim() will also remove space at the beginning, so length will be lower than anchorOffset
      */
-    const rightTrimmedText = lastNode.textContent.replace(/\s+$/, '');
+    const rightTrimmedText = lastNode.textContent.replace(/\s+$/, "");
 
     /**
      * We use >= comparison for case:
@@ -225,7 +247,11 @@ export default class Caret extends Module {
    *                            If default - leave default behaviour and apply offset if it's passed
    * @param {number} offset - caret offset regarding to the text node
    */
-  public setToBlock(block: Block, position: string = this.positions.DEFAULT, offset = 0): void {
+  public setToBlock(
+    block: Block,
+    position: string = this.positions.DEFAULT,
+    offset = 0
+  ): void {
     const { BlockManager } = this.Editor;
     let element;
 
@@ -244,7 +270,10 @@ export default class Caret extends Module {
       return;
     }
 
-    const nodeToSet = $.getDeepestNode(element, position === this.positions.END);
+    const nodeToSet = $.getDeepestNode(
+      element,
+      position === this.positions.END
+    );
     const contentLength = $.getContentLength(nodeToSet);
 
     switch (true) {
@@ -276,7 +305,11 @@ export default class Caret extends Module {
    *                            If default - leave default behaviour and apply offset if it's passed
    * @param {number} offset - caret offset regarding to the text node
    */
-  public setToInput(input: HTMLElement, position: string = this.positions.DEFAULT, offset = 0): void {
+  public setToInput(
+    input: HTMLElement,
+    position: string = this.positions.DEFAULT,
+    offset = 0
+  ): void {
     const { currentBlock } = this.Editor.BlockManager;
     const nodeToSet = $.getDeepestNode(input);
 
@@ -345,12 +378,13 @@ export default class Caret extends Module {
   /**
    * Extract content fragment of current Block from Caret position to the end of the Block
    */
-  public extractFragmentFromCaretPosition(): void|DocumentFragment {
+  public extractFragmentFromCaretPosition(): void | DocumentFragment {
     const selection = Selection.get();
 
     if (selection.rangeCount) {
       const selectRange = selection.getRangeAt(0);
-      const currentBlockInput = this.Editor.BlockManager.currentBlock.currentInput;
+      const currentBlockInput =
+        this.Editor.BlockManager.currentBlock.currentInput;
 
       selectRange.deleteContents();
 
@@ -361,10 +395,15 @@ export default class Caret extends Module {
            * Text before the caret stays in the input,
            * while text after the caret is returned as a fragment to be inserted after the block.
            */
-          const input = currentBlockInput as HTMLInputElement | HTMLTextAreaElement;
+          const input = currentBlockInput as
+            | HTMLInputElement
+            | HTMLTextAreaElement;
           const newFragment = document.createDocumentFragment();
 
-          const inputRemainingText = input.value.substring(0, input.selectionStart);
+          const inputRemainingText = input.value.substring(
+            0,
+            input.selectionStart
+          );
           const fragmentText = input.value.substring(input.selectionStart);
 
           newFragment.textContent = fragmentText;
@@ -380,6 +419,9 @@ export default class Caret extends Module {
           return range.extractContents();
         }
       }
+    } else {
+      alert("no selection");
+      console.log("selection", selection);
     }
   }
 
@@ -474,10 +516,10 @@ export default class Caret extends Module {
    * @param {Element} element - element after which shadow caret should be inserted
    */
   public createShadow(element: Element): void {
-    const shadowCaret = document.createElement('span');
+    const shadowCaret = document.createElement("span");
 
     shadowCaret.classList.add(Caret.CSS.shadowCaret);
-    element.insertAdjacentElement('beforeend', shadowCaret);
+    element.insertAdjacentElement("beforeend", shadowCaret);
   }
 
   /**
@@ -519,13 +561,15 @@ export default class Caret extends Module {
    */
   public insertContentAtCaretPosition(content: string): void {
     const fragment = document.createDocumentFragment();
-    const wrapper = document.createElement('div');
+    const wrapper = document.createElement("div");
     const selection = Selection.get();
     const range = Selection.range;
 
     wrapper.innerHTML = content;
 
-    Array.from(wrapper.childNodes).forEach((child: Node) => fragment.appendChild(child));
+    Array.from(wrapper.childNodes).forEach((child: Node) =>
+      fragment.appendChild(child)
+    );
 
     /**
      * If there is no child node, append empty one
@@ -568,18 +612,24 @@ export default class Caret extends Module {
    *
    * @returns {HTMLElement[]}
    */
-  private getHigherLevelSiblings(from: HTMLElement, direction?: 'left' | 'right'): HTMLElement[] {
+  private getHigherLevelSiblings(
+    from: HTMLElement,
+    direction?: "left" | "right"
+  ): HTMLElement[] {
     let current = from;
     const siblings = [];
 
     /**
      * Find passed node's firs-level parent (in example - blockquote)
      */
-    while (current.parentNode && (current.parentNode as HTMLElement).contentEditable !== 'true') {
+    while (
+      current.parentNode &&
+      (current.parentNode as HTMLElement).contentEditable !== "true"
+    ) {
       current = current.parentNode as HTMLElement;
     }
 
-    const sibling = direction === 'left' ? 'previousSibling' : 'nextSibling';
+    const sibling = direction === "left" ? "previousSibling" : "nextSibling";
 
     /**
      * Find all left/right siblings
