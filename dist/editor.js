@@ -19320,7 +19320,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var wrapper = _dom["default"].make("div");
 
         console.log("extractedFragment", extractedFragment);
-        wrapper.appendChild(extractedFragment);
+
+        if (extractedFragment) {
+          wrapper.appendChild(extractedFragment);
+        }
+
         console.log("wrapper", wrapper);
         /**
          * @todo make object in accordance with Tool

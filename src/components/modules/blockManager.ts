@@ -550,8 +550,9 @@ export default class BlockManager extends Module {
 
     console.log("extractedFragment", extractedFragment);
 
-    wrapper.appendChild(extractedFragment as DocumentFragment);
-
+    if (extractedFragment) {
+      wrapper.appendChild(extractedFragment as DocumentFragment);
+    }
     console.log("wrapper", wrapper);
 
     /**
