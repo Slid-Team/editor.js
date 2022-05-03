@@ -20179,7 +20179,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         })).then(function (savedData) {
           try {
             e.clipboardData.setData(_this3.Editor.Paste.MIME_TYPE, JSON.stringify(savedData));
-            console.log(e.clipboardData);
+            console.log(savedData);
           } catch (err) {// In Firefox we can't set data in async function
           }
         });

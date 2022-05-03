@@ -329,7 +329,7 @@ export default class BlockSelection extends Module {
             this.Editor.Paste.MIME_TYPE,
             JSON.stringify(savedData)
           );
-          console.log(e.clipboardData);
+          console.log(savedData);
         } catch (err) {
           // In Firefox we can't set data in async function
         }
