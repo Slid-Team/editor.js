@@ -5,15 +5,15 @@
  * @module BlockSelection
  * @version 1.0.0
  */
-import Module from '../__module';
-import Block from '../block';
-import * as _ from '../utils';
-import $ from '../dom';
-import Shortcuts from '../utils/shortcuts';
+import Module from "../__module";
+import Block from "../block";
+import * as _ from "../utils";
+import $ from "../dom";
+import Shortcuts from "../utils/shortcuts";
 
-import SelectionUtils from '../selection';
-import { SanitizerConfig } from '../../../types/configs';
-import { clean } from '../utils/sanitizer';
+import SelectionUtils from "../selection";
+import { SanitizerConfig } from "../../../types/configs";
+import { clean } from "../utils/sanitizer";
 
 /**
  *
@@ -95,7 +95,9 @@ export default class BlockSelection extends Module {
     const { BlockManager } = this.Editor;
 
     if (this.anyBlockSelectedCache === null) {
-      this.anyBlockSelectedCache = BlockManager.blocks.some((block) => block.selected === true);
+      this.anyBlockSelectedCache = BlockManager.blocks.some(
+        (block) => block.selected === true
+      );
     }
 
     return this.anyBlockSelectedCache;
@@ -107,7 +109,9 @@ export default class BlockSelection extends Module {
    * @returns {Block[]}
    */
   public get selectedBlocks(): Block[] {
-    return this.Editor.BlockManager.blocks.filter((block: Block) => block.selected);
+    return this.Editor.BlockManager.blocks.filter(
+      (block: Block) => block.selected
+    );
   }
 
   /**
@@ -153,7 +157,7 @@ export default class BlockSelection extends Module {
      * CMD/CTRL+A selection shortcut
      */
     Shortcuts.add({
-      name: 'CMD+A',
+      name: "CMD+A",
       handler: (event) => {
         const { BlockManager, ReadOnly } = this.Editor;
 
@@ -194,8 +198,7 @@ export default class BlockSelection extends Module {
    * @param {boolean} readOnlyEnabled - "read only" state
    */
   public toggleReadOnly(readOnlyEnabled: boolean): void {
-    SelectionUtils.get()
-      .removeAllRanges();
+    SelectionUtils.get().removeAllRanges();
 
     this.allBlocksSelected = false;
   }
@@ -234,14 +237,20 @@ export default class BlockSelection extends Module {
     this.nativeInputSelected = false;
     this.readyToBlockSelection = false;
 
-    const isKeyboard = reason && (reason instanceof KeyboardEvent);
-    const isPrintableKey = isKeyboard && _.isPrintableKey((reason as KeyboardEvent).keyCode);
+    const isKeyboard = reason && reason instanceof KeyboardEvent;
+    const isPrintableKey =
+      isKeyboard && _.isPrintableKey((reason as KeyboardEvent).keyCode);
 
     /**
      * If reason caused clear of the selection was printable key and any block is selected,
      * remove selected blocks and insert pressed key
      */
-    if (this.anyBlockSelected && isKeyboard && isPrintableKey && !SelectionUtils.isSelectionExists) {
+    if (
+      this.anyBlockSelected &&
+      isKeyboard &&
+      isPrintableKey &&
+      !SelectionUtils.isSelectionExists
+    ) {
       const indexToInsert = BlockManager.removeSelectedBlocks();
 
       BlockManager.insertDefaultBlockAtIndex(indexToInsert, true);
@@ -255,7 +264,7 @@ export default class BlockSelection extends Module {
          *
          * @see https://developer.mozilla.org/ru/docs/Web/API/KeyboardEvent/key
          */
-        Caret.insertContentAtCaretPosition(eventKey.length > 1 ? '' : eventKey);
+        Caret.insertContentAtCaretPosition(eventKey.length > 1 ? "" : eventKey);
       }, 20)();
     }
 
@@ -292,35 +301,40 @@ export default class BlockSelection extends Module {
      */
     e.preventDefault();
 
-    const fakeClipboard = $.make('div');
+    const fakeClipboard = $.make("div");
 
     this.selectedBlocks.forEach((block) => {
       /**
        * Make <p> tag that holds clean HTML
        */
       const cleanHTML = clean(block.holder.innerHTML, this.sanitizerConfig);
-      const fragment = $.make('p');
+      const fragment = $.make("p");
 
       fragment.innerHTML = cleanHTML;
       fakeClipboard.appendChild(fragment);
     });
 
-    const textPlain = Array.from(fakeClipboard.childNodes).map((node) => node.textContent)
-      .join('\n\n');
+    const textPlain = Array.from(fakeClipboard.childNodes)
+      .map((node) => node.textContent)
+      .join("\n\n");
     const textHTML = fakeClipboard.innerHTML;
 
-    e.clipboardData.setData('text/plain', textPlain);
-    e.clipboardData.setData('text/html', textHTML);
+    e.clipboardData.setData("text/plain", textPlain);
+    e.clipboardData.setData("text/html", textHTML);
 
-    return Promise
-      .all(this.selectedBlocks.map((block) => block.save()))
-      .then(savedData => {
+    return Promise.all(this.selectedBlocks.map((block) => block.save())).then(
+      (savedData) => {
         try {
-          e.clipboardData.setData(this.Editor.Paste.MIME_TYPE, JSON.stringify(savedData));
+          e.clipboardData.setData(
+            this.Editor.Paste.MIME_TYPE,
+            JSON.stringify(savedData)
+          );
+          console.log(e.clipboardData);
         } catch (err) {
           // In Firefox we can't set data in async function
         }
-      });
+      }
+    );
   }
 
   /**
@@ -346,8 +360,7 @@ export default class BlockSelection extends Module {
 
     /** Save selection */
     this.selection.save();
-    SelectionUtils.get()
-      .removeAllRanges();
+    SelectionUtils.get().removeAllRanges();
 
     block.selected = true;
 
@@ -370,7 +383,7 @@ export default class BlockSelection extends Module {
    */
   public destroy(): void {
     /** Selection shortcut */
-    Shortcuts.remove(this.Editor.UI.nodes.redactor, 'CMD+A');
+    Shortcuts.remove(this.Editor.UI.nodes.redactor, "CMD+A");
   }
 
   /**
@@ -389,7 +402,9 @@ export default class BlockSelection extends Module {
       return;
     }
 
-    const workingBlock = this.Editor.BlockManager.getBlock(event.target as HTMLElement);
+    const workingBlock = this.Editor.BlockManager.getBlock(
+      event.target as HTMLElement
+    );
     const inputs = workingBlock.inputs;
 
     /**
@@ -458,8 +473,7 @@ export default class BlockSelection extends Module {
     /**
      * Remove Ranges from Selection
      */
-    SelectionUtils.get()
-      .removeAllRanges();
+    SelectionUtils.get().removeAllRanges();
 
     this.allBlocksSelected = true;
 
