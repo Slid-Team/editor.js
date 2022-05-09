@@ -18393,6 +18393,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var BlockSelection = this.Editor.BlockSelection;
 
         if (!BlockSelection.anyBlockSelected) {
+          console.log("anyBlockSelected is false");
           return;
         } // Copy Selected Blocks
 
