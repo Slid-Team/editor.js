@@ -20167,7 +20167,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           var fragment = _dom["default"].make("p");
 
           fragment.innerHTML = cleanHTML;
-          fakeClipboard.appendChild(fragment);
+          fakeClipboard.innerHTML = cleanHTML; // fakeClipboard.appendChild(fragment);
         });
         var textPlain = Array.from(fakeClipboard.childNodes).map(function (node) {
           return node.textContent;

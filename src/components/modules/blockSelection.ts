@@ -313,7 +313,8 @@ export default class BlockSelection extends Module {
       const fragment = $.make("p");
 
       fragment.innerHTML = cleanHTML;
-      fakeClipboard.appendChild(fragment);
+      fakeClipboard.innerHTML = cleanHTML;
+      // fakeClipboard.appendChild(fragment);
     });
 
     const textPlain = Array.from(fakeClipboard.childNodes)
