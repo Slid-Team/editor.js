@@ -98,7 +98,7 @@ export default class BlockSelection extends Module {
 
     console.log("this.anyBlockSelectedCache", this.anyBlockSelectedCache);
     if (this.anyBlockSelectedCache === null) {
-      console.log("null null");
+      console.log("null null", BlockManager.blocks);
       this.anyBlockSelectedCache = BlockManager.blocks.some(selected);
     }
 

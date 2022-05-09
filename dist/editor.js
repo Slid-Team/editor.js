@@ -20407,7 +20407,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         console.log("this.anyBlockSelectedCache", this.anyBlockSelectedCache);
 
         if (this.anyBlockSelectedCache === null) {
-          console.log("null null");
+          console.log("null null", BlockManager.blocks);
           this.anyBlockSelectedCache = BlockManager.blocks.some(selected);
         }
 
