@@ -11,7 +11,7 @@ import Module from "../__module";
 import $ from "../dom";
 import * as _ from "../utils";
 import Blocks from "../blocks";
-import { BlockToolData, PasteEvent } from "../../../types";
+import { BlockToolData, PasteEvent, ToolboxConfig } from "../../../types";
 import { BlockTuneData } from "../../../types/block-tunes/block-tune-data";
 import BlockAPI from "../block/api";
 import { BlockMutationType } from "../../../types/events/block/mutation-type";
@@ -245,6 +245,7 @@ export default class BlockManager extends Module {
   }): Block {
     const readOnly = this.Editor.ReadOnly.isEnabled;
     const tool = this.Editor.Tools.blockTools.get(name);
+    console.log(tool);
     const block = new Block({
       id,
       data,
@@ -282,6 +283,7 @@ export default class BlockManager extends Module {
     needToFocus = true,
     replace = false,
     tunes = {},
+    config = {},
   }: {
     id?: string;
     tool?: string;
@@ -290,6 +292,7 @@ export default class BlockManager extends Module {
     needToFocus?: boolean;
     replace?: boolean;
     tunes?: { [name: string]: BlockTuneData };
+    config?: ToolboxConfigs;
   } = {}): Block {
     let newIndex = index;
 
