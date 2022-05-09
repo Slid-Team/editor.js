@@ -20400,10 +20400,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       get: function get() {
         var BlockManager = this.Editor.BlockManager;
 
+        var selected = function selected(block) {
+          return block.selected === true;
+        };
+
+        console.log("this.anyBlockSelectedCache", this.anyBlockSelectedCache);
+
         if (this.anyBlockSelectedCache === null) {
-          this.anyBlockSelectedCache = BlockManager.blocks.some(function (block) {
-            return block.selected === true;
-          });
+          console.log("null null");
+          this.anyBlockSelectedCache = BlockManager.blocks.some(selected);
         }
 
         return this.anyBlockSelectedCache;

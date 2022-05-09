@@ -94,10 +94,12 @@ export default class BlockSelection extends Module {
   public get anyBlockSelected(): boolean {
     const { BlockManager } = this.Editor;
 
+    const selected = (block): boolean => block.selected === true;
+
+    console.log("this.anyBlockSelectedCache", this.anyBlockSelectedCache);
     if (this.anyBlockSelectedCache === null) {
-      this.anyBlockSelectedCache = BlockManager.blocks.some(
-        (block) => block.selected === true
-      );
+      console.log("null null");
+      this.anyBlockSelectedCache = BlockManager.blocks.some(selected);
     }
 
     return this.anyBlockSelectedCache;
