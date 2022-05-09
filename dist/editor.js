@@ -20157,6 +20157,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         var fakeClipboard = _dom["default"].make("div");
 
+        console.log("this.selectedBlocks", this.selectedBlocks);
         this.selectedBlocks.forEach(function (block) {
           /**
            * Make <p> tag that holds clean HTML
@@ -20174,12 +20175,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var textHTML = fakeClipboard.innerHTML;
         e.clipboardData.setData("text/plain", textPlain);
         e.clipboardData.setData("text/html", textHTML);
+        console.log("textHTML", textHTML);
         return Promise.all(this.selectedBlocks.map(function (block) {
           return block.save();
         })).then(function (savedData) {
           try {
             e.clipboardData.setData(_this3.Editor.Paste.MIME_TYPE, JSON.stringify(savedData));
-            console.log(savedData);
           } catch (err) {// In Firefox we can't set data in async function
           }
         });

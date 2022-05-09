@@ -303,6 +303,8 @@ export default class BlockSelection extends Module {
 
     const fakeClipboard = $.make("div");
 
+    console.log("this.selectedBlocks", this.selectedBlocks);
+
     this.selectedBlocks.forEach((block) => {
       /**
        * Make <p> tag that holds clean HTML
@@ -321,6 +323,7 @@ export default class BlockSelection extends Module {
 
     e.clipboardData.setData("text/plain", textPlain);
     e.clipboardData.setData("text/html", textHTML);
+    console.log("textHTML", textHTML);
 
     return Promise.all(this.selectedBlocks.map((block) => block.save())).then(
       (savedData) => {
@@ -329,7 +332,6 @@ export default class BlockSelection extends Module {
             this.Editor.Paste.MIME_TYPE,
             JSON.stringify(savedData)
           );
-          console.log(savedData);
         } catch (err) {
           // In Firefox we can't set data in async function
         }
