@@ -292,7 +292,7 @@ export default class BlockManager extends Module {
     needToFocus?: boolean;
     replace?: boolean;
     tunes?: { [name: string]: BlockTuneData };
-    config?: ToolboxConfigs;
+    config?: ToolboxConfig;
   } = {}): Block {
     let newIndex = index;
 
