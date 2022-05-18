@@ -4,14 +4,9 @@
   right: 0;
   top: 0;
   transition: opacity 100ms ease;
-  will-change: opacity, transform;
-  display: none;
+  will-change: opacity, top;
 
-  @media (--mobile) {
-    @apply --overlay-pane;
-    padding: 3px;
-    margin-top: 5px;
-  }
+  display: none;
 
   &--opened {
     display: block;
@@ -50,9 +45,9 @@
     }
 
     @media (--mobile) {
+      @apply --overlay-pane;
       display: inline-flex !important;
       position: static;
-      transform: none !important;
     }
   }
 
@@ -79,8 +74,8 @@
       opacity: 1;
     }
 
-    &-buttons {
-      text-align: right;
+    @media (--mobile) {
+      right: auto;
     }
   }
 
@@ -89,13 +84,23 @@
     width: 18px;
     height: 100%;
 
+    margin-left: 5px;
     cursor: pointer;
     user-select: none;
-  }
-}
 
-.codex-editor--toolbox-opened .ce-toolbar__actions {
-  display: none;
+    @media (--not-mobile) {
+      width: 18px;
+    }
+
+    &--hidden {
+      display: none;
+    }
+
+    @media (--mobile) {
+      @apply --overlay-pane;
+      position: static;
+    }
+  }
 }
 
 /**

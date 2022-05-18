@@ -12,7 +12,7 @@
 - explain which changes were made
 
 **Outcomes of merging this PR**
- - what will happen if this PR is merged?
+- what will happen if this PR is merged?
 
 **How urgent is this PR**
 - Very urgent

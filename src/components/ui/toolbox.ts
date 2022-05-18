@@ -10,6 +10,11 @@ import BlockTool from "../tools/block";
 import ToolsCollection from "../tools/collection";
 import { API } from "../../../types";
 import EventsDispatcher from "../utils/events";
+import Popover, { PopoverEvent } from "../utils/popover";
+
+/**
+ * @todo the first Tab on the Block — focus Plus Button, the second — focus Block Tunes Toggler, the third — focus next Block
+ */
 
 /**
  * Event that can be triggered by the Toolbox
@@ -32,6 +37,11 @@ export enum ToolboxEvent {
 }
 
 /**
+ * Available i18n dict keys that should be passed to the constructor
+ */
+type toolboxTextLabelsKeys = "filter" | "nothingFound";
+
+/**
  * Toolbox
  * This UI element contains list of Block Tools available to be inserted
  * It appears after click on the Plus Button
@@ -45,7 +55,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    * @returns {boolean}
    */
   public get isEmpty(): boolean {
-    return this.displayedToolsCount === 0;
+    return this.toolsToBeDisplayed.length === 0;
   }
 
   /**
@@ -61,19 +71,27 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
   private api: API;
 
   /**
+   * Popover instance. There is a util for vertical lists.
+   */
+  private popover: Popover;
+
+  /**
    * List of Tools available. Some of them will be shown in the Toolbox
    */
   private tools: ToolsCollection<BlockTool>;
+
+  /**
+   * Text labels used in the Toolbox. Should be passed from the i18n module
+   */
+  private i18nLabels: Record<toolboxTextLabelsKeys, string>;
 
   /**
    * Current module HTML Elements
    */
   private nodes: {
     toolbox: HTMLElement;
-    buttons: HTMLElement[];
   } = {
     toolbox: null,
-    buttons: [],
   };
 
   /**
@@ -93,27 +111,9 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
 
       buttonTooltip: "ce-toolbox-button-tooltip",
       buttonShortcut: "ce-toolbox-button-tooltip__shortcut",
+      toolboxOpenedTop: "ce-toolbox--opened-top",
     };
   }
-
-  /**
-   * How many tools displayed in Toolbox
-   *
-   * @type {number}
-   */
-  private displayedToolsCount = 0;
-
-  /**
-   * Instance of class that responses for leafing buttons by arrows/tab
-   *
-   * @type {Flipper|null}
-   */
-  private flipper: Flipper = null;
-
-  /**
-   * Tooltip utility Instance
-   */
-  private tooltip: Tooltip;
 
   /**
    * Id of listener added used to remove it on destroy()
@@ -127,32 +127,67 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    * @param options.api - Editor API methods
    * @param options.tools - Tools available to check whether some of them should be displayed at the Toolbox or not
    */
-  constructor({ api, tools }) {
+  constructor({
+    api,
+    tools,
+    i18nLabels,
+  }: {
+    api: API;
+    tools: ToolsCollection<BlockTool>;
+    i18nLabels: Record<toolboxTextLabelsKeys, string>;
+  }) {
     super();
 
     this.api = api;
     this.tools = tools;
-
-    this.tooltip = new Tooltip();
-  }
-
-  /**
-   * Returns true if the Toolbox has the Flipper activated and the Flipper has selected button
-   */
-  public get flipperHasFocus(): boolean {
-    return this.flipper && this.flipper.currentItem !== null;
+    this.i18nLabels = i18nLabels;
   }
 
   /**
    * Makes the Toolbox
    */
   public make(): Element {
-    this.nodes.toolbox = $.make("div", Toolbox.CSS.toolbox);
+    // this.nodes.toolbox = $.make("div", Toolbox.CSS.toolbox);
+    this.popover = new Popover({
+      className: Toolbox.CSS.toolbox,
+      searchable: true,
+      filterLabel: this.i18nLabels.filter,
+      nothingFoundLabel: this.i18nLabels.nothingFound,
+      items: this.toolsToBeDisplayed.map((tool) => {
+        return {
+          icon: tool.toolbox.icon,
+          label: I18n.t(
+            I18nInternalNS.toolNames,
+            tool.toolbox.title || _.capitalize(tool.name)
+          ),
+          name: tool.name,
+          onClick: (item): void => {
+            this.toolButtonActivated(tool.name);
+          },
+          secondaryLabel: tool.shortcut
+            ? _.beautifyShortcut(tool.shortcut)
+            : "",
+        };
+      }),
+    });
 
-    this.addTools();
-    this.enableFlipper();
+    this.popover.on(PopoverEvent.OverlayClicked, this.onOverlayClicked);
+
+    /**
+     * Enable tools shortcuts
+     */
+    this.enableShortcuts();
+
+    this.nodes.toolbox = this.popover.getElement();
 
     return this.nodes.toolbox;
+  }
+
+  /**
+   * Returns true if the Toolbox has the Flipper activated and the Flipper has selected button
+   */
+  public hasFocus(): boolean {
+    return this.popover.hasFocus();
   }
 
   /**
@@ -161,36 +196,23 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
   public destroy(): void {
     super.destroy();
 
-    /**
-     * Sometimes (in read-only mode) there is no Flipper
-     */
-    if (this.flipper) {
-      this.flipper.deactivate();
-      this.flipper = null;
-    }
-
     if (this.nodes && this.nodes.toolbox) {
       this.nodes.toolbox.remove();
       this.nodes.toolbox = null;
-      this.nodes.buttons = [];
     }
 
     this.api.listeners.offById(this.clickListenerId);
 
     this.removeAllShortcuts();
-    this.tooltip.destroy();
+    this.popover.off(PopoverEvent.OverlayClicked, this.onOverlayClicked);
   }
 
   /**
    * Toolbox Tool's button click handler
    *
-   * @param {MouseEvent|KeyboardEvent} event - event that activates toolbox button
-   * @param {string} toolName - button to activate
+   * @param toolName - tool type to be activated
    */
-  public toolButtonActivate(
-    event: MouseEvent | KeyboardEvent,
-    toolName: string
-  ): void {
+  public toolButtonActivated(toolName: string): void {
     this.insertNewBlock(toolName);
   }
 
@@ -202,24 +224,31 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
       return;
     }
 
-    this.emit(ToolboxEvent.Opened);
+    /**
+     * Open the popover above the button
+     * if there is not enough available space below it
+     */
+    if (!this.shouldOpenPopoverBottom) {
+      this.nodes.toolbox.style.setProperty(
+        "--popover-height",
+        this.popover.calculateHeight() + "px"
+      );
+      this.nodes.toolbox.classList.add(Toolbox.CSS.toolboxOpenedTop);
+    }
 
-    this.nodes.toolbox.classList.add(Toolbox.CSS.toolboxOpened);
-
+    this.popover.show();
     this.opened = true;
-    this.flipper.activate();
+    this.emit(ToolboxEvent.Opened);
   }
 
   /**
    * Close Toolbox
    */
   public close(): void {
-    this.emit(ToolboxEvent.Closed);
-
-    this.nodes.toolbox.classList.remove(Toolbox.CSS.toolboxOpened);
-
+    this.popover.hide();
     this.opened = false;
-    this.flipper.deactivate();
+    this.nodes.toolbox.classList.remove(Toolbox.CSS.toolboxOpenedTop);
+    this.emit(ToolboxEvent.Closed);
   }
 
   /**
@@ -234,106 +263,70 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
   }
 
   /**
-   * Iterates available tools and appends them to the Toolbox
+   * Checks if there popover should be opened downwards.
+   * It happens in case there is enough space below or not enough space above
    */
-  private addTools(): void {
-    Array.from(this.tools.values()).forEach((tool) => this.addTool(tool));
+  private get shouldOpenPopoverBottom(): boolean {
+    const toolboxRect = this.nodes.toolbox.getBoundingClientRect();
+    const editorElementRect =
+      this.api.ui.nodes.redactor.getBoundingClientRect();
+    const popoverHeight = this.popover.calculateHeight();
+    const popoverPotentialBottomEdge = toolboxRect.top + popoverHeight;
+    const popoverPotentialTopEdge = toolboxRect.top - popoverHeight;
+    const bottomEdgeForComparison = Math.min(
+      window.innerHeight,
+      editorElementRect.bottom
+    );
+
+    return (
+      popoverPotentialTopEdge < editorElementRect.top ||
+      popoverPotentialBottomEdge <= bottomEdgeForComparison
+    );
   }
 
   /**
-   * Append Tool to the Toolbox
-   *
-   * @param {BlockToolConstructable} tool - BlockTool object
+   * Handles overlay click
    */
-  private addTool(tool: BlockTool): void {
-    const toolToolboxSettings = tool.toolbox;
+  private onOverlayClicked = (): void => {
+    this.close();
+  };
 
-    /**
-     * Skip tools that don't pass 'toolbox' property
-     */
-    if (!toolToolboxSettings) {
-      return;
-    }
+  /**
+   * Returns list of tools that enables the Toolbox (by specifying the 'toolbox' getter)
+   */
+  @_.cacheable
+  private get toolsToBeDisplayed(): BlockTool[] {
+    return Array.from(this.tools.values()).filter((tool) => {
+      const toolToolboxSettings = tool.toolbox;
 
-    if (toolToolboxSettings && !toolToolboxSettings.icon) {
-      _.log("Toolbar icon is missed. Tool %o skipped", "warn", tool.name);
-
-      return;
-    }
-
-    /**
-     * @todo Add checkup for the render method
-     */
-    // if (typeof tool.render !== 'function') {
-    //   _.log('render method missed. Tool %o skipped', 'warn', tool);
-    //   return;
-    // }
-
-    const button = $.make("li", [Toolbox.CSS.toolboxBlockButton]);
-    const buttonText = $.make("span", [Toolbox.CSS.toolboxBlockButtonText]);
-    const toolTitle = I18n.t(
-      I18nInternalNS.toolNames,
-      toolToolboxSettings.title || _.capitalize(tool.name)
-    );
-    const buttonIconContainer = $.make("div", [
-      Toolbox.CSS.toolboxBlockButtonIcon,
-    ]);
-
-    button.dataset.tool = tool.name;
-    buttonIconContainer.innerHTML = toolToolboxSettings.icon;
-    button.appendChild(buttonIconContainer);
-    buttonText.innerHTML = toolTitle;
-    button.appendChild(buttonText);
-
-    this.nodes.toolbox.appendChild(button);
-    this.nodes.buttons.push(button);
-
-    /**
-     * Add click listener
-     */
-    this.clickListenerId = this.api.listeners.on(
-      button,
-      "click",
-      (event: KeyboardEvent | MouseEvent) => {
-        this.toolButtonActivate(event, tool.name);
+      /**
+       * Skip tools that don't pass 'toolbox' property
+       */
+      if (!toolToolboxSettings) {
+        return false;
       }
-    );
 
-    /** Increment Tools count */
-    this.displayedToolsCount++;
+      if (toolToolboxSettings && !toolToolboxSettings.icon) {
+        _.log("Toolbar icon is missed. Tool %o skipped", "warn", tool.name);
+
+        return false;
+      }
+
+      return true;
+    });
   }
 
   /**
-   * Draw tooltip for toolbox tools
-   *
-   * @param tool - BlockTool object
-   * @returns {HTMLElement}
+   * Iterate all tools and enable theirs shortcuts if specified
    */
-  private drawTooltip(tool: BlockTool): HTMLElement {
-    const toolboxSettings = tool.toolbox || {};
-    const name = I18n.t(
-      I18nInternalNS.toolNames,
-      toolboxSettings.title || tool.name
-    );
+  private enableShortcuts(): void {
+    this.toolsToBeDisplayed.forEach((tool: BlockTool) => {
+      const shortcut = tool.shortcut;
 
-    let shortcut = tool.shortcut;
-
-    const tooltip = $.make("div", Toolbox.CSS.buttonTooltip);
-    const hint = document.createTextNode(_.capitalize(name));
-
-    tooltip.appendChild(hint);
-
-    if (shortcut) {
-      shortcut = _.beautifyShortcut(shortcut);
-
-      tooltip.appendChild(
-        $.make("div", Toolbox.CSS.buttonShortcut, {
-          textContent: shortcut,
-        })
-      );
-    }
-
-    return tooltip;
+      if (shortcut) {
+        this.enableShortcutForTool(tool.name, shortcut);
+      }
+    });
   }
 
   /**
@@ -342,7 +335,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    * @param {string} toolName - Tool name
    * @param {string} shortcut - shortcut according to the ShortcutData Module format
    */
-  private enableShortcut(toolName: string, shortcut: string): void {
+  private enableShortcutForTool(toolName: string, shortcut: string): void {
     Shortcuts.add({
       name: shortcut,
       on: this.api.ui.nodes.redactor,
@@ -358,24 +351,12 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
    * Fired when the Read-Only mode is activated
    */
   private removeAllShortcuts(): void {
-    Array.from(this.tools.values()).forEach((tool) => {
+    this.toolsToBeDisplayed.forEach((tool: BlockTool) => {
       const shortcut = tool.shortcut;
 
       if (shortcut) {
         Shortcuts.remove(this.api.ui.nodes.redactor, shortcut);
       }
-    });
-  }
-
-  /**
-   * Creates Flipper instance to be able to leaf tools
-   */
-  private enableFlipper(): void {
-    const tools = Array.from(this.nodes.toolbox.childNodes) as HTMLElement[];
-
-    this.flipper = new Flipper({
-      items: tools,
-      focusedItemClass: Toolbox.CSS.toolboxButtonActive,
     });
   }
 
