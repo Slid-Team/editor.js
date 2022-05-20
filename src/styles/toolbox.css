@@ -1,5 +1,5 @@
 .ce-toolbox {
-  position: absolute;
+  /* position: absolute;
   visibility: hidden;
   transition: opacity 100ms ease;
   will-change: opacity;
@@ -10,7 +10,8 @@
   border-radius: 8px;
   box-shadow: var(--boxShadow2);
   width: 220px;
-  padding: 8px 0;
+  padding: 8px 0; */
+  --gap: 8px;
 
   @media (--mobile) {
     position: static;
@@ -18,12 +19,11 @@
     align-items: center;
     overflow-x: auto;
   }
-  --gap: 8px;
 
   @media (--not-mobile) {
     position: absolute;
     top: calc(var(--toolbox-buttons-size) + var(--gap));
-    left: 0;
+    left: 44px;
 
     &--opened-top {
       top: calc(-1 * (var(--gap) + var(--popover-height)));

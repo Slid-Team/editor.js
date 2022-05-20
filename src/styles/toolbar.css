@@ -32,7 +32,7 @@
   &__plus {
     @apply --toolbox-button;
     flex-shrink: 0;
-    height: auto;
+    height: 100%;
 
     &-shortcut {
       opacity: 0.6;
@@ -60,6 +60,7 @@
     right: 100%;
     opacity: 0;
     display: flex;
+    height: 26px;
 
     @media (--mobile) {
       position: absolute;
@@ -84,7 +85,7 @@
     width: 18px;
     height: 100%;
 
-    margin-left: 5px;
+    /* margin-left: 5px; */
     cursor: pointer;
     user-select: none;
 

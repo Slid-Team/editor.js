@@ -121,14 +121,12 @@
   --overlay-pane: {
     position: absolute;
     background-color: #ffffff;
-    border: 1px solid #e8e8eb;
-    box-shadow: 0 3px 15px -3px rgba(13, 20, 33, 0.13);
-    border-radius: 6px;
+    box-shadow: var(--boxShadow2);
+    border-radius: 8px;
     z-index: 2;
 
     @media (--mobile) {
-      box-shadow: 0 8px 6px -6px rgb(33 48 73 / 19%);
-      border-bottom-color: #c7c7c7;
+      box-shadow: var(--boxShadow2);
     }
 
     &--left-oriented {

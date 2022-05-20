@@ -4,12 +4,12 @@
   will-change: opacity, transform;
   display: flex;
   flex-direction: column;
-  padding: 6px;
-  min-width: 200px;
-  overflow: hidden;
+  padding: 8px 0;
+  min-width: 220px;
+  /* overflow: hidden; */
   box-sizing: border-box;
   flex-shrink: 0;
-  max-height: 0;
+  /* max-height: 0; */
   pointer-events: none;
 
   @apply --overlay-pane;
@@ -18,28 +18,28 @@
   flex-wrap: nowrap;
 
   &--opened {
-     opacity: 1;
-     max-height: 270px;
-     pointer-events: auto;
-     animation: panelShowing 100ms ease;
+    opacity: 1;
+    height: fit-content;
+    pointer-events: auto;
+    animation: panelShowing 100ms ease;
 
-     @media (--mobile) {
-       animation: panelShowingMobile 250ms ease;
-     }
+    @media (--mobile) {
+      animation: panelShowingMobile 250ms ease;
+    }
   }
 
-  &::-webkit-scrollbar {
+  /* &::-webkit-scrollbar {
     width: 7px;
-  }
+  } */
 
-  &::-webkit-scrollbar-thumb {
+  /* &::-webkit-scrollbar-thumb {
     box-sizing: border-box;
     box-shadow: inset 0 0 2px 2px var(--bg-light);
     border: 3px solid transparent;
     border-left-width: 0px;
     border-top-width: 4px;
     border-bottom-width: 4px;
-  }
+  } */
 
   @media (--mobile) {
     position: fixed;
@@ -52,17 +52,30 @@
     border-radius: 10px;
   }
 
-  &__items {
+  /* &__items {
     overflow-y: auto;
     overscroll-behavior: contain;
 
     @media (--not-mobile) {
       margin-top: 5px;
     }
-  }
+  } */
 
   &__item {
-    @apply --popover-button;
+    /* @apply --popover-button; */
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--gray2);
+    }
+
+    &:active {
+      background-color: var(--gray1);
+    }
 
     &--focused {
       @apply --button-focused;
@@ -73,10 +86,24 @@
     }
 
     &-icon {
-      @apply --tool-icon;
+      /* @apply --tool-icon; */
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        fill: var(--gray6);
+      }
     }
 
     &-label {
+      margin-left: 4px;
+      font-size: 13px !important;
+      line-height: 18px;
+      color: var(--gary8);
+
       &::after {
         content: '';
         width: 25px;
