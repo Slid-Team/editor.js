@@ -1,5 +1,5 @@
 .ce-toolbox {
-  position: absolute;
+  /* position: absolute;
   visibility: hidden;
   transition: opacity 100ms ease;
   will-change: opacity;
@@ -10,7 +10,8 @@
   border-radius: 8px;
   box-shadow: var(--boxShadow2);
   width: 220px;
-  padding: 8px 0;
+  padding: 8px 0; */
+  --gap: 8px;
 
   @media (--mobile) {
     position: static;
@@ -19,15 +20,14 @@
     overflow-x: auto;
   }
 
-  &--opened {
-    opacity: 1;
-    visibility: visible;
-  }
+  @media (--not-mobile) {
+    position: absolute;
+    top: calc(var(--toolbox-buttons-size) + var(--gap));
+    left: 44px;
 
-  &__button {
-    @apply --toolbox-button;
-    flex-shrink: 0;
-    margin-left: 5px;
+    &--opened-top {
+      top: calc(-1 * (var(--gap) + var(--popover-height)));
+    }
   }
 
   &__block-button {
@@ -71,20 +71,13 @@
   }
 }
 
-.ce-toolbox-button-tooltip {
-  &__shortcut {
-    opacity: 0.6;
-    word-spacing: -3px;
-    margin-top: 3px;
-  }
-}
-
-/**
- * Styles for Narrow mode
- */
 .codex-editor--narrow .ce-toolbox {
   @media (--not-mobile) {
-    background: #fff;
-    z-index: 2;
+    left: auto;
+    right: 0;
+
+    .ce-popover {
+      right: 0;
+    }
   }
 }
