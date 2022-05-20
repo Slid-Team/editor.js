@@ -370,7 +370,7 @@ export default class Toolbar extends Module<ToolbarNodes> {
      *  - Remove Block Button
      *  - Settings Panel
      */
-    this.nodes.settingsToggler = $.make('span', this.CSS.settingsToggler);
+    this.nodes.settingsToggler = $.make('div', this.CSS.settingsToggler);
     const settingsIcon = $.svg('dots', 16, 16);
 
     $.append(this.nodes.settingsToggler, settingsIcon);
