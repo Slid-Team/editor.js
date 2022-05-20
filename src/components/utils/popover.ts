@@ -103,7 +103,7 @@ export default class Popover extends EventsDispatcher<PopoverEvent> {
   /**
    * Instance of the Search Input
    */
-  private search: SearchInput;
+  // private search: SearchInput;
 
   /**
    * Label for the 'Filter' placeholder
@@ -198,18 +198,18 @@ export default class Popover extends EventsDispatcher<PopoverEvent> {
     /**
      * Clear search and items scrolling
      */
-    this.search.clear();
+    // this.search.clear();
     this.nodes.items.scrollTop = 0;
 
     this.nodes.popover.classList.add(Popover.CSS.popoverOpened);
     this.nodes.overlay.classList.remove(Popover.CSS.popoverOverlayHidden);
     this.flipper.activate();
 
-    if (this.searchable) {
-      window.requestAnimationFrame(() => {
-        this.search.focus();
-      });
-    }
+    // if (this.searchable) {
+    //   window.requestAnimationFrame(() => {
+    //     this.search.focus();
+    //   });
+    // }
 
     if (isMobileScreen()) {
       this.scrollLocker.lock();
@@ -286,9 +286,9 @@ export default class Popover extends EventsDispatcher<PopoverEvent> {
     this.nodes.overlay = Dom.make('div', [Popover.CSS.popoverOverlay, Popover.CSS.popoverOverlayHidden]);
     this.nodes.wrapper.appendChild(this.nodes.overlay);
 
-    if (this.searchable) {
-      this.addSearch(this.nodes.popover);
-    }
+    // if (this.searchable) {
+    //   this.addSearch(this.nodes.popover);
+    // }
 
     this.nodes.items = Dom.make('div', Popover.CSS.itemsWrapper);
     this.items.forEach(item => {
@@ -321,37 +321,37 @@ export default class Popover extends EventsDispatcher<PopoverEvent> {
    * @param holder - where to append search input
    */
   private addSearch(holder: HTMLElement): void {
-    this.search = new SearchInput({
-      items: this.items,
-      placeholder: this.filterLabel,
-      onSearch: (filteredItems): void => {
-        const itemsVisible = [];
+    // this.search = new SearchInput({
+    //   items: this.items,
+    //   placeholder: this.filterLabel,
+    //   onSearch: (filteredItems): void => {
+    //     const itemsVisible = [];
 
-        this.items.forEach((item, index) => {
-          const itemElement = this.nodes.items.children[index];
+    //     this.items.forEach((item, index) => {
+    //       const itemElement = this.nodes.items.children[index];
 
-          if (filteredItems.includes(item)) {
-            itemsVisible.push(itemElement);
-            itemElement.classList.remove(Popover.CSS.itemHidden);
-          } else {
-            itemElement.classList.add(Popover.CSS.itemHidden);
-          }
-        });
+    //       if (filteredItems.includes(item)) {
+    //         itemsVisible.push(itemElement);
+    //         itemElement.classList.remove(Popover.CSS.itemHidden);
+    //       } else {
+    //         itemElement.classList.add(Popover.CSS.itemHidden);
+    //       }
+    //     });
 
-        this.nodes.nothingFound.classList.toggle(Popover.CSS.noFoundMessageShown, itemsVisible.length === 0);
+    //     this.nodes.nothingFound.classList.toggle(Popover.CSS.noFoundMessageShown, itemsVisible.length === 0);
 
-        /**
-         * Update flipper items with only visible
-         */
-        this.flipper.deactivate();
-        this.flipper.activate(itemsVisible);
-        this.flipper.focusFirst();
-      },
-    });
+    //     /**
+    //      * Update flipper items with only visible
+    //      */
+    //     this.flipper.deactivate();
+    //     this.flipper.activate(itemsVisible);
+    //     this.flipper.focusFirst();
+    //   },
+    // });
 
-    const searchField = this.search.getElement();
+    // const searchField = this.search.getElement();
 
-    holder.appendChild(searchField);
+    // holder.appendChild(searchField);
   }
 
   /**
