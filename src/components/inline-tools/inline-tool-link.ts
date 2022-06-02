@@ -154,6 +154,10 @@ export default class LinkInlineTool implements InlineTool {
     /**
      * Range will be null when user makes second click on the 'link icon' to close opened input
      */
+    const inlineToolbarElement = document.getElementsByClassName(
+      "ce-inline-toolbar"
+    )[0] as HTMLDivElement;
+
     if (range) {
       /**
        * Save selection before change focus to the input
@@ -162,12 +166,13 @@ export default class LinkInlineTool implements InlineTool {
         /** Create blue background instead of selection */
         this.selection.setFakeBackground();
         this.selection.save();
+        inlineToolbarElement.style.transform = "translate(-50%, -33px)";
       } else {
         this.selection.restore();
         this.selection.removeFakeBackground();
+        inlineToolbarElement.style.transform = "";
       }
       const parentAnchor = this.selection.findParentTag("A");
-
       /**
        * Unlink icon pressed
        */
@@ -181,6 +186,7 @@ export default class LinkInlineTool implements InlineTool {
         this.nodes.button.classList.remove(this.CSS.buttonActive);
         unlinkButton.remove();
         this.inlineToolbar.close();
+        inlineToolbarElement.style.transform = "";
 
         return;
       }
@@ -197,15 +203,20 @@ export default class LinkInlineTool implements InlineTool {
   public checkState(selection?: Selection): boolean {
     const anchorTag = this.selection.findParentTag("A");
     const unlinkButton = document.createElement("button");
+    const inlineToolbarElement = document.getElementsByClassName(
+      "ce-inline-toolbar"
+    )[0] as HTMLDivElement;
     unlinkButton.classList.add("unlink-button");
     unlinkButton.textContent = this.i18n.t("Remove");
     unlinkButton.addEventListener("click", () => {
+      this.selection.expandToTag(anchorTag);
       this.unlink();
       this.nodes.input.value = "";
       this.nodes.button.classList.remove(this.CSS.buttonUnlink);
       this.nodes.button.classList.remove(this.CSS.buttonActive);
       unlinkButton.remove();
       this.inlineToolbar.close();
+      inlineToolbarElement.style.transform = "";
     });
 
     if (anchorTag) {
