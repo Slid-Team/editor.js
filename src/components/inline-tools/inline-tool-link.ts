@@ -180,6 +180,7 @@ export default class LinkInlineTool implements InlineTool {
         this.nodes.button.classList.remove(this.CSS.buttonUnlink);
         this.nodes.button.classList.remove(this.CSS.buttonActive);
         unlinkButton.remove();
+        this.inlineToolbar.close();
 
         return;
       }
@@ -204,6 +205,7 @@ export default class LinkInlineTool implements InlineTool {
       this.nodes.button.classList.remove(this.CSS.buttonUnlink);
       this.nodes.button.classList.remove(this.CSS.buttonActive);
       unlinkButton.remove();
+      this.inlineToolbar.close();
     });
 
     if (anchorTag) {
@@ -414,6 +416,7 @@ export default class LinkInlineTool implements InlineTool {
     }
 
     document.execCommand(this.commandLink, false, link);
+    this.selection.findParentTag("A").setAttribute("target", "_blank");
   }
 
   /**
