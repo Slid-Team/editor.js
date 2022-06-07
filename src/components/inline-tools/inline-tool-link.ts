@@ -166,11 +166,9 @@ export default class LinkInlineTool implements InlineTool {
         /** Create blue background instead of selection */
         this.selection.setFakeBackground();
         this.selection.save();
-        inlineToolbarElement.style.transform = "translate(-50%, -33px)";
       } else {
         this.selection.restore();
         this.selection.removeFakeBackground();
-        inlineToolbarElement.style.transform = "";
       }
       const parentAnchor = this.selection.findParentTag("A");
       /**
@@ -186,7 +184,6 @@ export default class LinkInlineTool implements InlineTool {
         this.nodes.button.classList.remove(this.CSS.buttonActive);
         unlinkButton.remove();
         this.inlineToolbar.close();
-        inlineToolbarElement.style.transform = "";
 
         return;
       }
@@ -216,7 +213,6 @@ export default class LinkInlineTool implements InlineTool {
       this.nodes.button.classList.remove(this.CSS.buttonActive);
       unlinkButton.remove();
       this.inlineToolbar.close();
-      inlineToolbarElement.style.transform = "";
     });
 
     if (anchorTag) {
@@ -274,7 +270,12 @@ export default class LinkInlineTool implements InlineTool {
    * @param {boolean} needFocus - on link creation we need to focus input. On editing - nope.
    */
   private openActions(needFocus = false): void {
+    const inlineToolbarElement = document.getElementsByClassName(
+      "ce-inline-toolbar"
+    )[0] as HTMLDivElement;
+
     this.nodes.input.classList.add(this.CSS.inputShowed);
+    inlineToolbarElement.style.transform = "translate(-50%, -33px)";
     if (needFocus) {
       this.nodes.input.focus();
     }
@@ -288,6 +289,10 @@ export default class LinkInlineTool implements InlineTool {
    *                                        on toggle-clicks on the icon of opened Toolbar
    */
   private closeActions(clearSavedSelection = true): void {
+    const inlineToolbarElement = document.getElementsByClassName(
+      "ce-inline-toolbar"
+    )[0] as HTMLDivElement;
+
     if (this.selection.isFakeBackgroundEnabled) {
       // if actions is broken by other selection We need to save new selection
       const currentSelection = new SelectionUtils();
@@ -302,6 +307,7 @@ export default class LinkInlineTool implements InlineTool {
     }
 
     this.nodes.input.classList.remove(this.CSS.inputShowed);
+    inlineToolbarElement.style.transform = "";
     this.nodes.input.value = "";
     if (clearSavedSelection) {
       this.selection.clearSaved();
