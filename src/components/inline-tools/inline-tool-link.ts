@@ -171,12 +171,14 @@ export default class LinkInlineTool implements InlineTool {
         this.selection.removeFakeBackground();
       }
       const parentAnchor = this.selection.findParentTag("A");
+
       /**
        * Unlink icon pressed
        */
       if (parentAnchor) {
         const unlinkButton =
           document.getElementsByClassName("unlink-button")[0];
+
         this.selection.expandToTag(parentAnchor);
         this.unlink();
         this.nodes.input.value = "";
@@ -200,9 +202,7 @@ export default class LinkInlineTool implements InlineTool {
   public checkState(selection?: Selection): boolean {
     const anchorTag = this.selection.findParentTag("A");
     const unlinkButton = document.createElement("button");
-    const inlineToolbarElement = document.getElementsByClassName(
-      "ce-inline-toolbar"
-    )[0] as HTMLDivElement;
+
     unlinkButton.classList.add("unlink-button");
     unlinkButton.textContent = this.i18n.t("Remove");
     unlinkButton.addEventListener("click", () => {
@@ -226,7 +226,10 @@ export default class LinkInlineTool implements InlineTool {
       const hrefAttr = anchorTag.getAttribute("href");
 
       this.nodes.input.value = hrefAttr !== "null" ? hrefAttr : "";
-      if (this.nodes.input.value !== "") {
+      if (
+        this.nodes.input.value !== "" &&
+        !document.querySelector(".unlink-button")
+      ) {
         document
           .querySelector(".ce-inline-toolbar__actions")
           .appendChild(unlinkButton);
