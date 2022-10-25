@@ -105,7 +105,7 @@
       color: var(--gary8);
 
       &::after {
-        content: '';
+        content: "";
         width: 25px;
         display: inline-block;
       }
@@ -113,7 +113,7 @@
 
     &-secondary-label {
       color: var(--grayText);
-      font-size: 12px;
+      font-size: 12px !important;
       margin-left: auto;
       white-space: nowrap;
       letter-spacing: -0.1em;
@@ -121,7 +121,7 @@
       margin-bottom: -2px;
       opacity: 0.6;
 
-      @media (--mobile){
+      @media (--mobile) {
         display: none;
       }
     }
