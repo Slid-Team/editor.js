@@ -66,7 +66,7 @@
       /* e of reset button  */
       justify-content: end;
       font-weight: 400;
-      font-size: 11px;
+      font-size: 11px !important;
       line-height: 16px;
       color: var(--gray6);
       padding: 8px 10px 8px 0;
@@ -104,7 +104,7 @@
     &-content {
       display: flex;
       font-weight: 500;
-      font-size: 14px;
+      font-size: 14px !important;
 
       svg {
         /* height: 12px; */
@@ -168,7 +168,7 @@
     border: 0;
     border-radius: 0 0 4px 4px;
     margin: 0;
-    font-size: 11px;
+    font-size: 11px !important;
     line-height: 16px;
     padding: 8px 5px 8px 10px;
     width: 100%;
