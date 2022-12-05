@@ -94,6 +94,7 @@
         fill: var(--gray8);
       }
     }
+    /* @apply --tool-icon; */
   }
 
   &--last {

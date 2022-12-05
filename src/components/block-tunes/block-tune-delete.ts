@@ -1,11 +1,13 @@
 /**
  * @class DeleteTune
  * @classdesc Editor's default tune that moves up selected block
- *
  * @copyright <CodeX Team> 2018
  */
-import { API, BlockTune } from "../../../types";
-import $ from "../dom";
+import { API, BlockTune, PopoverItem } from '../../../types';
+// import { IconCross } from '@codexteam/icons';
+const IconCross = `<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5 1.5C5 1.22386 5.22386 1 5.5 1H10.5C10.7761 1 11 1.22386 11 1.5V3H5V1.5ZM4 3V1.5C4 0.671573 4.67157 0 5.5 0H10.5C11.3284 0 12 0.671573 12 1.5V3H13.5H15C15.2761 3 15.5 3.22386 15.5 3.5C15.5 3.77614 15.2761 4 15 4H14V14.5C14 15.3284 13.3284 16 12.5 16H3.5C2.67157 16 2 15.3284 2 14.5V4H1C0.723858 4 0.5 3.77614 0.5 3.5C0.5 3.22386 0.723858 3 1 3H2.5H4ZM11.5 4H4.5H3V14.5C3 14.7761 3.22386 15 3.5 15H12.5C12.7761 15 13 14.7761 13 14.5V4H11.5ZM6.5 6.5C6.77614 6.5 7 6.72386 7 7V12C7 12.2761 6.77614 12.5 6.5 12.5C6.22386 12.5 6 12.2761 6 12V7C6 6.72386 6.22386 6.5 6.5 6.5ZM10 7C10 6.72386 9.77614 6.5 9.5 6.5C9.22386 6.5 9 6.72386 9 7V12C9 12.2761 9.22386 12.5 9.5 12.5C9.77614 12.5 10 12.2761 10 12V7Z" />
+</svg>`;
 
 /**
  *
@@ -24,24 +26,6 @@ export default class DeleteTune implements BlockTune {
   private readonly api: API;
 
   /**
-   * Styles
-   */
-  private CSS = {
-    button: "ce-settings__button",
-    iconContainer: "ce-settings__button-icon-container",
-    buttonText: "ce-settings__button-text",
-    shortCutText: "ce-settings__button-shortcut-text",
-    buttonDelete: "ce-settings__button--delete",
-  };
-
-  /**
-   * Tune nodes
-   */
-  private nodes: { button: HTMLElement } = {
-    button: null,
-  };
-
-  /**
    * DeleteTune constructor
    *
    * @param {API} api - Editor's API
@@ -51,48 +35,24 @@ export default class DeleteTune implements BlockTune {
   }
 
   /**
-   * Create "Delete" button and add click event listener
-   *
-   * @returns {HTMLElement}
+   * Tune's appearance in block settings menu
    */
-  public render(): HTMLElement {
-    const deleteButton = $.make("div", [
-      this.CSS.button,
-      this.CSS.buttonDelete,
-    ]);
-    const deleteButtonContainer = $.make("div", [this.CSS.iconContainer]);
-    const deleteButtonText = $.make("span", [this.CSS.buttonText]);
-    const shortCutText = $.make("span", [this.CSS.shortCutText]);
-
-    deleteButtonContainer.appendChild($.svg("delete", 16, 16));
-    deleteButtonText.innerHTML = this.api.i18n.t("Delete");
-    shortCutText.innerHTML = "backspace";
-    deleteButton.appendChild(deleteButtonContainer);
-    deleteButton.appendChild(deleteButtonText);
-    deleteButton.appendChild(shortCutText);
-
-    this.api.listeners.on(
-      deleteButton,
-      "click",
-      (event: MouseEvent) => this.handleClick(event),
-      false
-    );
-
-    return deleteButton;
+  public render(): PopoverItem {
+    return {
+      icon: IconCross,
+      label: this.api.i18n.t('Delete'),
+      name: 'delete',
+      confirmation: {
+        label: this.api.i18n.t('Click to delete'),
+        onActivate: (): void => this.handleClick(),
+      },
+    };
   }
 
   /**
    * Delete block conditions passed
-   *
-   * @param {MouseEvent} event - click event
    */
-  public handleClick(event: MouseEvent): void {
+  public handleClick(): void {
     this.api.blocks.delete();
-    this.api.toolbar.close();
-
-    /**
-     * Prevent firing ui~documentClicked that can drop currentBlock pointer
-     */
-    event.stopPropagation();
   }
 }

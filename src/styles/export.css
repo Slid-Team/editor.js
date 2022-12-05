@@ -36,6 +36,7 @@
 
 /**
  * Settings
+ * @deprecated - use tunes config instead of creating html element with controls
  */
 .cdx-settings-button {
   @apply --toolbar-button;
@@ -47,11 +48,24 @@
   &:nth-child(n + 4) {
     margin-top: 3px;
   }
+  /* min-width: var(--toolbox-buttons-size);
+  min-height: var(--toolbox-buttons-size); */
 
   &--active {
     svg {
       fill: var(--blue5);
     }
+  }
+
+  svg {
+    width: auto;
+    height: auto;
+  }
+
+  @media (--mobile) {
+    width: var(--toolbox-buttons-size--mobile);
+    height: var(--toolbox-buttons-size--mobile);
+    border-radius: 8px;
   }
 }
 
@@ -100,9 +114,11 @@
   text-align: center;
   cursor: pointer;
 
-  &:hover {
-    background: #fbfcfe;
-    box-shadow: 0 1px 3px 0 rgba(18, 30, 57, 0.08);
+  @media (--can-hover) {
+    &:hover {
+      background: #FBFCFE;
+      box-shadow: 0 1px 3px 0 rgba(18,30,57,0.08);
+    }
   }
 
   svg {
