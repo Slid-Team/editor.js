@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import Module from '../../__module';
 import $ from '../../dom';
 import SelectionUtils from '../../selection';
@@ -146,10 +145,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    *                                  Avoid to use it just for closing IT, better call .close() clearly.
    * @param [needToShowConversionToolbar] - pass false to not to show Conversion Toolbar
    */
-  public tryToShow(
-    needToClose = false,
-    needToShowConversionToolbar = true
-  ): void {
+  public tryToShow(needToClose = false, needToShowConversionToolbar = true): void {
     if (!this.allowedToShow()) {
       if (needToClose) {
         this.close();
@@ -196,7 +192,6 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     }
 
     this.nodes.wrapper.style.left = Math.floor(newCoords.x) + 'px';
-
     this.nodes.wrapper.style.top = Math.floor(newCoords.y) + 'px';
   }
 
@@ -213,22 +208,20 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     }
 
     this.nodes.wrapper.classList.remove(this.CSS.inlineToolbarShowed);
-    Array.from(this.toolsInstances.entries()).forEach(
-      ([name, toolInstance]) => {
-        const shortcut = this.getToolShortcut(name);
+    Array.from(this.toolsInstances.entries()).forEach(([name, toolInstance]) => {
+      const shortcut = this.getToolShortcut(name);
 
-        if (shortcut) {
-          Shortcuts.remove(this.Editor.UI.nodes.redactor, shortcut);
-        }
-
-        /**
-         * @todo replace 'clear' with 'destroy'
-         */
-        if (_.isFunction(toolInstance.clear)) {
-          toolInstance.clear();
-        }
+      if (shortcut) {
+        Shortcuts.remove(this.Editor.UI.nodes.redactor, shortcut);
       }
-    );
+
+      /**
+       * @todo replace 'clear' with 'destroy'
+       */
+      if (_.isFunction(toolInstance.clear)) {
+        toolInstance.clear();
+      }
+    });
 
     this.opened = false;
 
@@ -255,15 +248,10 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
      */
     this.nodes.wrapper.classList.add(this.CSS.inlineToolbarShowed);
 
-    this.buttonsList = this.nodes.buttons.querySelectorAll(
-      `.${this.CSS.inlineToolButton}`
-    );
+    this.buttonsList = this.nodes.buttons.querySelectorAll(`.${this.CSS.inlineToolButton}`);
     this.opened = true;
 
-    if (
-      needToShowConversionToolbar &&
-      this.Editor.ConversionToolbar.hasTools()
-    ) {
+    if (needToShowConversionToolbar && this.Editor.ConversionToolbar.hasTools()) {
       /**
        * Change Conversion Dropdown content for current tool
        */
@@ -322,18 +310,13 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     /**
      * Creates a different wrapper for toggler and buttons.
      */
-    this.nodes.togglerAndButtonsWrapper = $.make(
-      'div',
-      this.CSS.togglerAndButtonsWrapper
-    );
+    this.nodes.togglerAndButtonsWrapper = $.make('div', this.CSS.togglerAndButtonsWrapper);
     this.nodes.buttons = $.make('div', this.CSS.buttonsWrapper);
     this.nodes.actions = $.make('div', this.CSS.actionsWrapper);
 
     // To prevent reset of a selection when click on the wrapper
     this.listeners.on(this.nodes.wrapper, 'mousedown', (event) => {
-      const isClickedOnActionsWrapper = (event.target as Element).closest(
-        `.${this.CSS.actionsWrapper}`
-      );
+      const isClickedOnActionsWrapper = (event.target as Element).closest(`.${this.CSS.actionsWrapper}`);
 
       // If click is on actions wrapper,
       // do not prevent default behavior because actions might include interactive elements
@@ -345,10 +328,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     /**
      * Append the intermediary wrapper which contains toggler and buttons and button actions.
      */
-    $.append(this.nodes.wrapper, [
-      this.nodes.togglerAndButtonsWrapper,
-      this.nodes.actions,
-    ]);
+    $.append(this.nodes.wrapper, [this.nodes.togglerAndButtonsWrapper, this.nodes.actions]);
     /**
      * Append the inline toolbar to the editor.
      */
@@ -409,10 +389,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
       ? currentSelection.anchorNode.parentElement
       : currentSelection.anchorNode;
 
-    if (
-      currentSelection &&
-      tagsConflictsWithSelection.includes(target.tagName)
-    ) {
+    if (currentSelection && tagsConflictsWithSelection.includes(target.tagName)) {
       return false;
     }
 
@@ -424,9 +401,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     }
 
     // is enabled by current Block's Tool
-    const currentBlock = this.Editor.BlockManager.getBlock(
-      currentSelection.anchorNode as HTMLElement
-    );
+    const currentBlock = this.Editor.BlockManager.getBlock(currentSelection.anchorNode as HTMLElement);
 
     if (!currentBlock) {
       return false;
@@ -448,10 +423,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    */
   private addConversionToggler(): void {
     this.nodes.conversionToggler = $.make('div', this.CSS.conversionToggler);
-    this.nodes.conversionTogglerContent = $.make(
-      'div',
-      this.CSS.conversionTogglerContent
-    );
+    this.nodes.conversionTogglerContent = $.make('div', this.CSS.conversionTogglerContent);
 
     const iconWrapper = $.make('div', this.CSS.conversionTogglerArrow, {
       innerHTML: IconChevronDown,
@@ -460,9 +432,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     this.nodes.conversionToggler.appendChild(this.nodes.conversionTogglerContent);
     this.nodes.conversionToggler.appendChild(iconWrapper);
 
-    this.nodes.togglerAndButtonsWrapper.appendChild(
-      this.nodes.conversionToggler
-    );
+    this.nodes.togglerAndButtonsWrapper.appendChild(this.nodes.conversionToggler);
 
     this.listeners.on(this.nodes.conversionToggler, 'click', () => {
       this.Editor.ConversionToolbar.toggle((conversionToolbarOpened) => {
@@ -473,8 +443,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
          * Other case when ConversionToolbar is closing (for example, by escape) but we need to continue flipping
          * InlineToolbar items, we activate InlineToolbar flipper
          */
-        const canActivateInlineToolbarFlipper =
-          !conversionToolbarOpened && this.opened;
+        const canActivateInlineToolbarFlipper = !conversionToolbarOpened && this.opened;
 
         if (canActivateInlineToolbarFlipper) {
           this.flipper.activate();
@@ -507,10 +476,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     const exportRuleDefined = conversionConfig && conversionConfig.export;
 
     this.nodes.conversionToggler.hidden = !exportRuleDefined;
-    this.nodes.conversionToggler.classList.toggle(
-      this.CSS.conversionTogglerHidden,
-      !exportRuleDefined
-    );
+    this.nodes.conversionToggler.classList.toggle(this.CSS.conversionTogglerHidden, !exportRuleDefined);
 
     /**
      * Get icon or title for dropdown
@@ -518,7 +484,9 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     const toolboxSettings = await currentBlock.getActiveToolboxEntry() || {};
 
     this.nodes.conversionTogglerContent.innerHTML =
-      toolboxSettings.icon || toolboxSettings.title || _.capitalize(toolName);
+      toolboxSettings.icon ||
+      toolboxSettings.title ||
+      _.capitalize(toolName);
   }
 
   /**
@@ -540,9 +508,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    */
   private addToolsFiltered(): void {
     const currentSelection = SelectionUtils.get();
-    const currentBlock = this.Editor.BlockManager.getBlock(
-      currentSelection.anchorNode as HTMLElement
-    );
+    const currentBlock = this.Editor.BlockManager.getBlock(currentSelection.anchorNode as HTMLElement);
 
     /**
      * Clear buttons list
@@ -551,7 +517,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     this.nodes.actions.innerHTML = '';
     this.toolsInstances = new Map();
 
-    Array.from(currentBlock.tool.inlineTools.values()).forEach((tool) => {
+    Array.from(currentBlock.tool.inlineTools.values()).forEach(tool => {
       this.addTool(tool);
     });
 
@@ -611,11 +577,9 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     tooltipContent.appendChild($.text(toolTitle));
 
     if (shortcut) {
-      tooltipContent.appendChild(
-        $.make('div', this.CSS.inlineToolbarShortcut, {
-          textContent: _.beautifyShortcut(shortcut),
-        })
-      );
+      tooltipContent.appendChild($.make('div', this.CSS.inlineToolbarShortcut, {
+        textContent: _.beautifyShortcut(shortcut),
+      }));
     }
 
     if (_.isMobileScreen() === false ) {
@@ -730,11 +694,11 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
   private get inlineTools(): { [name: string]: IInlineTool } {
     const result = {};
 
-    Array.from(this.Editor.Tools.inlineTools.entries()).forEach(
-      ([name, tool]) => {
+    Array
+      .from(this.Editor.Tools.inlineTools.entries())
+      .forEach(([name, tool]) => {
         result[name] = tool.create();
-      }
-    );
+      });
 
     return result;
   }
