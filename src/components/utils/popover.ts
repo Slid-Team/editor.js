@@ -1,7 +1,7 @@
 import Dom from '../dom';
 import Listeners from './listeners';
 import Flipper from '../flipper';
-import SearchInput from './search-input';
+// import SearchInput from './search-input';
 import EventsDispatcher from './events';
 import { isMobileScreen, keyCodes, cacheable } from '../utils';
 import ScrollLocker from './scroll-locker';
@@ -372,55 +372,55 @@ export default class Popover extends EventsDispatcher<PopoverEvent> {
    *
    * @param holder - where to append search input
    */
-  private addSearch(holder: HTMLElement): void {
-    // this.search = new SearchInput({
-    //   items: this.items,
-    //   placeholder: this.filterLabel,
-    //   onSearch: (filteredItems): void => {
-    //     const searchResultElements = [];
+  // private addSearch(holder: HTMLElement): void {
+  // this.search = new SearchInput({
+  //   items: this.items,
+  //   placeholder: this.filterLabel,
+  //   onSearch: (filteredItems): void => {
+  //     const searchResultElements = [];
 
-    //     this.items.forEach((item, index) => {
-    //       const itemElement = this.nodes.items.children[index];
+  //     this.items.forEach((item, index) => {
+  //       const itemElement = this.nodes.items.children[index];
 
-    //       if (filteredItems.includes(item)) {
-    //         searchResultElements.push(itemElement);
-    //         itemElement.classList.remove(Popover.CSS.itemHidden);
-    //       } else {
-    //         itemElement.classList.add(Popover.CSS.itemHidden);
-    //       }
-    //     });
+  //       if (filteredItems.includes(item)) {
+  //         searchResultElements.push(itemElement);
+  //         itemElement.classList.remove(Popover.CSS.itemHidden);
+  //       } else {
+  //         itemElement.classList.add(Popover.CSS.itemHidden);
+  //       }
+  //     });
 
-    //     this.nodes.nothingFound.classList.toggle(Popover.CSS.noFoundMessageShown, searchResultElements.length === 0);
+  //     this.nodes.nothingFound.classList.toggle(Popover.CSS.noFoundMessageShown, searchResultElements.length === 0);
 
-    //     /**
-    //      * In order to make keyboard navigation work correctly, flipper should be reactivated with only visible items.
-    //      * As custom html content is not displayed while search, it should be excluded from keyboard navigation.
-    //      */
-    //     const allItemsDisplayed = filteredItems.length === this.items.length;
+  //     /**
+  //      * In order to make keyboard navigation work correctly, flipper should be reactivated with only visible items.
+  //      * As custom html content is not displayed while search, it should be excluded from keyboard navigation.
+  //      */
+  //     const allItemsDisplayed = filteredItems.length === this.items.length;
 
-    //     /**
-    //      * Contains list of elements available for keyboard navigation considering search query applied
-    //      */
-    //     const flippableElements = allItemsDisplayed ? this.flippableElements : searchResultElements;
+  //     /**
+  //      * Contains list of elements available for keyboard navigation considering search query applied
+  //      */
+  //     const flippableElements = allItemsDisplayed ? this.flippableElements : searchResultElements;
 
-    //     if (this.customContent) {
-    //       this.customContent.classList.toggle(Popover.CSS.customContentHidden, !allItemsDisplayed);
-    //     }
+  //     if (this.customContent) {
+  //       this.customContent.classList.toggle(Popover.CSS.customContentHidden, !allItemsDisplayed);
+  //     }
 
-    //     if (this.flipper.isActivated) {
-    //       /**
-    //        * Update flipper items with only visible
-    //        */
-    //       this.reactivateFlipper(flippableElements);
-    //       this.flipper.focusFirst();
-    //     }
-    //   },
-    // });
+  //     if (this.flipper.isActivated) {
+  //       /**
+  //        * Update flipper items with only visible
+  //        */
+  //       this.reactivateFlipper(flippableElements);
+  //       this.flipper.focusFirst();
+  //     }
+  //   },
+  // });
 
-    // const searchField = this.search.getElement();
+  // const searchField = this.search.getElement();
 
-    // holder.appendChild(searchField);
-  }
+  // holder.appendChild(searchField);
+  // }
 
   /**
    * Renders the single item
