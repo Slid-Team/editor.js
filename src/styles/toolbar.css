@@ -85,11 +85,11 @@
     width: 18px;
     height: 100%;
 
-    /* margin-left: 5px; */
+    /* margin-left: 3px; */
     cursor: pointer;
     user-select: none;
 
-    @media (--not-mobile) {
+    @media (--not-mobile){
       width: 18px;
     }
 
@@ -106,8 +106,8 @@
   &__plus,
   &__settings-btn {
     svg {
-      width: 24px;
-      height: 24px;
+      width: 16px;
+      height: 16px;
     }
   }
 }
