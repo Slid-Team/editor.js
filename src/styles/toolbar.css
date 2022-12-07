@@ -102,6 +102,14 @@
       position: static;
     }
   }
+
+  &__plus,
+  &__settings-btn {
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
 }
 
 /**

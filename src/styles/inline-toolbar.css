@@ -1,4 +1,6 @@
 .ce-inline-toolbar {
+  --y-offset: 8px;
+
   @apply --overlay-pane;
   border-radius: 4px !important;
   border: none;
@@ -19,7 +21,7 @@
   }
 
   &--left-oriented {
-    transform: translateX(-23px) translateY(8px) scale(0.9);
+    transform: translateX(-23px) translateY(8px) scale(0.94);
   }
 
   &--left-oriented&--showed {
@@ -27,7 +29,7 @@
   }
 
   &--right-oriented {
-    transform: translateX(-100%) translateY(8px) scale(0.9);
+    transform: translateX(-100%) translateY(8px) scale(0.94);
     margin-left: 23px;
   }
 
@@ -88,10 +90,10 @@
     cursor: pointer;
     border-right: 1px solid var(--gray3);
     border-radius: 4px 0 0 4px;
-
+    @media (--can-hover) {
     &:hover {
       background: var(--gray2);
-    }
+    }}
 
     &:active {
       background: var(--gray1);
@@ -105,14 +107,11 @@
       display: flex;
       font-weight: 500;
       font-size: 14px !important;
-
-      svg {
-        /* height: 12px; */
-      }
     }
 
-    .icon--toggler-down {
-      margin-left: 4px;
+    &-content,
+    &-arrow {
+      display: flex;
     }
   }
 
@@ -125,6 +124,7 @@
 
 .ce-inline-tool {
   @apply --toolbar-button;
+
   border-radius: 0;
   line-height: normal;
   width: auto;
