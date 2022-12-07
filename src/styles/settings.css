@@ -18,7 +18,8 @@
   @media (--not-mobile){
     position: absolute;
     top: calc(var(--toolbox-buttons-size) + var(--gap));
-    left: 0;
+    /* @slid - in our product popups are positioned where editor starts */
+    left: 44px;
 
     &--opened-top {
       top: calc(-1 * (var(--gap) + var(--popover-height)));

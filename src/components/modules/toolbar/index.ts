@@ -8,7 +8,12 @@ import { ModuleConfig } from '../../../types-internal/module-config';
 import { BlockAPI } from '../../../../types';
 import Block from '../../block';
 import Toolbox, { ToolboxEvent } from '../../ui/toolbox';
-import { IconMenu, IconPlus } from '@codexteam/icons';
+// @slid - replace plus and menu icon with slid's icons
+// import { IconMenu, IconPlus } from '@codexteam/icons';
+
+const IconMenu = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g transform="translate(4 1.5)" fill-rule="evenodd"><circle cx="1.3" cy="1.3" r="1.3"/><circle cx="6.5" cy="1.3" r="1.3"/><circle cx="6.5" cy="6.5" r="1.3"/><circle cx="1.3" cy="6.5" r="1.3"/><circle cx="6.5" cy="11.7" r="1.3"/><circle cx="1.3" cy="11.7" r="1.3"/></g></svg>`;
+
+const IconPlus = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g transform="translate(1 1.5)" fill-rule="evenodd"><rect x="6" width="2" height="13" rx="1"/><rect x=".5" y="5.5" width="13" height="2" rx="1"/></g></svg>`;
 
 /**
  * @todo Tab on non-empty block should open Block Settings of the hoveredBlock (not where caret is set)

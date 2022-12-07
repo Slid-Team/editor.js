@@ -106,8 +106,8 @@
   /**
    * Size of svg icons got from the CodeX Icons pack
    */
-  --icon-size: 20px;
-  --icon-size--mobile: 28px;
+  --icon-size: 12px;
+  --icon-size--mobile: 12px;
 
 
   /**

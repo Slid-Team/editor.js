@@ -107,14 +107,11 @@
       display: flex;
       font-weight: 500;
       font-size: 14px !important;
+    }
 
     &-content,
     &-arrow {
       display: flex;
-      svg {
-        /* width: var(--icon-size);
-        height: var(--icon-size); */
-      }
     }
   }
 

@@ -102,10 +102,7 @@
 
   svg {
     max-height: 100%;
-  }
-
-  path {
-    stroke: currentColor;
+    fill: currentColor;
   }
 }
 
