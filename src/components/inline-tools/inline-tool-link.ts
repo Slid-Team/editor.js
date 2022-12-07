@@ -198,21 +198,6 @@ export default class LinkInlineTool implements InlineTool {
   /**
    * Check selection and set activated state to button if there are <a> tag
    */
-  // public checkState(selection?: Selection): boolean {
-  //   const anchorTag = this.selection.findParentTag("A");
-  //   const unlinkButton = document.createElement("button");
-
-  //   unlinkButton.classList.add("unlink-button");
-  //   unlinkButton.textContent = this.i18n.t("Remove");
-  //   unlinkButton.addEventListener("click", () => {
-  //     this.selection.expandToTag(anchorTag);
-  //     this.unlink();
-  //     this.nodes.input.value = "";
-  //     this.nodes.button.classList.remove(this.CSS.buttonUnlink);
-  //     this.nodes.button.classList.remove(this.CSS.buttonActive);
-  //     unlinkButton.remove();
-  //     this.inlineToolbar.close();
-  //   });
   public checkState(): boolean {
     const anchorTag = this.selection.findParentTag('A');
     const unlinkButton = document.createElement('button');
@@ -222,6 +207,18 @@ export default class LinkInlineTool implements InlineTool {
       this.nodes.button.classList.add(this.CSS.buttonUnlink);
       this.nodes.button.classList.add(this.CSS.buttonActive);
       this.openActions();
+
+      unlinkButton.classList.add('unlink-button');
+      unlinkButton.textContent = this.i18n.t('Remove');
+      unlinkButton.addEventListener('click', () => {
+        this.selection.expandToTag(anchorTag);
+        this.unlink();
+        this.nodes.input.value = '';
+        this.nodes.button.classList.remove(this.CSS.buttonUnlink);
+        this.nodes.button.classList.remove(this.CSS.buttonActive);
+        unlinkButton.remove();
+        this.inlineToolbar.close();
+      });
 
       /**
        * Fill input value with link href
