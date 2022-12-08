@@ -55,68 +55,74 @@
   --purpleDark: #4f3292;
 
   /**
-   * Selection color
-   */
+  * Selection color
+  */
   --selectionColor: #e1f2ff;
   --inlineSelectionColor: #d4ecff;
 
   /**
-   * Toolbar buttons
-   */
+  * Toolbar buttons
+  */
   --bg-light: #eff2f5;
 
   /**
-   * All gray texts: placeholders, settings
-   */
+  * All gray texts: placeholders, settings
+  */
   --grayText: #707684;
 
   /**
-   * Gray icons hover
-   */
+  * Gray icons hover
+  */
   --color-dark: #1d202b;
 
   /**
-   * Blue icons
-   */
+  * Blue icons
+  */
   --color-active-icon: #388ae5;
 
   /**
-   * Gray border, loaders
-   */
+  * Gray border, loaders
+  * @deprecated — use --color-line-gray instead
+  */
   --color-gray-border: rgba(201, 201, 204, 0.48);
 
   /**
-   * Block content width
-   * Should be set in a constant at the modules/ui.js
-   */
+  * Block content width
+  * Should be set in a constant at the modules/ui.js
+  */
   --content-width: 650px;
 
   /**
-   * In narrow mode, we increase right zone contained Block Actions button
-   */
+  * In narrow mode, we increase right zone contained Block Actions button
+  */
   --narrow-mode-right-padding: 50px;
 
   /**
-   * Toolbar buttons height and width
-   */
-  --toolbar-buttons-size: 32px;
-
-  /**
-   * Toolbar Plus Button and Toolbox buttons height and width
-   */
+  * Toolbar Plus Button and Toolbox buttons height and width
+  */
   --toolbox-buttons-size: 26px;
   --toolbox-buttons-size--mobile: 36px;
 
   /**
-   * The main `.cdx-block` wrapper has such vertical paddings
-   * And the Block Actions toggler too
-   */
+  * Size of svg icons got from the CodeX Icons pack
+  */
+  --icon-size: 12px;
+  --icon-size--mobile: 12px;
+
+
+  /**
+  * The main `.cdx-block` wrapper has such vertical paddings
+  * And the Block Actions toggler too
+  */
   --block-padding-vertical: 0.4em;
 
   /**
-   * Confirm deletion bg
-   */
-  --color-confirm: #e24a4a;
+  * Confirm deletion bg
+  */
+  --color-confirm: #E24A4A;
+  --color-confirm-hover: #CE4343;
+
+  --color-line-gray: #EFF0F1;
 
   --overlay-pane: {
     position: absolute;
@@ -150,9 +156,20 @@
     background: rgba(34, 186, 255, 0.08) !important;
   }
 
+  --button-active: {
+    background: rgba(56, 138, 229, 0.1);
+    color:  var(--color-active-icon);
+  };
+
+  --button-disabled: {
+    color: var(--grayText);
+    cursor: default;
+    pointer-events: none;
+  }
+
   /**
-   * Styles for Toolbox Buttons and Plus Button
-   */
+  * Styles for Toolbox Buttons and Plus Button
+  */
   --toolbox-button: {
     color: var(--color-dark);
     cursor: pointer;
@@ -182,8 +199,8 @@
   }
 
   /**
-   * Styles for Settings Button in Toolbar
-   */
+  * Styles for Settings Button in Toolbar
+  */
   --toolbar-button: {
     display: inline-flex;
     align-items: center;
@@ -199,11 +216,23 @@
     outline: none;
     background-color: transparent;
     vertical-align: bottom;
-    color: #000;
+    color: inherit;
     margin: 0;
 
-    &:hover {
-      background-color: var(--bg-light);
+    svg {
+      width: var(--icon-size);
+      height: var(--icon-size);
+
+      @media (--mobile) {
+        width: var(--icon-size--mobile);
+        height: var(--icon-size--mobile);
+      }
+    }
+
+    @media (--can-hover) {
+      &:hover {
+        background-color: var(--bg-light);
+      }
     }
 
     &--active {
@@ -221,8 +250,8 @@
   }
 
   /**
-   * Element of the Toolbox. Has icon and label
-   */
+  * Element of the Toolbox. Has icon and label
+  */
   --popover-button: {
     display: grid;
     grid-template-columns: auto auto 1fr;
@@ -241,12 +270,6 @@
       margin-bottom: 1px;
     }
 
-    @media (--can-hover) {
-      &:hover {
-        background-color: var(--bg-light);
-      }
-    }
-
     @media (--mobile) {
       font-size: 16px !important;
       padding: 4px;
@@ -254,30 +277,35 @@
   }
 
   /**
-   * Tool icon with border
-   */
+  * Tool icon with border
+  */
   --tool-icon: {
     display: inline-flex;
     width: var(--toolbox-buttons-size);
     height: var(--toolbox-buttons-size);
-    border: 1px solid var(--color-gray-border);
+    box-shadow: 0 0 0 1px var(--color-gray-border);
     border-radius: 5px;
     align-items: center;
     justify-content: center;
     background: #fff;
-    box-sizing: border-box;
+    box-sizing: content-box;
     flex-shrink: 0;
     margin-right: 10px;
+
+    svg {
+      width: var(--icon-size);
+      height: var(--icon-size);
+    }
 
     @media (--mobile) {
       width: var(--toolbox-buttons-size--mobile);
       height: var(--toolbox-buttons-size--mobile);
       border-radius: 8px;
-    }
 
-    svg {
-      width: 12px;
-      height: 12px;
+      svg {
+        width: var(--icon-size--mobile);
+        height: var(--icon-size--mobile);
+      }
     }
   }
 }

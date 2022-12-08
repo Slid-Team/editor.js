@@ -17,7 +17,7 @@
 /*!
  * Editor.js
  * 
- * @version 2.24.3
+ * @version 2.26.2
  * 
  * @licence Apache-2.0
  * @author CodeX <https://codex.so>
@@ -31,7 +31,7 @@
  * @copyright CodeX (https://codex.so)
  * @license MIT
  * @author CodeX (https://codex.so)
- * @version 1.1.1
+ * @version 1.2.0
  */
 
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
@@ -42,7 +42,6 @@
    * Short Description (눈_눈;)
    *
    * @version 2.18.0
-   *
    * @license Apache-2.0
    * @author CodeX-Team <https://ifmo.su>
    */

@@ -1,5 +1,4 @@
 .ce-settings {
-  @apply --overlay-pane;
   border: none;
   top: 34px;
   left: 51px;
@@ -12,36 +11,19 @@
     top: auto;
   }
 
-  &::before {
-    left: auto;
-    right: 12px;
+  position: absolute;
+  z-index: 2;
+  --gap: 8px;
 
-    @media (--mobile) {
-      bottom: -5px;
-      top: auto;
+  @media (--not-mobile){
+    position: absolute;
+    top: calc(var(--toolbox-buttons-size) + var(--gap));
+    /* @slid - in our product popups are positioned where editor starts */
+    left: 44px;
+
+    &--opened-top {
+      top: calc(-1 * (var(--gap) + var(--popover-height)));
     }
-  }
-
-  display: none;
-
-  &--opened {
-    display: block;
-    animation-duration: 0.1s;
-    animation-name: panelShowing;
-  }
-
-  &__plugin-zone {
-    display: flex;
-    flex-direction: column;
-
-    &:not(:empty) {
-      border-bottom: 1px solid var(--gray3);
-      padding: 8px 0;
-    }
-  }
-
-  &__default-zone {
-    padding: 8px 0;
   }
 
   &__button {
