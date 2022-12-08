@@ -1,11 +1,14 @@
 /**
  * @class MoveUpTune
  * @classdesc Editor's default tune that moves up selected block
- *
  * @copyright <CodeX Team> 2018
  */
-import $ from "../dom";
-import { API, BlockTune } from "../../../types";
+import { API, BlockTune, PopoverItem } from '../../../types';
+import Popover from '../../components/utils/popover';
+// import { IconChevronUp } from '@codexteam/icons';
+const IconChevronUp = `<svg width="12" height="16" viewBox="0 0 12 16" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.70711 0.999924C6.31658 0.6094 5.68342 0.609401 5.29289 0.999924L0.146447 6.14637C-0.0488156 6.34163 -0.0488156 6.65822 0.146447 6.85348C0.341709 7.04874 0.658291 7.04874 0.853553 6.85348L5.5 2.20703V15C5.5 15.2761 5.72386 15.5 6 15.5C6.27614 15.5 6.5 15.2761 6.5 15V2.20703L11.1464 6.85348C11.3417 7.04874 11.6583 7.04874 11.8536 6.85348C12.0488 6.65822 12.0488 6.34163 11.8536 6.14637L6.70711 0.999924Z" />
+</svg>`;
 
 /**
  *
@@ -25,15 +28,9 @@ export default class MoveUpTune implements BlockTune {
 
   /**
    * Styles
-   *
-   * @type {{wrapper: string}}
    */
   private CSS = {
-    button: "ce-settings__button",
-    wrapper: "ce-tune-move-up",
-    iconContainer: "ce-settings__button-icon-container",
-    buttonText: "ce-settings__button-text",
-    animation: "wobble",
+    animation: 'wobble',
   };
 
   /**
@@ -46,37 +43,23 @@ export default class MoveUpTune implements BlockTune {
   }
 
   /**
-   * Create "MoveUp" button and add click event listener
-   *
-   * @returns {HTMLElement}
+   * Tune's appearance in block settings menu
    */
-  public render(): HTMLElement {
-    const moveUpButton = $.make("div", [this.CSS.button, this.CSS.wrapper]);
-    const moveUpButtonContainer = $.make("div", [this.CSS.iconContainer]);
-    const moveUpText = $.make("span", [this.CSS.buttonText]);
-
-    moveUpButtonContainer.appendChild($.svg("arrow-up", 12, 16));
-    moveUpText.innerHTML = this.api.i18n.t("Move up");
-    moveUpButton.appendChild(moveUpButtonContainer);
-    moveUpButton.appendChild(moveUpText);
-
-    this.api.listeners.on(
-      moveUpButton,
-      "click",
-      (event) => this.handleClick(event as MouseEvent, moveUpButton),
-      false
-    );
-
-    return moveUpButton;
+  public render(): PopoverItem {
+    return {
+      icon: IconChevronUp,
+      label: this.api.i18n.t('Move up'),
+      onActivate: (item, e): void => this.handleClick(e),
+      name: 'move-up',
+    };
   }
 
   /**
    * Move current block up
    *
    * @param {MouseEvent} event - click event
-   * @param {HTMLElement} button - clicked button
    */
-  public handleClick(event: MouseEvent, button: HTMLElement): void {
+  public handleClick(event: MouseEvent): void {
     const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
     const currentBlock = this.api.blocks.getBlockByIndex(currentBlockIndex);
     const previousBlock = this.api.blocks.getBlockByIndex(
@@ -84,10 +67,15 @@ export default class MoveUpTune implements BlockTune {
     );
 
     if (currentBlockIndex === 0 || !currentBlock || !previousBlock) {
+      const button = (event.target as HTMLElement)
+        .closest('.' + Popover.CSS.item)
+        .querySelector('.' + Popover.CSS.itemIcon);
+
       button.classList.add(this.CSS.animation);
 
       window.setTimeout(() => {
         button.classList.remove(this.CSS.animation);
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       }, 500);
 
       return;
@@ -105,7 +93,7 @@ export default class MoveUpTune implements BlockTune {
      *      than we scroll window to the difference between this offsets.
      */
     const currentBlockCoords = currentBlockElement.getBoundingClientRect(),
-      previousBlockCoords = previousBlockElement.getBoundingClientRect();
+        previousBlockCoords = previousBlockElement.getBoundingClientRect();
 
     let scrollUpOffset;
 

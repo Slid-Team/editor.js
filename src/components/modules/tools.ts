@@ -1,24 +1,25 @@
-import Paragraph from "../../tools/paragraph/dist/bundle";
-import Module from "../__module";
-import * as _ from "../utils";
+/* eslint-disable @typescript-eslint/no-empty-function */
+import Paragraph from '../../tools/paragraph/dist/bundle';
+import Module from '../__module';
+import * as _ from '../utils';
 import {
   SanitizerConfig,
   ToolConfig,
   ToolConstructable,
-  ToolSettings,
-} from "../../../types";
-import BoldInlineTool from "../inline-tools/inline-tool-bold";
-import ItalicInlineTool from "../inline-tools/inline-tool-italic";
-import LinkInlineTool from "../inline-tools/inline-tool-link";
-import Stub from "../../tools/stub";
-import ToolsFactory from "../tools/factory";
-import InlineTool from "../tools/inline";
-import BlockTool from "../tools/block";
-import BlockTune from "../tools/tune";
-import MoveDownTune from "../block-tunes/block-tune-move-down";
-import DeleteTune from "../block-tunes/block-tune-delete";
-import MoveUpTune from "../block-tunes/block-tune-move-up";
-import ToolsCollection from "../tools/collection";
+  ToolSettings
+} from '../../../types';
+import BoldInlineTool from '../inline-tools/inline-tool-bold';
+import ItalicInlineTool from '../inline-tools/inline-tool-italic';
+import LinkInlineTool from '../inline-tools/inline-tool-link';
+import Stub from '../../tools/stub';
+import ToolsFactory from '../tools/factory';
+import InlineTool from '../tools/inline';
+import BlockTool from '../tools/block';
+import BlockTune from '../tools/tune';
+import MoveDownTune from '../block-tunes/block-tune-move-down';
+import DeleteTune from '../block-tunes/block-tune-delete';
+import MoveUpTune from '../block-tunes/block-tune-move-up';
+import ToolsCollection from '../tools/collection';
 
 /**
  * @module Editor.js Tools Submodule
@@ -26,17 +27,8 @@ import ToolsCollection from "../tools/collection";
  * Creates Instances from Plugins and binds external config to the instances
  */
 
-type ToolClass = BlockTool | InlineTool | BlockTune;
-
 /**
- * Class properties:
- *
- * @typedef {Tools} Tools
- * @property {Tools[]} toolsAvailable - available Tools
- * @property {Tools[]} toolsUnavailable - unavailable Tools
- * @property {object} toolsClasses - all classes
- * @property {object} toolsSettings - Tools settings
- * @property {EditorConfig} config - Editor config
+ * Modules that works with tools classes
  */
 export default class Tools extends Module {
   /**
@@ -45,12 +37,10 @@ export default class Tools extends Module {
    *
    * @type {string}
    */
-  public stubTool = "stub";
+  public stubTool = 'stub';
 
   /**
    * Returns available Tools
-   *
-   * @returns {object<Tool>}
    */
   public get available(): ToolsCollection {
     return this.toolsAvailable;
@@ -58,8 +48,6 @@ export default class Tools extends Module {
 
   /**
    * Returns unavailable Tools
-   *
-   * @returns {Tool[]}
    */
   public get unavailable(): ToolsCollection {
     return this.toolsUnavailable;
@@ -67,8 +55,6 @@ export default class Tools extends Module {
 
   /**
    * Return Tools for the Inline Toolbar
-   *
-   * @returns {object} - object of Inline Tool's classes
    */
   public get inlineTools(): ToolsCollection<InlineTool> {
     return this.available.inlineTools;
@@ -133,7 +119,7 @@ export default class Tools extends Module {
     this.config.tools = _.deepMerge({}, this.internalTools, this.config.tools);
 
     if (
-      !Object.prototype.hasOwnProperty.call(this.config, "tools") ||
+      !Object.prototype.hasOwnProperty.call(this.config, 'tools') ||
       Object.keys(this.config.tools).length === 0
     ) {
       throw Error("Can't start without tools");
@@ -204,7 +190,7 @@ export default class Tools extends Module {
     [toolName: string]:
       | ToolConstructable
       | (ToolSettings & { isInternal?: boolean });
-  } {
+      } {
     return {
       bold: {
         class: BoldInlineTool,
@@ -254,7 +240,7 @@ export default class Tools extends Module {
       /**
        * Some Tools validation
        */
-      const inlineToolRequiredMethods = ["render", "surround", "checkState"];
+      const inlineToolRequiredMethods = ['render', 'surround', 'checkState'];
       const notImplementedMethods = inlineToolRequiredMethods.filter(
         (method) => !tool.create()[method]
       );
@@ -262,7 +248,7 @@ export default class Tools extends Module {
       if (notImplementedMethods.length) {
         _.log(
           `Incorrect Inline Tool: ${tool.name}. Some of required methods is not implemented %o`,
-          "warn",
+          'warn',
           notImplementedMethods
         );
 
@@ -350,13 +336,13 @@ export default class Tools extends Module {
       tool.inlineTools = new ToolsCollection<InlineTool>(
         Array.isArray(this.config.inlineToolbar)
           ? this.config.inlineToolbar.map((name) => [
-              name,
-              this.inlineTools.get(name),
-            ])
+            name,
+            this.inlineTools.get(name),
+          ])
           : /**
              * If common settings is 'true' or not specified (will be set as true at core.ts), get the default order
              */
-            Array.from(this.inlineTools.entries())
+          Array.from(this.inlineTools.entries())
       );
 
       return;

@@ -1,20 +1,18 @@
 /**
  * @class BlockManager
  * @classdesc Manage editor`s blocks storage and appearance
- *
  * @module BlockManager
- *
  * @version 2.0.0
  */
-import Block, { BlockToolAPI } from "../block";
-import Module from "../__module";
-import $ from "../dom";
-import * as _ from "../utils";
-import Blocks from "../blocks";
-import { BlockToolData, PasteEvent } from "../../../types";
-import { BlockTuneData } from "../../../types/block-tunes/block-tune-data";
-import BlockAPI from "../block/api";
-import { BlockMutationType } from "../../../types/events/block/mutation-type";
+import Block, { BlockToolAPI } from '../block';
+import Module from '../__module';
+import $ from '../dom';
+import * as _ from '../utils';
+import Blocks from '../blocks';
+import { BlockToolData, PasteEvent } from '../../../types';
+import { BlockTuneData } from '../../../types/block-tunes/block-tune-data';
+import BlockAPI from '../block/api';
+import { BlockMutationType } from '../../../types/events/block/mutation-type';
 
 /**
  * @typedef {BlockManager} BlockManager
@@ -186,9 +184,7 @@ export default class BlockManager extends Module {
      * this._blocks[0] = new Block(...);
      *
      * block = this._blocks[0];
-     *
      * @todo proxy the enumerate method
-     *
      * @type {Proxy}
      * @private
      */
@@ -198,7 +194,7 @@ export default class BlockManager extends Module {
     });
 
     /** Copy event */
-    this.listeners.on(document, "copy", (e: ClipboardEvent) =>
+    this.listeners.on(document, 'copy', (e: ClipboardEvent) =>
       this.Editor.BlockEvents.handleCommandC(e)
     );
   }
@@ -229,7 +225,6 @@ export default class BlockManager extends Module {
    * @param {string} options.tool - tools passed in editor config {@link EditorConfig#tools}
    * @param {string} [options.id] - unique id for this block
    * @param {BlockToolData} [options.data] - constructor params
-   *
    * @returns {Block}
    */
   public composeBlock({
@@ -271,7 +266,6 @@ export default class BlockManager extends Module {
    * @param {number} [options.index] - index where to insert new Block
    * @param {boolean} [options.needToFocus] - flag shows if needed to update current Block index
    * @param {boolean} [options.replace] - flag shows if block by passed index should be replaced with inserted one
-   *
    * @returns {Block}
    */
   public insert({
@@ -342,7 +336,6 @@ export default class BlockManager extends Module {
    * @param {object} options - replace options
    * @param {string} options.tool — plugin name
    * @param {BlockToolData} options.data — plugin data
-   *
    * @returns {Block}
    */
   public replace({ tool = this.config.defaultBlock, data = {} }): Block {
@@ -374,7 +367,7 @@ export default class BlockManager extends Module {
     try {
       block.call(BlockToolAPI.ON_PASTE, pasteEvent);
     } catch (e) {
-      _.log(`${toolName}: onPaste callback call is failed`, "error", e);
+      _.log(`${toolName}: onPaste callback call is failed`, 'error', e);
     }
 
     return block;
@@ -387,7 +380,6 @@ export default class BlockManager extends Module {
    * @param {boolean} needToFocus - if true, updates current Block index
    *
    * TODO: Remove method and use insert() with index instead (?)
-   *
    * @returns {Block} inserted Block
    */
   public insertDefaultBlockAtIndex(index: number, needToFocus = false): Block {
@@ -433,7 +425,6 @@ export default class BlockManager extends Module {
    *
    * @param {Block} targetBlock - previous block will be append to this block
    * @param {Block} blockToMerge - block that will be merged with target block
-   *
    * @returns {Promise} - the sequence that can be continued
    */
   public async mergeBlocks(
@@ -546,16 +537,17 @@ export default class BlockManager extends Module {
   public split(): Block {
     const extractedFragment =
       this.Editor.Caret.extractFragmentFromCaretPosition();
-    const wrapper = $.make("div");
+    const wrapper = $.make('div');
 
-    if (extractedFragment)
+    if (extractedFragment) {
       wrapper.appendChild(extractedFragment as DocumentFragment);
+    }
 
     /**
      * @todo make object in accordance with Tool
      */
     const data = {
-      text: $.isEmpty(wrapper) ? "" : wrapper.innerHTML,
+      text: $.isEmpty(wrapper) ? '' : wrapper.innerHTML,
     };
 
     /**
@@ -570,7 +562,6 @@ export default class BlockManager extends Module {
    * Returns Block by passed index
    *
    * @param {number} index - index to get. -1 to get last
-   *
    * @returns {Block}
    */
   public getBlockByIndex(index): Block {
@@ -594,7 +585,6 @@ export default class BlockManager extends Module {
    * Returns the Block by passed id
    *
    * @param id - id of block to get
-   *
    * @returns {Block}
    */
   public getBlockById(id): Block | undefined {
@@ -605,8 +595,6 @@ export default class BlockManager extends Module {
    * Get Block instance by html element
    *
    * @param {Node} element - html element to get Block by
-   *
-   * @returns {Block}
    */
   public getBlock(element: HTMLElement): Block {
     if (!$.isElement(element) as boolean) {
@@ -614,8 +602,8 @@ export default class BlockManager extends Module {
     }
 
     const nodes = this._blocks.nodes,
-      firstLevelBlock = element.closest(`.${Block.CSS.wrapper}`),
-      index = nodes.indexOf(firstLevelBlock as HTMLElement);
+        firstLevelBlock = element.closest(`.${Block.CSS.wrapper}`),
+        index = nodes.indexOf(firstLevelBlock as HTMLElement);
 
     if (index >= 0) {
       return this._blocks[index];
@@ -709,7 +697,6 @@ export default class BlockManager extends Module {
    * Return block which contents passed node
    *
    * @param {Node} childNode - node to get Block by
-   *
    * @returns {Block}
    */
   public getBlockByChildNode(childNode: Node): Block {
@@ -732,7 +719,6 @@ export default class BlockManager extends Module {
    *
    * @param {number} fromIndex - index of first block
    * @param {number} toIndex - index of second block
-   *
    * @deprecated — use 'move' instead
    */
   public swap(fromIndex, toIndex): void {
@@ -752,7 +738,7 @@ export default class BlockManager extends Module {
   public move(toIndex, fromIndex = this.currentBlockIndex): void {
     // make sure indexes are valid and within a valid range
     if (isNaN(toIndex) || isNaN(fromIndex)) {
-      _.log(`Warning during 'move' call: incorrect indices provided.`, "warn");
+      _.log(`Warning during 'move' call: incorrect indices provided.`, 'warn');
 
       return;
     }
@@ -760,7 +746,7 @@ export default class BlockManager extends Module {
     if (!this.validateIndex(toIndex) || !this.validateIndex(fromIndex)) {
       _.log(
         `Warning during 'move' call: indices cannot be lower than 0 or greater than the amount of blocks.`,
-        "warn"
+        'warn'
       );
 
       return;
@@ -833,7 +819,7 @@ export default class BlockManager extends Module {
 
     this.readOnlyMutableListeners.on(
       block.holder,
-      "keydown",
+      'keydown',
       (event: KeyboardEvent) => {
         BlockEvents.keydown(event);
       }
@@ -841,7 +827,7 @@ export default class BlockManager extends Module {
 
     this.readOnlyMutableListeners.on(
       block.holder,
-      "keyup",
+      'keyup',
       (event: KeyboardEvent) => {
         BlockEvents.keyup(event);
       }
@@ -849,7 +835,7 @@ export default class BlockManager extends Module {
 
     this.readOnlyMutableListeners.on(
       block.holder,
-      "dragover",
+      'dragover',
       (event: DragEvent) => {
         BlockEvents.dragOver(event);
       }
@@ -857,13 +843,13 @@ export default class BlockManager extends Module {
 
     this.readOnlyMutableListeners.on(
       block.holder,
-      "dragleave",
+      'dragleave',
       (event: DragEvent) => {
         BlockEvents.dragLeave(event);
       }
     );
 
-    block.on("didMutated", (affectedBlock: Block) => {
+    block.on('didMutated', (affectedBlock: Block) => {
       return this.blockDidMutated(BlockMutationType.Changed, affectedBlock, {
         index: this.getBlockIndex(affectedBlock),
       });
@@ -882,7 +868,7 @@ export default class BlockManager extends Module {
    */
   private enableModuleBindings(): void {
     /** Cut event */
-    this.readOnlyMutableListeners.on(document, "cut", (e: ClipboardEvent) =>
+    this.readOnlyMutableListeners.on(document, 'cut', (e: ClipboardEvent) =>
       this.Editor.BlockEvents.handleCommandX(e)
     );
 
@@ -895,7 +881,6 @@ export default class BlockManager extends Module {
    * Validates that the given index is not lower than 0 or higher than the amount of blocks
    *
    * @param {number} index - index of blocks array to validate
-   *
    * @returns {boolean}
    */
   private validateIndex(index: number): boolean {
