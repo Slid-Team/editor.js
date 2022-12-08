@@ -328,8 +328,13 @@ export default class ConversionToolbar extends Module<ConversionToolbarNodes> {
     const tool = $.make('div', [ ConversionToolbar.CSS.conversionTool ]);
     const icon = $.make('div', [ ConversionToolbar.CSS.conversionToolIcon ]);
 
+    // @slid - this check icon is for showing the current tool
+    const checkIcon = $.make('div', [
+      ConversionToolbar.CSS.conversionToolCheckIcon,
+    ]);
+
     tool.dataset.tool = toolName;
-    // icon.innerHTML = toolboxItem.icon;
+
     switch (toolName) {
       case 'paragraph':
         icon.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
@@ -365,8 +370,11 @@ export default class ConversionToolbar extends Module<ConversionToolbarNodes> {
         icon.innerHTML = toolboxItem.icon;
     }
 
+    checkIcon.innerHTML = `<svg width="12" height="8" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.1919 0.278013C11.5907 0.660142 11.6041 1.29316 11.222 1.69191L5.47199 7.69191C5.09491 8.08539 4.47219 8.10446 4.07172 7.73481L0.821725 4.7348C0.415904 4.3602 0.390598 3.72754 0.765202 3.32172C1.13981 2.9159 1.77246 2.89059 2.17829 3.2652L4.7071 5.59949L9.77802 0.308096C10.1601 -0.090647 10.7932 -0.104116 11.1919 0.278013Z" /></svg>`;
+
     $.append(tool, icon);
     $.append(tool, $.text(I18n.t(I18nInternalNS.toolNames, toolboxItem.title || _.capitalize(toolName))));
+    $.append(tool, checkIcon);
 
     $.append(this.nodes.tools, tool);
     this.tools.push({
@@ -406,8 +414,9 @@ export default class ConversionToolbar extends Module<ConversionToolbarNodes> {
         hidden = (tool.button.dataset.tool === currentBlock.name && isToolboxItemActive);
       }
 
-      tool.button.hidden = hidden;
-      tool.button.classList.toggle(ConversionToolbar.CSS.conversionToolHidden, hidden);
+      // @slid - in Slid editor, we do not hide the current tool but display it with check icon
+      // tool.button.hidden = hidden;
+      tool.button.classList.toggle(ConversionToolbar.CSS.conversionToolCurrent, hidden);
     });
   }
 
