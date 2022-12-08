@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 import Module from '../../__module';
 import $ from '../../dom';
 import SelectionUtils from '../../selection';

@@ -27,8 +27,8 @@ export default class BlockSettings extends Module<BlockSettingsNodes> {
    */
   public get events(): { opened: string; closed: string } {
     return {
-      opened: "block-settings-opened",
-      closed: "block-settings-closed",
+      opened: 'block-settings-opened',
+      closed: 'block-settings-closed',
     };
   }
 

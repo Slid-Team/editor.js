@@ -4,15 +4,15 @@
  * @module BlockManager
  * @version 2.0.0
  */
-import Block, { BlockToolAPI } from "../block";
-import Module from "../__module";
-import $ from "../dom";
-import * as _ from "../utils";
-import Blocks from "../blocks";
-import { BlockToolData, PasteEvent } from "../../../types";
-import { BlockTuneData } from "../../../types/block-tunes/block-tune-data";
-import BlockAPI from "../block/api";
-import { BlockMutationType } from "../../../types/events/block/mutation-type";
+import Block, { BlockToolAPI } from '../block';
+import Module from '../__module';
+import $ from '../dom';
+import * as _ from '../utils';
+import Blocks from '../blocks';
+import { BlockToolData, PasteEvent } from '../../../types';
+import { BlockTuneData } from '../../../types/block-tunes/block-tune-data';
+import BlockAPI from '../block/api';
+import { BlockMutationType } from '../../../types/events/block/mutation-type';
 
 /**
  * @typedef {BlockManager} BlockManager
@@ -194,7 +194,7 @@ export default class BlockManager extends Module {
     });
 
     /** Copy event */
-    this.listeners.on(document, "copy", (e: ClipboardEvent) =>
+    this.listeners.on(document, 'copy', (e: ClipboardEvent) =>
       this.Editor.BlockEvents.handleCommandC(e)
     );
   }
@@ -367,7 +367,7 @@ export default class BlockManager extends Module {
     try {
       block.call(BlockToolAPI.ON_PASTE, pasteEvent);
     } catch (e) {
-      _.log(`${toolName}: onPaste callback call is failed`, "error", e);
+      _.log(`${toolName}: onPaste callback call is failed`, 'error', e);
     }
 
     return block;
@@ -537,16 +537,17 @@ export default class BlockManager extends Module {
   public split(): Block {
     const extractedFragment =
       this.Editor.Caret.extractFragmentFromCaretPosition();
-    const wrapper = $.make("div");
+    const wrapper = $.make('div');
 
-    if (extractedFragment)
+    if (extractedFragment) {
       wrapper.appendChild(extractedFragment as DocumentFragment);
+    }
 
     /**
      * @todo make object in accordance with Tool
      */
     const data = {
-      text: $.isEmpty(wrapper) ? "" : wrapper.innerHTML,
+      text: $.isEmpty(wrapper) ? '' : wrapper.innerHTML,
     };
 
     /**
@@ -601,8 +602,8 @@ export default class BlockManager extends Module {
     }
 
     const nodes = this._blocks.nodes,
-      firstLevelBlock = element.closest(`.${Block.CSS.wrapper}`),
-      index = nodes.indexOf(firstLevelBlock as HTMLElement);
+        firstLevelBlock = element.closest(`.${Block.CSS.wrapper}`),
+        index = nodes.indexOf(firstLevelBlock as HTMLElement);
 
     if (index >= 0) {
       return this._blocks[index];
@@ -737,7 +738,7 @@ export default class BlockManager extends Module {
   public move(toIndex, fromIndex = this.currentBlockIndex): void {
     // make sure indexes are valid and within a valid range
     if (isNaN(toIndex) || isNaN(fromIndex)) {
-      _.log(`Warning during 'move' call: incorrect indices provided.`, "warn");
+      _.log(`Warning during 'move' call: incorrect indices provided.`, 'warn');
 
       return;
     }
@@ -745,7 +746,7 @@ export default class BlockManager extends Module {
     if (!this.validateIndex(toIndex) || !this.validateIndex(fromIndex)) {
       _.log(
         `Warning during 'move' call: indices cannot be lower than 0 or greater than the amount of blocks.`,
-        "warn"
+        'warn'
       );
 
       return;
@@ -818,7 +819,7 @@ export default class BlockManager extends Module {
 
     this.readOnlyMutableListeners.on(
       block.holder,
-      "keydown",
+      'keydown',
       (event: KeyboardEvent) => {
         BlockEvents.keydown(event);
       }
@@ -826,7 +827,7 @@ export default class BlockManager extends Module {
 
     this.readOnlyMutableListeners.on(
       block.holder,
-      "keyup",
+      'keyup',
       (event: KeyboardEvent) => {
         BlockEvents.keyup(event);
       }
@@ -834,7 +835,7 @@ export default class BlockManager extends Module {
 
     this.readOnlyMutableListeners.on(
       block.holder,
-      "dragover",
+      'dragover',
       (event: DragEvent) => {
         BlockEvents.dragOver(event);
       }
@@ -842,13 +843,13 @@ export default class BlockManager extends Module {
 
     this.readOnlyMutableListeners.on(
       block.holder,
-      "dragleave",
+      'dragleave',
       (event: DragEvent) => {
         BlockEvents.dragLeave(event);
       }
     );
 
-    block.on("didMutated", (affectedBlock: Block) => {
+    block.on('didMutated', (affectedBlock: Block) => {
       return this.blockDidMutated(BlockMutationType.Changed, affectedBlock, {
         index: this.getBlockIndex(affectedBlock),
       });
@@ -867,7 +868,7 @@ export default class BlockManager extends Module {
    */
   private enableModuleBindings(): void {
     /** Cut event */
-    this.readOnlyMutableListeners.on(document, "cut", (e: ClipboardEvent) =>
+    this.readOnlyMutableListeners.on(document, 'cut', (e: ClipboardEvent) =>
       this.Editor.BlockEvents.handleCommandX(e)
     );
 

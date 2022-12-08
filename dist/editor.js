@@ -11224,7 +11224,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
 })(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _slicedToArray2, _classCallCheck2, _createClass2, _register, _polyfills, _core, _) {
-  "use strict";
+  'use strict';
 
   /**
    * Apply polyfills
@@ -11294,7 +11294,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
        */
       function exportAPI(editor) {
         var _this2 = this;
-        var fieldsToExport = ["configuration"];
+        var fieldsToExport = ['configuration'];
         var destroy = function destroy() {
           Object.values(editor.moduleInstances).forEach(function (moduleInstance) {
             if (_.isFunction(moduleInstance.destroy)) {
@@ -11318,19 +11318,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         delete this.exportAPI;
         var shorthands = {
           blocks: {
-            clear: "clear",
-            render: "render"
+            clear: 'clear',
+            render: 'render'
           },
           caret: {
-            focus: "focus"
+            focus: 'focus'
           },
           events: {
-            on: "on",
-            off: "off",
-            emit: "emit"
+            on: 'on',
+            off: 'off',
+            emit: 'emit'
           },
           saver: {
-            save: "save"
+            save: 'save'
           }
         };
         Object.entries(shorthands).forEach(function (_ref) {
@@ -18360,7 +18360,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           get: _blocks["default"].get
         });
         /** Copy event */
-        this.listeners.on(document, "copy", function (e) {
+        this.listeners.on(document, 'copy', function (e) {
           return _this2.Editor.BlockEvents.handleCommandC(e);
         });
       }
@@ -18520,7 +18520,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         try {
           block.call(_block.BlockToolAPI.ON_PASTE, pasteEvent);
         } catch (e) {
-          _.log("".concat(toolName, ": onPaste callback call is failed"), "error", e);
+          _.log("".concat(toolName, ": onPaste callback call is failed"), 'error', e);
         }
         return block;
       }
@@ -18705,13 +18705,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "split",
       value: function split() {
         var extractedFragment = this.Editor.Caret.extractFragmentFromCaretPosition();
-        var wrapper = _dom["default"].make("div");
-        if (extractedFragment) wrapper.appendChild(extractedFragment);
+        var wrapper = _dom["default"].make('div');
+        if (extractedFragment) {
+          wrapper.appendChild(extractedFragment);
+        }
         /**
          * @todo make object in accordance with Tool
          */
         var data = {
-          text: _dom["default"].isEmpty(wrapper) ? "" : wrapper.innerHTML
+          text: _dom["default"].isEmpty(wrapper) ? '' : wrapper.innerHTML
         };
         /**
          * Renew current Block
@@ -18894,11 +18896,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var fromIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.currentBlockIndex;
         // make sure indexes are valid and within a valid range
         if (isNaN(toIndex) || isNaN(fromIndex)) {
-          _.log("Warning during 'move' call: incorrect indices provided.", "warn");
+          _.log("Warning during 'move' call: incorrect indices provided.", 'warn');
           return;
         }
         if (!this.validateIndex(toIndex) || !this.validateIndex(fromIndex)) {
-          _.log("Warning during 'move' call: indices cannot be lower than 0 or greater than the amount of blocks.", "warn");
+          _.log("Warning during 'move' call: indices cannot be lower than 0 or greater than the amount of blocks.", 'warn');
           return;
         }
         /** Move up current Block */
@@ -18982,19 +18984,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function bindBlockEvents(block) {
         var _this3 = this;
         var BlockEvents = this.Editor.BlockEvents;
-        this.readOnlyMutableListeners.on(block.holder, "keydown", function (event) {
+        this.readOnlyMutableListeners.on(block.holder, 'keydown', function (event) {
           BlockEvents.keydown(event);
         });
-        this.readOnlyMutableListeners.on(block.holder, "keyup", function (event) {
+        this.readOnlyMutableListeners.on(block.holder, 'keyup', function (event) {
           BlockEvents.keyup(event);
         });
-        this.readOnlyMutableListeners.on(block.holder, "dragover", function (event) {
+        this.readOnlyMutableListeners.on(block.holder, 'dragover', function (event) {
           BlockEvents.dragOver(event);
         });
-        this.readOnlyMutableListeners.on(block.holder, "dragleave", function (event) {
+        this.readOnlyMutableListeners.on(block.holder, 'dragleave', function (event) {
           BlockEvents.dragLeave(event);
         });
-        block.on("didMutated", function (affectedBlock) {
+        block.on('didMutated', function (affectedBlock) {
           return _this3.blockDidMutated(_mutationType.BlockMutationType.Changed, affectedBlock, {
             index: _this3.getBlockIndex(affectedBlock)
           });
@@ -19016,7 +19018,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function enableModuleBindings() {
         var _this4 = this;
         /** Cut event */
-        this.readOnlyMutableListeners.on(document, "cut", function (e) {
+        this.readOnlyMutableListeners.on(document, 'cut', function (e) {
           return _this4.Editor.BlockEvents.handleCommandX(e);
         });
         this.blocks.forEach(function (block) {
@@ -23023,8 +23025,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "events",
       get: function get() {
         return {
-          opened: "block-settings-opened",
-          closed: "block-settings-closed"
+          opened: 'block-settings-opened',
+          closed: 'block-settings-closed'
         };
       }
       /**
@@ -24959,6 +24961,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
     return c > 3 && r && Object.defineProperty(target, key, r), r;
   };
+  /* eslint-disable @typescript-eslint/no-empty-function */
   /**
    * @module Editor.js Tools Submodule
    *
@@ -24980,7 +24983,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
        *
        * @type {string}
        */
-      _this.stubTool = "stub";
+      _this.stubTool = 'stub';
       /**
        * Tools` classes available to use
        */
@@ -25069,7 +25072,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                    * Assign internal tools
                    */
                   this.config.tools = _.deepMerge({}, this.internalTools, this.config.tools);
-                  if (!(!Object.prototype.hasOwnProperty.call(this.config, "tools") || Object.keys(this.config.tools).length === 0)) {
+                  if (!(!Object.prototype.hasOwnProperty.call(this.config, 'tools') || Object.keys(this.config.tools).length === 0)) {
                     _context.next = 4;
                     break;
                   }
@@ -25208,12 +25211,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           /**
            * Some Tools validation
            */
-          var inlineToolRequiredMethods = ["render", "surround", "checkState"];
+          var inlineToolRequiredMethods = ['render', 'surround', 'checkState'];
           var notImplementedMethods = inlineToolRequiredMethods.filter(function (method) {
             return !tool.create()[method];
           });
           if (notImplementedMethods.length) {
-            _.log("Incorrect Inline Tool: ".concat(tool.name, ". Some of required methods is not implemented %o"), "warn", notImplementedMethods);
+            _.log("Incorrect Inline Tool: ".concat(tool.name, ". Some of required methods is not implemented %o"), 'warn', notImplementedMethods);
             this.toolsUnavailable.set(tool.name, tool);
             return;
           }

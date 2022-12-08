@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
-import { EditorConfig } from "../types";
+import { EditorConfig } from '../types';
 
 /**
  * Apply polyfills
  */
-import "@babel/register";
+import '@babel/register';
 
-import "components/polyfills";
-import Core from "./components/core";
-import * as _ from "./components/utils";
+import 'components/polyfills';
+import Core from './components/core';
+import * as _ from './components/utils';
 
 declare const VERSION: string;
 
@@ -79,7 +79,7 @@ export default class EditorJS {
    * @param {Core} editor — Editor's instance
    */
   public exportAPI(editor: Core): void {
-    const fieldsToExport = ["configuration"];
+    const fieldsToExport = [ 'configuration' ];
     const destroy = (): void => {
       Object.values(editor.moduleInstances).forEach((moduleInstance) => {
         if (_.isFunction(moduleInstance.destroy)) {
@@ -111,19 +111,19 @@ export default class EditorJS {
 
     const shorthands = {
       blocks: {
-        clear: "clear",
-        render: "render",
+        clear: 'clear',
+        render: 'render',
       },
       caret: {
-        focus: "focus",
+        focus: 'focus',
       },
       events: {
-        on: "on",
-        off: "off",
-        emit: "emit",
+        on: 'on',
+        off: 'off',
+        emit: 'emit',
       },
       saver: {
-        save: "save",
+        save: 'save',
       },
     };
 
