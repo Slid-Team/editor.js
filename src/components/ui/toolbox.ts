@@ -20,17 +20,17 @@ export enum ToolboxEvent {
   /**
    * When the Toolbox is opened
    */
-  Opened = "toolbox-opened",
+  Opened = 'toolbox-opened',
 
   /**
    * When the Toolbox is closed
    */
-  Closed = "toolbox-closed",
+  Closed = 'toolbox-closed',
 
   /**
    * When the new Block added by Toolbox
    */
-  BlockAdded = "toolbox-block-added",
+  BlockAdded = 'toolbox-block-added',
 }
 
 /**
