@@ -40,8 +40,8 @@ export default class DeleteTune implements BlockTune {
   public render(): PopoverItem {
     return {
       icon: IconCross,
-      label: this.api.i18n.t("Delete"),
-      name: "delete",
+      label: this.api.i18n.t('Delete'),
+      name: 'delete',
       onActivate: (): void => this.handleClick(),
     };
   }
