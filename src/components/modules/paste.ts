@@ -184,6 +184,24 @@ export default class Paste extends Module {
     const plainData = dataTransfer.getData('text/plain');
     let htmlData = dataTransfer.getData('text/html');
 
+    // @SLID - onPaste hanlder for preventing pasting styled text
+    const tempDiv = document.createElement('div');
+
+    tempDiv.innerHTML = htmlData ;
+
+    tempDiv.querySelectorAll('*').forEach((node ) => {
+      if (node instanceof HTMLElement) {
+        node.style.color = 'inherit';
+        node.style.fontFamily = 'inherit';
+        node.style.fontSize = 'inherit';
+        node.style.backgroundColor = 'initial';
+      }
+    });
+
+    const modifiedHtmlContent = tempDiv.innerHTML;
+
+    htmlData = modifiedHtmlContent;
+
     /**
      * If EditorJS json is passed, insert it
      */
