@@ -191,8 +191,8 @@ export default class Paste extends Module {
 
     tempDiv.querySelectorAll('*').forEach((node ) => {
       if (node instanceof HTMLElement) {
-        node.style.color = 'inherit';
         node.style.fontFamily = 'inherit';
+        node.style.color = 'inherit';
         node.style.fontSize = 'inherit';
         node.style.backgroundColor = 'initial';
       }
