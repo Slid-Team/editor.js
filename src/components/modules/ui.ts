@@ -13,6 +13,8 @@ import Block from '../block';
 import Flipper from '../flipper';
 import { mobileScreenBreakpoint } from '../utils';
 
+import styles from '../../styles/main.css?inline';
+import { BlockHovered } from '../events/BlockHovered';
 /**
  * HTML Elements used for UI
  */
@@ -20,7 +22,6 @@ interface UINodes {
   holder: HTMLElement;
   wrapper: HTMLElement;
   redactor: HTMLElement;
-  loader: HTMLElement;
 }
 
 /**
@@ -41,29 +42,19 @@ interface UINodes {
  */
 export default class UI extends Module<UINodes> {
   /**
-   * Events could be emitted by this module.
-   */
-  public get events(): { blockHovered: string } {
-    return {
-      blockHovered: 'block-hovered',
-    };
-  }
-
-  /**
    * Editor.js UI CSS class names
    *
    * @returns {{editorWrapper: string, editorZone: string}}
    */
   public get CSS(): {
     editorWrapper: string; editorWrapperNarrow: string; editorZone: string; editorZoneHidden: string;
-    editorLoader: string; editorEmpty: string; editorRtlFix: string;
+    editorEmpty: string; editorRtlFix: string;
     } {
     return {
       editorWrapper: 'codex-editor',
       editorWrapperNarrow: 'codex-editor--narrow',
       editorZone: 'codex-editor__redactor',
       editorZoneHidden: 'codex-editor__redactor--hidden',
-      editorLoader: 'codex-editor__loader',
       editorEmpty: 'codex-editor--empty',
       editorRtlFix: 'codex-editor--rtl',
     };
@@ -123,23 +114,6 @@ export default class UI extends Module<UINodes> {
   }, 200);
 
   /**
-   * Adds loader to editor while content is not ready
-   */
-  public addLoader(): void {
-    this.nodes.loader = $.make('div', this.CSS.editorLoader);
-    this.nodes.wrapper.prepend(this.nodes.loader);
-    this.nodes.redactor.classList.add(this.CSS.editorZoneHidden);
-  }
-
-  /**
-   * Removes loader when content has loaded
-   */
-  public removeLoader(): void {
-    this.nodes.loader.remove();
-    this.nodes.redactor.classList.remove(this.CSS.editorZoneHidden);
-  }
-
-  /**
    * Making main interface
    */
   public async prepare(): Promise<void> {
@@ -152,11 +126,6 @@ export default class UI extends Module<UINodes> {
      * Make main UI elements
      */
     this.make();
-
-    /**
-     * Loader for rendering process
-     */
-    this.addLoader();
 
     /**
      * Load and append CSS
@@ -284,6 +253,8 @@ export default class UI extends Module<UINodes> {
 
     /**
      * If Editor has injected into the narrow container, enable Narrow Mode
+     *
+     * @todo Forced layout. Get rid of this feature
      */
     if (this.nodes.holder.offsetWidth < this.contentRect.width) {
       this.nodes.wrapper.classList.add(this.CSS.editorWrapperNarrow);
@@ -306,7 +277,6 @@ export default class UI extends Module<UINodes> {
      * Load CSS
      */
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const styles = require('../../styles/main.css');
     const styleTagId = 'editor-js-styles';
 
     /**
@@ -402,7 +372,7 @@ export default class UI extends Module<UINodes> {
 
       blockHoveredEmitted = hoveredBlock;
 
-      this.eventsDispatcher.emit(this.events.blockHovered, {
+      this.eventsDispatcher.emit(BlockHovered, {
         block: this.Editor.BlockManager.getBlockByChildNode(hoveredBlock),
       });
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -445,6 +415,7 @@ export default class UI extends Module<UINodes> {
         break;
 
       case _.keyCodes.BACKSPACE:
+      case _.keyCodes.DELETE:
         this.backspacePressed(event);
         break;
 
@@ -691,9 +662,6 @@ export default class UI extends Module<UINodes> {
      * Select clicked Block as Current
      */
     try {
-      /**
-       * Renew Current Block
-       */
       this.Editor.BlockManager.setCurrentBlockByChildNode(clickedNode);
 
       /**
