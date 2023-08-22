@@ -7150,7 +7150,7 @@ const vt = class extends T {
     let a = s.getData("text/html");
     const l = document.createElement("div");
     if (l.innerHTML = a, l.querySelectorAll("*").forEach((m) => {
-      m instanceof HTMLElement && (m.style.color = "inherit", m.style.fontFamily = "inherit", m.style.fontSize = "inherit", m.style.backgroundColor = "initial");
+      m instanceof HTMLElement && (m.style.fontFamily = "inherit", m.style.color = "inherit", m.style.fontSize = "inherit", m.style.backgroundColor = "initial");
     }), a = l.innerHTML, i)
       try {
         this.insertEditorJSData(JSON.parse(i));
