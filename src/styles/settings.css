@@ -1,31 +1,4 @@
 .ce-settings {
-  border: none;
-  top: 34px;
-  left: 51px;
-  width: 220px;
-  box-sizing: content-box;
-
-  @media (--mobile) {
-    bottom: 40px;
-    right: auto;
-    top: auto;
-  }
-
-  position: absolute;
-  z-index: 2;
-  --gap: 8px;
-
-  @media (--not-mobile){
-    position: absolute;
-    top: calc(var(--toolbox-buttons-size) + var(--gap));
-    /* @slid - in our product popups are positioned where editor starts */
-    left: 44px;
-
-    &--opened-top {
-      top: calc(-1 * (var(--gap) + var(--popover-height)));
-    }
-  }
-
   &__button {
     padding: 8px 16px;
     display: flex;
@@ -76,5 +49,16 @@
     &--selected {
       color: var(--blue5);
     }
+  }
+}
+
+.codex-editor--narrow .ce-settings {
+  @media (--not-mobile) {
+    .ce-popover {
+      right: 0;
+      left: unset;
+    }
+    /* @slid - in our product popups are positioned where editor starts */
+    left: 44px;
   }
 }
