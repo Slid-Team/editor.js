@@ -128,7 +128,9 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    */
   public toggleReadOnly(readOnlyEnabled: boolean): void {
     if (!readOnlyEnabled) {
-      this.make();
+      window.requestIdleCallback(() => {
+        this.make();
+      }, { timeout: 2000 });
     } else {
       this.destroy();
       this.Editor.ConversionToolbar.destroy();
@@ -373,8 +375,11 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
 
     /**
      * Recalculate initial width with all buttons
+     * We use RIC to prevent forced layout during editor initialization to make it faster
      */
-    this.recalculateWidth();
+    window.requestAnimationFrame(() => {
+      this.recalculateWidth();
+    });
 
     /**
      * Allow to leaf buttons by arrows / tab

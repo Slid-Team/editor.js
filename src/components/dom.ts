@@ -145,7 +145,7 @@ export default class Dom {
    * @param {string} selector - searching string
    * @returns {Element}
    */
-  public static find(el: Element | Document = document, selector: string): Element {
+  public static find(el: Element | Document = document, selector: string): Element | null {
     return el.querySelector(selector);
   }
 
@@ -548,20 +548,6 @@ export default class Dom {
     }
 
     return element;
-  }
-
-  /**
-   * Method checks passed Node if it is some extension Node
-   *
-   * @param {Node} node - any node
-   * @returns {boolean}
-   */
-  public static isExtensionNode(node: Node): boolean {
-    const extensions = [
-      'GRAMMARLY-EXTENSION',
-    ];
-
-    return node && extensions.includes(node.nodeName);
   }
 
   /**

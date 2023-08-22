@@ -1,20 +1,19 @@
-import Module from '../../__module';
-import $ from '../../dom';
-import * as _ from '../../utils';
-import I18n from '../../i18n';
-import { I18nInternalNS } from '../../i18n/namespace-internal';
-import Tooltip from '../../utils/tooltip';
-import { ModuleConfig } from '../../../types-internal/module-config';
-import { BlockAPI } from '../../../../types';
-import Block from '../../block';
-import Toolbox, { ToolboxEvent } from '../../ui/toolbox';
+import Module from "../../__module";
+import $ from "../../dom";
+import * as _ from "../../utils";
+import I18n from "../../i18n";
+import { I18nInternalNS } from "../../i18n/namespace-internal";
+import Tooltip from "../../utils/tooltip";
+import { ModuleConfig } from "../../../types-internal/module-config";
+import Block from "../../block";
+import Toolbox, { ToolboxEvent } from "../../ui/toolbox";
+import { BlockHovered } from "../../events/BlockHovered";
 // @slid - replace plus and menu icon with slid's icons
 // import { IconMenu, IconPlus } from '@codexteam/icons';
 
 const IconMenu = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g transform="translate(4 1.5)" fill-rule="evenodd"><circle cx="1.3" cy="1.3" r="1.3"/><circle cx="6.5" cy="1.3" r="1.3"/><circle cx="6.5" cy="6.5" r="1.3"/><circle cx="1.3" cy="6.5" r="1.3"/><circle cx="6.5" cy="11.7" r="1.3"/><circle cx="1.3" cy="11.7" r="1.3"/></g></svg>`;
 
 const IconPlus = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g transform="translate(1 1.5)" fill-rule="evenodd"><rect x="6" width="2" height="13" rx="1"/><rect x=".5" y="5.5" width="13" height="2" rx="1"/></g></svg>`;
-
 
 /**
  * @todo Tab on non-empty block should open Block Settings of the hoveredBlock (not where caret is set)
@@ -109,8 +108,9 @@ export default class Toolbar extends Module<ToolbarNodes> {
 
   /**
    * Toolbox class instance
+   * It will be created in requestIdleCallback so it can be null in some period of time
    */
-  private toolboxInstance: Toolbox;
+  private toolboxInstance: Toolbox | null = null;
 
   /**
    * @class
@@ -133,18 +133,18 @@ export default class Toolbar extends Module<ToolbarNodes> {
    */
   public get CSS(): { [name: string]: string } {
     return {
-      toolbar: 'ce-toolbar',
-      content: 'ce-toolbar__content',
-      actions: 'ce-toolbar__actions',
-      actionsOpened: 'ce-toolbar__actions--opened',
+      toolbar: "ce-toolbar",
+      content: "ce-toolbar__content",
+      actions: "ce-toolbar__actions",
+      actionsOpened: "ce-toolbar__actions--opened",
 
-      toolbarOpened: 'ce-toolbar--opened',
-      openedToolboxHolderModifier: 'codex-editor--toolbox-opened',
+      toolbarOpened: "ce-toolbar--opened",
+      openedToolboxHolderModifier: "codex-editor--toolbox-opened",
 
-      plusButton: 'ce-toolbar__plus',
-      plusButtonShortcut: 'ce-toolbar__plus-shortcut',
-      settingsToggler: 'ce-toolbar__settings-btn',
-      settingsTogglerHidden: 'ce-toolbar__settings-btn--hidden',
+      plusButton: "ce-toolbar__plus",
+      plusButtonShortcut: "ce-toolbar__plus-shortcut",
+      settingsToggler: "ce-toolbar__settings-btn",
+      settingsTogglerHidden: "ce-toolbar__settings-btn--hidden",
     };
   }
 
@@ -161,18 +161,30 @@ export default class Toolbar extends Module<ToolbarNodes> {
    * Public interface for accessing the Toolbox
    */
   public get toolbox(): {
-    opened: boolean;
+    opened: boolean | undefined; // undefined is for the case when Toolbox is not initialized yet
     close: () => void;
     open: () => void;
     toggle: () => void;
-    hasFocus: () => boolean;
-    } {
+    hasFocus: () => boolean | undefined;
+  } {
     return {
-      opened: this.toolboxInstance.opened,
-      close: (): void => {
-        this.toolboxInstance.close();
+      opened: this.toolboxInstance?.opened,
+      close: () => {
+        this.toolboxInstance?.close();
       },
-      open: (): void => {
+      open: () => {
+        /**
+         * If Toolbox is not initialized yet, do nothing
+         */
+        if (this.toolboxInstance === null) {
+          _.log(
+            "toolbox.open() called before initialization is finished",
+            "warn"
+          );
+
+          return;
+        }
+
         /**
          * Set current block to cover the case when the Toolbar showed near hovered Block but caret is set to another Block.
          */
@@ -180,8 +192,22 @@ export default class Toolbar extends Module<ToolbarNodes> {
 
         this.toolboxInstance.open();
       },
-      toggle: (): void => this.toolboxInstance.toggle(),
-      hasFocus: (): boolean => this.toolboxInstance.hasFocus(),
+      toggle: () => {
+        /**
+         * If Toolbox is not initialized yet, do nothing
+         */
+        if (this.toolboxInstance === null) {
+          _.log(
+            "toolbox.toggle() called before initialization is finished",
+            "warn"
+          );
+
+          return;
+        }
+
+        this.toolboxInstance.toggle();
+      },
+      hasFocus: () => this.toolboxInstance?.hasFocus(),
     };
   }
 
@@ -204,8 +230,14 @@ export default class Toolbar extends Module<ToolbarNodes> {
    */
   private get blockTunesToggler(): { hide: () => void; show: () => void } {
     return {
-      hide: (): void => this.nodes.settingsToggler.classList.add(this.CSS.settingsTogglerHidden),
-      show: (): void => this.nodes.settingsToggler.classList.remove(this.CSS.settingsTogglerHidden),
+      hide: (): void =>
+        this.nodes.settingsToggler.classList.add(
+          this.CSS.settingsTogglerHidden
+        ),
+      show: (): void =>
+        this.nodes.settingsToggler.classList.remove(
+          this.CSS.settingsTogglerHidden
+        ),
     };
   }
 
@@ -216,8 +248,13 @@ export default class Toolbar extends Module<ToolbarNodes> {
    */
   public toggleReadOnly(readOnlyEnabled: boolean): void {
     if (!readOnlyEnabled) {
-      this.drawUI();
-      this.enableModuleBindings();
+      window.requestIdleCallback(
+        () => {
+          this.drawUI();
+          this.enableModuleBindings();
+        },
+        { timeout: 2000 }
+      );
     } else {
       this.destroy();
       this.Editor.BlockSettings.destroy();
@@ -230,12 +267,31 @@ export default class Toolbar extends Module<ToolbarNodes> {
    *
    * @param block - block to move Toolbar near it
    */
-  public moveAndOpen(block: Block = this.Editor.BlockManager.currentBlock): void {
+  public moveAndOpen(
+    block: Block = this.Editor.BlockManager.currentBlock
+  ): void {
+    /**
+     * Some UI elements creates inside requestIdleCallback, so the can be not ready yet
+     */
+    if (this.toolboxInstance === null) {
+      _.log(
+        "Can't open Toolbar since Editor initialization is not finished yet",
+        "warn"
+      );
+
+      return;
+    }
+
     /**
      * Close Toolbox when we move toolbar
      */
-    this.toolboxInstance.close();
-    this.Editor.BlockSettings.close();
+    if (this.toolboxInstance.opened) {
+      this.toolboxInstance.close();
+    }
+
+    if (this.Editor.BlockSettings.opened) {
+      this.Editor.BlockSettings.close();
+    }
 
     /**
      * If no one Block selected as a Current
@@ -250,7 +306,10 @@ export default class Toolbar extends Module<ToolbarNodes> {
     const { isMobile } = this.Editor.UI;
     const renderedContent = block.pluginsContent;
     const renderedContentStyle = window.getComputedStyle(renderedContent);
-    const blockRenderedElementPaddingTop = parseInt(renderedContentStyle.paddingTop, 10);
+    const blockRenderedElementPaddingTop = parseInt(
+      renderedContentStyle.paddingTop,
+      10
+    );
     const blockHeight = targetBlockHolder.offsetHeight;
 
     let toolbarY;
@@ -295,7 +354,7 @@ export default class Toolbar extends Module<ToolbarNodes> {
 
     /** Close components */
     this.blockActions.hide();
-    this.toolboxInstance.close();
+    this.toolboxInstance?.close();
     this.Editor.BlockSettings.close();
   }
 
@@ -314,7 +373,7 @@ export default class Toolbar extends Module<ToolbarNodes> {
       } else {
         this.blockActions.hide();
       }
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     }, 50)();
   }
 
@@ -322,13 +381,16 @@ export default class Toolbar extends Module<ToolbarNodes> {
    * Draws Toolbar elements
    */
   private make(): void {
-    this.nodes.wrapper = $.make('div', this.CSS.toolbar);
+    this.nodes.wrapper = $.make("div", this.CSS.toolbar);
+    /**
+     * @todo detect test environment and add data-cy="toolbar" to use it in tests instead of class name
+     */
 
     /**
      * Make Content Zone and Actions Zone
      */
-    ['content', 'actions'].forEach((el) => {
-      this.nodes[el] = $.make('div', this.CSS[el]);
+    ["content", "actions"].forEach((el) => {
+      this.nodes[el] = $.make("div", this.CSS[el]);
     });
 
     /**
@@ -342,25 +404,34 @@ export default class Toolbar extends Module<ToolbarNodes> {
      *  - Plus Button
      *  - Toolbox
      */
-    this.nodes.plusButton = $.make('div', this.CSS.plusButton, {
+    this.nodes.plusButton = $.make("div", this.CSS.plusButton, {
       innerHTML: IconPlus,
     });
     $.append(this.nodes.actions, this.nodes.plusButton);
 
-    this.readOnlyMutableListeners.on(this.nodes.plusButton, 'click', () => {
-      this.tooltip.hide(true);
-      this.plusButtonClicked();
-    }, false);
+    this.readOnlyMutableListeners.on(
+      this.nodes.plusButton,
+      "click",
+      () => {
+        this.tooltip.hide(true);
+        this.plusButtonClicked();
+      },
+      false
+    );
 
     /**
      * Add events to show/hide tooltip for plus button
      */
-    const tooltipContent = $.make('div');
+    const tooltipContent = $.make("div");
 
-    tooltipContent.appendChild(document.createTextNode(I18n.ui(I18nInternalNS.ui.toolbar.toolbox, 'Add')));
-    tooltipContent.appendChild($.make('div', this.CSS.plusButtonShortcut, {
-      textContent: '⇥ Tab',
-    }));
+    tooltipContent.appendChild(
+      document.createTextNode(I18n.ui(I18nInternalNS.ui.toolbar.toolbox, "Add"))
+    );
+    tooltipContent.appendChild(
+      $.make("div", this.CSS.plusButtonShortcut, {
+        textContent: "⇥ Tab",
+      })
+    );
 
     this.tooltip.onHover(this.nodes.plusButton, tooltipContent, {
       hidingDelay: 400,
@@ -372,7 +443,7 @@ export default class Toolbar extends Module<ToolbarNodes> {
      *  - Remove Block Button
      *  - Settings Panel
      */
-    this.nodes.settingsToggler = $.make('span', this.CSS.settingsToggler, {
+    this.nodes.settingsToggler = $.make("span", this.CSS.settingsToggler, {
       innerHTML: IconMenu,
     });
 
@@ -380,7 +451,7 @@ export default class Toolbar extends Module<ToolbarNodes> {
 
     this.tooltip.onHover(
       this.nodes.settingsToggler,
-      I18n.ui(I18nInternalNS.ui.blockTunes.toggler, 'Click to tune'),
+      I18n.ui(I18nInternalNS.ui.blockTunes.toggler, "Click to tune"),
       {
         hidingDelay: 400,
       }
@@ -409,20 +480,24 @@ export default class Toolbar extends Module<ToolbarNodes> {
       api: this.Editor.API.methods,
       tools: this.Editor.Tools.blockTools,
       i18nLabels: {
-        filter: I18n.ui(I18nInternalNS.ui.popover, 'Filter'),
-        nothingFound: I18n.ui(I18nInternalNS.ui.popover, 'Nothing found'),
+        filter: I18n.ui(I18nInternalNS.ui.popover, "Filter"),
+        nothingFound: I18n.ui(I18nInternalNS.ui.popover, "Nothing found"),
       },
     });
 
     this.toolboxInstance.on(ToolboxEvent.Opened, () => {
-      this.Editor.UI.nodes.wrapper.classList.add(this.CSS.openedToolboxHolderModifier);
+      this.Editor.UI.nodes.wrapper.classList.add(
+        this.CSS.openedToolboxHolderModifier
+      );
     });
 
     this.toolboxInstance.on(ToolboxEvent.Closed, () => {
-      this.Editor.UI.nodes.wrapper.classList.remove(this.CSS.openedToolboxHolderModifier);
+      this.Editor.UI.nodes.wrapper.classList.remove(
+        this.CSS.openedToolboxHolderModifier
+      );
     });
 
-    this.toolboxInstance.on(ToolboxEvent.BlockAdded, ({ block }: {block: BlockAPI }) => {
+    this.toolboxInstance.on(ToolboxEvent.BlockAdded, ({ block }) => {
       const { BlockManager, Caret } = this.Editor;
       const newBlock = BlockManager.getBlockById(block.id);
 
@@ -452,7 +527,7 @@ export default class Toolbar extends Module<ToolbarNodes> {
      */
     this.Editor.BlockManager.currentBlock = this.hoveredBlock;
 
-    this.toolboxInstance.toggle();
+    this.toolboxInstance?.toggle();
   }
 
   /**
@@ -464,20 +539,27 @@ export default class Toolbar extends Module<ToolbarNodes> {
      *
      * mousedown is used because on click selection is lost in Safari and FF
      */
-    this.readOnlyMutableListeners.on(this.nodes.settingsToggler, 'mousedown', (e) => {
-      /**
-       * Stop propagation to prevent block selection clearance
-       *
-       * @see UI.documentClicked
-       */
-      e.stopPropagation();
+    this.readOnlyMutableListeners.on(
+      this.nodes.settingsToggler,
+      "mousedown",
+      (e) => {
+        /**
+         * Stop propagation to prevent block selection clearance
+         *
+         * @see UI.documentClicked
+         */
+        e.stopPropagation();
 
-      this.settingsTogglerClicked();
+        this.settingsTogglerClicked();
 
-      this.toolboxInstance.close();
+        if (this.toolboxInstance?.opened) {
+          this.toolboxInstance.close();
+        }
 
-      this.tooltip.hide(true);
-    }, true);
+        this.tooltip.hide(true);
+      },
+      true
+    );
 
     /**
      * Subscribe to the 'block-hovered' event if current view is not mobile
@@ -488,11 +570,11 @@ export default class Toolbar extends Module<ToolbarNodes> {
       /**
        * Subscribe to the 'block-hovered' event
        */
-      this.eventsDispatcher.on(this.Editor.UI.events.blockHovered, (data: {block: Block}) => {
+      this.eventsDispatcher.on(BlockHovered, (data) => {
         /**
          * Do not move toolbar if Block Settings or Toolbox opened
          */
-        if (this.Editor.BlockSettings.opened || this.toolboxInstance.opened) {
+        if (this.Editor.BlockSettings.opened || this.toolboxInstance?.opened) {
           return;
         }
 

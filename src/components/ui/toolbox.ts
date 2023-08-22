@@ -3,7 +3,7 @@ import { BlockToolAPI } from '../block';
 import Shortcuts from '../utils/shortcuts';
 import BlockTool from '../tools/block';
 import ToolsCollection from '../tools/collection';
-import { API, BlockToolData, ToolboxConfigEntry, PopoverItem } from '../../../types';
+import { API, BlockToolData, ToolboxConfigEntry, PopoverItem, BlockAPI } from '../../../types';
 import EventsDispatcher from '../utils/events';
 import Popover, { PopoverEvent } from '../utils/popover';
 import I18n from '../i18n';
@@ -34,6 +34,19 @@ export enum ToolboxEvent {
 }
 
 /**
+ * Events fired by the Toolbox
+ *
+ * Event name -> payload
+ */
+export interface ToolboxEventMap {
+  [ToolboxEvent.Opened]: undefined;
+  [ToolboxEvent.Closed]: undefined;
+  [ToolboxEvent.BlockAdded]: {
+    block: BlockAPI
+  };
+}
+
+/**
  * Available i18n dict keys that should be passed to the constructor
  */
 type ToolboxTextLabelsKeys = 'filter' | 'nothingFound';
@@ -45,7 +58,7 @@ type ToolboxTextLabelsKeys = 'filter' | 'nothingFound';
  *
  * @implements {EventsDispatcher} with some events, see {@link ToolboxEvent}
  */
-export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
+export default class Toolbox extends EventsDispatcher<ToolboxEventMap> {
   /**
    * Returns True if Toolbox is Empty and nothing to show
    *
@@ -124,14 +137,15 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     // this.nodes.toolbox = $.make("div", Toolbox.CSS.toolbox);
     this.popover = new Popover({
       scopeElement: this.api.ui.nodes.redactor,
-      className: Toolbox.CSS.toolbox,
       searchable: true,
-      filterLabel: this.i18nLabels.filter,
-      nothingFoundLabel: this.i18nLabels.nothingFound,
+      messages: {
+        nothingFound: this.i18nLabels.nothingFound,
+        search: this.i18nLabels.filter,
+      },
       items: this.toolboxItemsToBeDisplayed,
     });
 
-    this.popover.on(PopoverEvent.OverlayClicked, this.onOverlayClicked);
+    this.popover.on(PopoverEvent.Close, this.onPopoverClose);
 
     /**
      * Enable tools shortcuts
@@ -139,6 +153,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     this.enableShortcuts();
 
     this.nodes.toolbox = this.popover.getElement();
+    this.nodes.toolbox.classList.add(Toolbox.CSS.toolbox);
 
     return this.nodes.toolbox;
   }
@@ -162,7 +177,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     }
 
     this.removeAllShortcuts();
-    this.popover?.off(PopoverEvent.OverlayClicked, this.onOverlayClicked);
+    this.popover?.off(PopoverEvent.Close, this.onPopoverClose);
   }
 
   /**
@@ -209,10 +224,11 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
   }
 
   /**
-   * Handles overlay click
+   * Handles popover close event
    */
-  private onOverlayClicked = (): void => {
-    this.close();
+  private onPopoverClose = (): void => {
+    this.opened = false;
+    this.emit(ToolboxEvent.Closed);
   };
 
   /**
@@ -244,7 +260,7 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
     const toPopoverItem = (toolboxItem: ToolboxConfigEntry, tool: BlockTool): PopoverItem => {
       return {
         icon: toolboxItem.icon,
-        label: I18n.t(I18nInternalNS.toolNames, toolboxItem.title || _.capitalize(tool.name)),
+        title: I18n.t(I18nInternalNS.toolNames, toolboxItem.title || _.capitalize(tool.name)),
         name: tool.name,
         onActivate: (): void => {
           this.toolButtonActivated(tool.name, toolboxItem.data);
@@ -292,6 +308,26 @@ export default class Toolbox extends EventsDispatcher<ToolboxEvent> {
       on: this.api.ui.nodes.redactor,
       handler: (event: KeyboardEvent) => {
         event.preventDefault();
+
+        const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
+        const currentBlock = this.api.blocks.getBlockByIndex(currentBlockIndex);
+
+        /**
+         * Try to convert current Block to shortcut's tool
+         * If conversion is not possible, insert a new Block below
+         */
+        if (currentBlock) {
+          try {
+            this.api.blocks.convert(currentBlock.id, toolName);
+
+            window.requestAnimationFrame(() => {
+              this.api.caret.setToBlock(currentBlockIndex, 'end');
+            });
+
+            return;
+          } catch (error) {}
+        }
+
         this.insertNewBlock(toolName);
       },
     });
