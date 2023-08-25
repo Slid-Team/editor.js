@@ -366,6 +366,7 @@ export default class BlockManager extends Module {
   ): Promise<Block> {
     const existingData = await block.data;
 
+    console.log("data", data);
     const newBlock = this.composeBlock({
       id: block.id,
       tool: block.name,
