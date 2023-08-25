@@ -20,7 +20,7 @@
   --color-shadow-item-focus: rgba(7, 161, 227, 0.08);
   --color-background-item-hover: #eff2f5;
   --color-background-item-confirm: #e24a4a;
-  --color-background-item-confirm-hover:#ce4343;
+  --color-background-item-confirm-hover: #ce4343;
 
   min-width: var(--width);
   width: var(--width);
