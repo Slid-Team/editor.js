@@ -119,6 +119,7 @@ export default class BlockEvents extends Module {
    * @param {KeyboardEvent} event - tab keydown event
    */
   public tabPressed(event: KeyboardEvent): void {
+    event.preventDefault();
     /**
      * Clear blocks selection by tab
      */
