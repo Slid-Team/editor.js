@@ -5356,7 +5356,7 @@ class zo extends T {
    * @param {KeyboardEvent} event - tab keydown event
    */
   tabPressed(e) {
-    this.Editor.BlockSelection.clearSelection(e);
+    e.preventDefault(), this.Editor.BlockSelection.clearSelection(e);
     const { BlockManager: t, InlineToolbar: o, ConversionToolbar: n } = this.Editor, i = t.currentBlock;
     if (!i)
       return;
