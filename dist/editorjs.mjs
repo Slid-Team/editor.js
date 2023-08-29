@@ -1413,7 +1413,7 @@ function Kt(s, e) {
 }
 const Ie = "redactor dom changed", lt = "block changed", ct = "fake cursor is about to be toggled", dt = "fake cursor have been set";
 function qe(s, e) {
-  return s.mergeable && s.name === e.name;
+  return e && e.mergeable || s.name === e.name;
 }
 function Xt(s, e) {
   const t = e == null ? void 0 : e.export;
@@ -6194,7 +6194,7 @@ class Wo extends T {
     ))
       return this.currentBlockIndex = this._blocks.nodes.indexOf(
         t
-      ), this.currentBlock.updateCurrentInput(), this.currentBlock;
+      ), this.currentBlock && this.currentBlock.updateCurrentInput(), this.currentBlock;
   }
   /**
    * Return block which contents passed node
