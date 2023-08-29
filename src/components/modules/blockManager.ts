@@ -744,7 +744,7 @@ export default class BlockManager extends Module {
     /**
      * Update current block active input
      */
-    this.currentBlock.updateCurrentInput();
+    if(this.currentBlock) this.currentBlock.updateCurrentInput();
 
     return this.currentBlock;
   }
